@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/kanban_tasks/board.gd" type="Script" id=1]
+[ext_resource path="res://addons/kanban_tasks/documentation.gd" type="Script" id=2]
 [ext_resource path="res://addons/kanban_tasks/details_dialog.gd" type="Script" id=3]
 
 [sub_resource type="Image" id=3]
@@ -173,6 +174,7 @@ margin_right = 650.0
 margin_bottom = 450.0
 window_title = "Documentation"
 resizable = true
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -187,38 +189,70 @@ margin_bottom = -36.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Dialogs/Documentation/VBoxContainer"]
 margin_right = 634.0
-margin_bottom = 404.0
+margin_bottom = 406.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
-bbcode_text = "Kanban Tasks - Todo Manager is a simple kanban board integrated into the editor. It can be found in the \"Tasks\" main window.
+bbcode_text = "[u]Features[/u]
 
-Usage
-- drag and drop tasks from one stage to another
-- when you drag a task on the stage header it will be put at the beginning
-- double click on names to change them (works on stages and tasks)
-- use the details popup to enter a detailed description of the task
+- Renamable stages
+- Tasks with detailed description and titles
+- Search in tasks and task details
+- Intuitive drag and drop usage utilising the godot build in drag and drop
+- Support for shortcuts *
+- Categories **
+- Different stage layouts with multiple stages per column ***
+- Supports all editor themes including light ones
 
-[b]Advanced[/b]
-The board supports difftent categories and stages. At the moment these can not be configured from the plugin. Instead you have to open the [code]data.json[/code] file in the plugin directory. Extend the [code]categories[/code] entry to edit categories (There must be at least one category).
-Use the [code]stages[/code] entry to add a new stage. To appear visualy the index of the stage has to be added to one column found in the [code]columns[/code] entry. Using this entry you can change the layout of the stages.
-/!\\ editing the json can corrupt your file /!\\
+* uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)  
+** new categories can currently only be added via editing the data.json file  
+*** the layout can currently only be changed via editing the data.json file  
 
-[i]If you find a bug or want to suggest a new feature feel free to do so on Github.[/i]"
-text = "Kanban Tasks - Todo Manager is a simple kanban board integrated into the editor. It can be found in the \"Tasks\" main window.
+[u]Where is the data stored?[/u]
 
-Usage
-- drag and drop tasks from one stage to another
-- when you drag a task on the stage header it will be put at the beginning
-- double click on names to change them (works on stages and tasks)
-- use the details popup to enter a detailed description of the task
+The data is stored inside of the addon folder (res://addons/kanban_tasks/data.json).
+Currently some features require editing the file to use. Do this before adding tasks to prevent save file corruption. You can have a look at the examples folder on github for some example data configurations.
 
-Advanced
-The board supports difftent categories and stages. At the moment these can not be configured from the plugin. Instead you have to open the data.json file in the plugin directory. Extend the categories entry to edit categories (There must be at least one category).
-Use the stages entry to add a new stage. To appear visualy the index of the stage has to be added to one column found in the columns entry. Using this entry you can change the layout of the stages.
-/!\\ editing the json can corrupt your file /!\\
+[u]I found a bug. What should I do?[/u]
 
-If you find a bug or want to suggest a new feature feel free to do so on Github."
+The plugin is work in progress. Feel free to add a bug report on the github page.
+
+[u]Under which license is this?[/u]
+
+The plugin is under the MIT license.
+Copyright (c) 2022 Holon Production
+
+Leave a star on [url=https://github.com/HolonProduction/godot_kanban_tasks]Github[/url]"
+text = "Features
+
+- Renamable stages
+- Tasks with detailed description and titles
+- Search in tasks and task details
+- Intuitive drag and drop usage utilising the godot build in drag and drop
+- Support for shortcuts *
+- Categories **
+- Different stage layouts with multiple stages per column ***
+- Supports all editor themes including light ones
+
+* uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)  
+** new categories can currently only be added via editing the data.json file  
+*** the layout can currently only be changed via editing the data.json file  
+
+Where is the data stored?
+
+The data is stored inside of the addon folder (res://addons/kanban_tasks/data.json).
+Currently some features require editing the file to use. Do this before adding tasks to prevent save file corruption. You can have a look at the examples folder on github for some example data configurations.
+
+I found a bug. What should I do?
+
+The plugin is work in progress. Feel free to add a bug report on the github page.
+
+Under which license is this?
+
+The plugin is under the MIT license.
+Copyright (c) 2022 Holon Production
+
+Leave a star on Github"
 
 [node name="Settings" type="AcceptDialog" parent="Dialogs"]
 margin_right = 650.0
