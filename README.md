@@ -38,3 +38,6 @@ The plugin is under the MIT license.
 You should put the plugin in your build exceptions to prevent exporting it it. (Don't know if this is neccessary).
 
 ## Can I get some screenshots please?
+![screenshot](https://raw.githubusercontent.com/HolonProduction/godot_kanban_tasks/master/images/screenshot1.png)
+![screenshot](https://raw.githubusercontent.com/HolonProduction/godot_kanban_tasks/master/images/screenshot2.png)
+![screenshot](https://raw.githubusercontent.com/HolonProduction/godot_kanban_tasks/master/images/screenshot3.png)
