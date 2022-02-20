@@ -1,0 +1,152 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/kanban_tasks/stage.gd" type="Script" id=1]
+[ext_resource path="res://addons/kanban_tasks/edit_label/edit_label.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1589]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.1, 0.115, 0.155, 1 )
+
+[node name="Stage" type="MarginContainer"]
+margin_right = 300.0
+margin_bottom = 37.0
+rect_min_size = Vector2( 200, 200 )
+focus_mode = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_right = 300.0
+margin_bottom = 200.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1589 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 296.0
+margin_bottom = 196.0
+mouse_filter = 2
+custom_constants/separation = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_right = 292.0
+margin_bottom = 22.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="Title" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+margin_right = 280.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+alignment = 1
+script = ExtResource( 2 )
+
+[node name="Title2" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+visible = false
+margin_left = 126.0
+margin_top = 1.0
+margin_right = 252.0
+margin_bottom = 23.0
+size_flags_horizontal = 3
+
+[node name="New" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 280.0
+margin_right = 292.0
+margin_bottom = 22.0
+hint_tooltip = "Add task."
+focus_mode = 0
+
+[node name="NewCategory" type="MenuButton" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+visible = false
+margin_left = 280.0
+margin_right = 292.0
+margin_bottom = 24.0
+flat = false
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
+margin_top = 27.0
+margin_right = 292.0
+margin_bottom = 27.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 32.0
+margin_right = 292.0
+margin_bottom = 192.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+follow_focus = true
+scroll_horizontal_enabled = false
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/ScrollContainer"]
+margin_right = 292.0
+margin_bottom = 10.0
+mouse_filter = 2
+size_flags_horizontal = 3
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="TaskHolder" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 287.0
+margin_bottom = 5.0
+mouse_filter = 2
+size_flags_horizontal = 3
+custom_constants/separation = 5
+
+[node name="PreviewHolder" type="Control" parent="PanelContainer/VBoxContainer/ScrollContainer/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 287.0
+margin_bottom = 5.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="PreviewPosition" type="Control" parent="PanelContainer/VBoxContainer/ScrollContainer/MarginContainer/PreviewHolder"]
+visible = false
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/ScrollContainer/MarginContainer/PreviewHolder/PreviewPosition"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_vertical = 2
+rect_min_size = Vector2( 0, 1 )
+mouse_filter = 2
+color = Color( 0.8, 0.8075, 0.8275, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

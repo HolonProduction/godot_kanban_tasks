@@ -1,0 +1,64 @@
+{
+  "categories": [
+    {
+      "title": "Feature",
+      "color": "6394ed"
+    },
+    {
+      "title": "Bug",
+      "color": "dd5b27"
+    },
+    {
+      "title": "Improvement",
+      "color": "43b777"
+    }
+  ],
+  "columns": [
+    {
+      "stages": [
+        0
+      ]
+    },
+    {
+      "stages": [
+        1,
+        3
+      ]
+    },
+    {
+      "stages": [
+        2
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "title": "Todo",
+      "tasks": [
+        1
+      ]
+    },
+    {
+      "title": "Doing",
+      "tasks": [
+        0
+      ]
+    },
+    {
+      "title": "Done",
+      "tasks": [
+
+      ]
+    },
+    {
+      "title": "Ideas",
+      "tasks": [
+        2,
+        3
+      ]
+    }
+  ],
+  "tasks": [
+    
+  ]
+}
