@@ -1,3 +1,4 @@
+tool
 extends AcceptDialog
 
 onready var label := $VBoxContainer/RichTextLabel
