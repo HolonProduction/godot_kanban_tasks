@@ -5,6 +5,9 @@
 .import/
 export.cfg
 export_presets.cfg
+project.godot
+*.import
+addons/kanban_tasks/data.json
 
 # Imported translations (automatically generated from CSV files)
 *.translation
