@@ -34,6 +34,13 @@ class CategoryEntry extends HBoxContainer:
 		delete.connect("pressed", self, "__on_delete")
 		delete.focus_mode = FOCUS_NONE
 		add_child(delete)
+		
+		board.connect("categories_changed", self, "__on_categories_changed")
+		
+		__on_categories_changed()
+	
+	func _exit_tree():
+		board.disconnect("categories_changed", self, "__on_categories_changed")
 	
 	func _notification(what):
 		match(what):
@@ -41,9 +48,16 @@ class CategoryEntry extends HBoxContainer:
 				if is_instance_valid(delete):
 					delete.icon = get_icon('Remove', 'EditorIcons')
 	
+	func __on_categories_changed():
+		delete.disabled = board.category_index(managed_category, true) == 0
+	
 	func __on_delete():
-		board.delete_category(managed_category)
-		queue_free()
+		if board.category_index(managed_category) != 0:
+			for b in board.tasks:
+				if b.category == managed_category:
+					b.category = board.categories[0]
+			board.delete_category(managed_category)
+			queue_free()
 		
 
 func _ready():
