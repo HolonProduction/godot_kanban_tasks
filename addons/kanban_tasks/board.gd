@@ -131,8 +131,9 @@ func construct_category(title: String, color: Color):
 	cat.connect("changed", self, "save_data")
 	emit_signal("categories_changed")
 	return cat
-func category_index(cat):
-	assert(cat in categories, "You have to construct categories by using the board.")
+func category_index(cat, unsafe = false):
+	if not unsafe:
+		assert(cat in categories, "You have to construct categories by using the board.")
 	return categories.find(cat)
 func delete_category(cat):
 	categories.erase(cat)
@@ -153,8 +154,9 @@ func construct_task(title:String="Task", details:String="", category=categories[
 	scene.init(self, title, details, category)
 	emit_signal("tasks_changed")
 	return scene
-func task_index(task):
-	assert(task in tasks, "You have to construct tasks by using the board.")
+func task_index(task, unsafe = false):
+	if not unsafe:
+		assert(task in tasks, "You have to construct tasks by using the board.")
 	return tasks.find(task)
 func delete_task(scene):
 	if scene.is_inside_tree():
@@ -170,8 +172,9 @@ func construct_stage(title:String="Stage", tasks:Array=[]):
 	scene.init(self, title, tasks)
 	emit_signal("stages_changed")
 	return scene
-func stage_index(stage):
-	assert(stage in stages, "You have to construct stages by using the board.")
+func stage_index(stage, unsafe = false):
+	if not unsafe:
+		assert(stage in stages, "You have to construct stages by using the board.")
 	return stages.find(stage)
 func delete_stage(scene):
 	if scene.is_inside_tree():
@@ -187,8 +190,9 @@ func construct_column(stages:Array=[]):
 	scene.init(self, stages)
 	emit_signal("columns_changed")
 	return scene
-func column_index(column):
-	assert(column in columns, "You have to construct columns by using the board.")
+func column_index(column, unsafe = false):
+	if not unsafe:
+		assert(column in columns, "You have to construct columns by using the board.")
 	return columns.find(column)
 func delete_column(scene):
 	if scene.is_inside_tree():
