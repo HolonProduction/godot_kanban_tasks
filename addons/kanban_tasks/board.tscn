@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/kanban_tasks/board.gd" type="Script" id=1]
 [ext_resource path="res://addons/kanban_tasks/documentation.gd" type="Script" id=2]
 [ext_resource path="res://addons/kanban_tasks/details_dialog.gd" type="Script" id=3]
+[ext_resource path="res://addons/kanban_tasks/settings.gd" type="Script" id=5]
 
 [sub_resource type="Image" id=3]
 data = {
@@ -48,7 +49,7 @@ margin_bottom = 31.0
 custom_constants/separation = 5
 
 [node name="Search" type="LineEdit" parent="Header/HBoxContainer"]
-margin_right = 943.0
+margin_right = 910.0
 margin_bottom = 26.0
 size_flags_horizontal = 3
 clear_button_enabled = true
@@ -56,32 +57,31 @@ right_icon = SubResource( 2 )
 placeholder_text = "Search"
 
 [node name="SearchDetails" type="Button" parent="Header/HBoxContainer"]
-margin_left = 948.0
-margin_right = 976.0
+margin_left = 915.0
+margin_right = 943.0
 margin_bottom = 26.0
 hint_tooltip = "Search in details."
 toggle_mode = true
 icon = SubResource( 2 )
 
 [node name="VSeparator" type="VSeparator" parent="Header/HBoxContainer"]
-margin_left = 981.0
-margin_right = 981.0
+margin_left = 948.0
+margin_right = 948.0
 margin_bottom = 26.0
 custom_constants/separation = 0
 
 [node name="Help" type="Button" parent="Header/HBoxContainer"]
-margin_left = 986.0
-margin_right = 1014.0
+margin_left = 953.0
+margin_right = 981.0
 margin_bottom = 26.0
 hint_tooltip = "Manage board settings."
 icon = SubResource( 2 )
 flat = true
 
 [node name="Settings" type="Button" parent="Header/HBoxContainer"]
-visible = false
 margin_left = 986.0
 margin_right = 1014.0
-margin_bottom = 24.0
+margin_bottom = 26.0
 hint_tooltip = "Manage board settings."
 icon = SubResource( 2 )
 
@@ -134,6 +134,8 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = -8.0
 margin_bottom = -36.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -141,13 +143,6 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="Dialogs/Details/VBoxContainer"]
 margin_right = 354.0
 margin_bottom = 22.0
-
-[node name="Label" type="Label" parent="Dialogs/Details/VBoxContainer/HBoxContainer"]
-visible = false
-margin_right = 175.0
-margin_bottom = 22.0
-size_flags_horizontal = 3
-text = "Details:"
 
 [node name="OptionButton" type="OptionButton" parent="Dialogs/Details/VBoxContainer/HBoxContainer"]
 margin_right = 354.0
@@ -186,6 +181,8 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = -8.0
 margin_bottom = -36.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Dialogs/Documentation/VBoxContainer"]
 margin_right = 634.0
@@ -255,13 +252,12 @@ Copyright (c) 2022 Holon Production
 Leave a star on Github"
 
 [node name="Settings" type="AcceptDialog" parent="Dialogs"]
+visible = true
 margin_right = 650.0
 margin_bottom = 450.0
 window_title = "Settings"
 resizable = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource( 5 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings"]
 anchor_right = 1.0
@@ -270,13 +266,41 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = -8.0
 margin_bottom = -36.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Dialogs/Settings/VBoxContainer"]
+[node name="Categories" type="PanelContainer" parent="Dialogs/Settings/VBoxContainer"]
 margin_right = 634.0
+margin_bottom = 46.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/VBoxContainer/Categories"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 627.0
 margin_bottom = 39.0
-text = "Nothing here right now
-(plugin under construction)"
-align = 1
+
+[node name="Header" type="HBoxContainer" parent="Dialogs/Settings/VBoxContainer/Categories/VBoxContainer"]
+margin_right = 620.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="Dialogs/Settings/VBoxContainer/Categories/VBoxContainer/Header"]
+margin_top = 3.0
+margin_right = 604.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Categories"
+
+[node name="Add" type="Button" parent="Dialogs/Settings/VBoxContainer/Categories/VBoxContainer/Header"]
+margin_left = 608.0
+margin_right = 620.0
+margin_bottom = 20.0
+
+[node name="HSeparator" type="HSeparator" parent="Dialogs/Settings/VBoxContainer/Categories/VBoxContainer"]
+margin_top = 24.0
+margin_right = 620.0
+margin_bottom = 28.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/VBoxContainer/Categories/VBoxContainer"]
+margin_top = 32.0
+margin_right = 620.0
+margin_bottom = 32.0

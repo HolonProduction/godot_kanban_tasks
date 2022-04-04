@@ -115,6 +115,11 @@ func _ready():
 	button_help.connect("pressed", self, "__on_documentation_button_clicked")
 	button_settings.connect("pressed", self, "__on_settings_button_clicked")
 	
+	connect("categories_changed", self, "save_data")
+	connect("tasks_changed", self, "save_data")
+	connect("columns_changed", self, "save_data")
+	connect("stages_changed", self, "save_data")
+	
 	notification(NOTIFICATION_THEME_CHANGED)
 
 func get_details_dialog():
@@ -123,6 +128,7 @@ func get_details_dialog():
 func construct_category(title: String, color: Color):
 	var cat = Category.new(title, color)
 	categories.append(cat)
+	cat.connect("changed", self, "save_data")
 	emit_signal("categories_changed")
 	return cat
 func category_index(cat):
