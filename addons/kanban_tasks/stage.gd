@@ -226,6 +226,7 @@ func __on_category_popup_selected(id):
 func __on_popup_about_to_show():
 	var menu: PopupMenu = menu_button_new.get_popup()
 	menu.clear()
+	menu.rect_size = Vector2.ZERO
 	for c in len(board.categories):
 		var i = Image.new()
 		i.create(16, 16, false, Image.FORMAT_RGB8)
