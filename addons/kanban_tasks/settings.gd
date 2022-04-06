@@ -13,6 +13,7 @@ onready var board = $'../../../VBoxContainer'
 class CategoryEntry extends HBoxContainer:
 	var title
 	var delete: Button
+	var color_picker: ColorPickerButton
 	var managed_category
 	var board
 	
@@ -29,6 +30,13 @@ class CategoryEntry extends HBoxContainer:
 		title.text = managed_category.title
 		title.connect("text_changed", managed_category, "set_title")
 		add_child(title)
+		
+		color_picker = ColorPickerButton.new()
+		color_picker.rect_min_size.x = 100
+		color_picker.edit_alpha = false
+		color_picker.color = managed_category.color
+		color_picker.connect("color_changed", managed_category, "set_color")
+		add_child(color_picker)
 		
 		delete = Button.new()
 		delete.connect("pressed", self, "__on_delete")
@@ -47,6 +55,9 @@ class CategoryEntry extends HBoxContainer:
 			NOTIFICATION_THEME_CHANGED:
 				if is_instance_valid(delete):
 					delete.icon = get_icon('Remove', 'EditorIcons')
+	
+	func show_edit(intention=null):
+		title.show_edit(intention)
 	
 	func __on_categories_changed():
 		delete.disabled = board.category_index(managed_category, true) == 0
@@ -77,4 +88,7 @@ func _notification(what):
 
 func __on_add_category():
 	var cat = board.construct_category("New Category", Color.coral)
-	category_holder.add_child(CategoryEntry.new(board, cat))
+	var ent = CategoryEntry.new(board, cat)
+	category_holder.add_child(ent)
+	
+	ent.show_edit(preload("./edit_label/edit_label.gd").INTENTION.REPLACE)

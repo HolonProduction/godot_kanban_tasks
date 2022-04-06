@@ -28,9 +28,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Header" type="MarginContainer" parent="."]
 margin_right = 1024.0
@@ -271,13 +268,13 @@ size_flags_vertical = 3
 
 [node name="Categories" type="PanelContainer" parent="Dialogs/Settings/VBoxContainer"]
 margin_right = 634.0
-margin_bottom = 66.0
+margin_bottom = 114.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/VBoxContainer/Categories"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 627.0
-margin_bottom = 59.0
+margin_bottom = 107.0
 
 [node name="Header" type="HBoxContainer" parent="Dialogs/Settings/VBoxContainer/Categories/VBoxContainer"]
 margin_right = 620.0
@@ -303,4 +300,4 @@ margin_bottom = 28.0
 [node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/VBoxContainer/Categories/VBoxContainer"]
 margin_top = 32.0
 margin_right = 620.0
-margin_bottom = 52.0
+margin_bottom = 100.0
