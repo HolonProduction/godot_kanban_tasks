@@ -87,7 +87,12 @@ func _notification(what):
 				category_add.icon = get_icon('Add', 'EditorIcons')
 
 func __on_add_category():
-	var cat = board.construct_category("New Category", Color.coral)
+	var randomizer = RandomNumberGenerator.new()
+	randomizer.randomize()
+	var color = Color.from_hsv(randomizer.randf(), randomizer.randf_range(0.8, 1.0), randomizer.randf_range(0.7, 1.0))
+	
+	var cat = board.construct_category("New Category", color)
+	
 	var ent = CategoryEntry.new(board, cat)
 	category_holder.add_child(ent)
 	
