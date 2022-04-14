@@ -16,6 +16,7 @@ class CategoryEntry extends HBoxContainer:
 	var color_picker: ColorPickerButton
 	var managed_category
 	var board
+	var focus_box: StyleBoxFlat
 	
 	func _init(p_board, p_category):
 		board = p_board
@@ -36,12 +37,18 @@ class CategoryEntry extends HBoxContainer:
 		color_picker.edit_alpha = false
 		color_picker.color = managed_category.color
 		color_picker.connect("color_changed", managed_category, "set_color")
+		color_picker.focus_mode = Control.FOCUS_NONE
+		color_picker.flat = true
 		add_child(color_picker)
 		
 		delete = Button.new()
 		delete.connect("pressed", self, "__on_delete")
 		delete.focus_mode = FOCUS_NONE
+		delete.flat = true
 		add_child(delete)
+		
+		focus_box = StyleBoxFlat.new()
+		focus_box.bg_color = Color(1, 1, 1, 0.1)
 		
 		board.connect("categories_changed", self, "__on_categories_changed")
 		
@@ -55,6 +62,9 @@ class CategoryEntry extends HBoxContainer:
 			NOTIFICATION_THEME_CHANGED:
 				if is_instance_valid(delete):
 					delete.icon = get_icon('Remove', 'EditorIcons')
+			NOTIFICATION_DRAW:
+				if has_focus():
+					focus_box.draw(get_canvas_item(), Rect2(Vector2.ZERO, get_rect().size))
 	
 	func show_edit(intention=null):
 		title.show_edit(intention)
