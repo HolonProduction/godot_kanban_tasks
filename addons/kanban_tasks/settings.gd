@@ -57,6 +57,14 @@ class CategoryEntry extends HBoxContainer:
 	func _exit_tree():
 		board.disconnect("categories_changed", self, "__on_categories_changed")
 	
+	func _unhandled_key_input(event):
+		if not board.can_handle_shortcut(self):
+			return
+			
+		if not event.is_echo() and event.is_pressed():
+			if board.shortcut_rename.is_shortcut(event):
+				title.show_edit()
+	
 	func _notification(what):
 		match(what):
 			NOTIFICATION_THEME_CHANGED:
@@ -106,4 +114,5 @@ func __on_add_category():
 	var ent = CategoryEntry.new(board, cat)
 	category_holder.add_child(ent)
 	
+	ent.grab_focus()
 	ent.show_edit(preload("./edit_label/edit_label.gd").INTENTION.REPLACE)
