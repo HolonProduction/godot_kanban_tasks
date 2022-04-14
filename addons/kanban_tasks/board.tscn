@@ -162,6 +162,7 @@ __meta__ = {
 }
 
 [node name="Documentation" type="AcceptDialog" parent="Dialogs"]
+visible = true
 margin_right = 650.0
 margin_bottom = 450.0
 window_title = "Documentation"
@@ -187,19 +188,24 @@ margin_bottom = 406.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
-bbcode_text = "[u]Features[/u]
+bbcode_text = "[u]How to use[/u]
+
+- Double click on names to change them (works on stages, tasks and categories). Using F2 will also work.
+- Drag and drop the tasks to move them between stages or reorder them.
+- Click the pencil icon of a task to view its details. You can also press Enter while it has focus.
+
+[u]Features[/u]
 
 - Renamable stages
 - Tasks with detailed description and titles
 - Search in tasks and task details
 - Intuitive drag and drop usage utilising the godot build in drag and drop
 - Support for shortcuts *
-- Categories **
+- Categories
 - Different stage layouts with multiple stages per column ***
 - Supports all editor themes including light ones
 
 * uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)  
-** new categories can currently only be added via editing the data.json file  
 *** the layout can currently only be changed via editing the data.json file  
 
 [u]Where is the data stored?[/u]
@@ -207,29 +213,26 @@ bbcode_text = "[u]Features[/u]
 The data is stored inside of the addon folder (res://addons/kanban_tasks/data.json).
 Currently some features require editing the file to use. Do this before adding tasks to prevent save file corruption. You can have a look at the examples folder on github for some example data configurations.
 
-[u]I found a bug. What should I do?[/u]
 
-The plugin is work in progress. Feel free to add a bug report on the github page.
+[center]Leave a star on [url=https://github.com/HolonProduction/godot_kanban_tasks]Github[/url][/center]"
+text = "How to use
 
-[u]Under which license is this?[/u]
+- Double click on names to change them (works on stages, tasks and categories). Using F2 will also work.
+- Drag and drop the tasks to move them between stages or reorder them.
+- Click the pencil icon of a task to view its details. You can also press Enter while it has focus.
 
-The plugin is under the MIT license.
-Copyright (c) 2022 Holon Production
-
-Leave a star on [url=https://github.com/HolonProduction/godot_kanban_tasks]Github[/url]"
-text = "Features
+Features
 
 - Renamable stages
 - Tasks with detailed description and titles
 - Search in tasks and task details
 - Intuitive drag and drop usage utilising the godot build in drag and drop
 - Support for shortcuts *
-- Categories **
+- Categories
 - Different stage layouts with multiple stages per column ***
 - Supports all editor themes including light ones
 
 * uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)  
-** new categories can currently only be added via editing the data.json file  
 *** the layout can currently only be changed via editing the data.json file  
 
 Where is the data stored?
@@ -237,19 +240,10 @@ Where is the data stored?
 The data is stored inside of the addon folder (res://addons/kanban_tasks/data.json).
 Currently some features require editing the file to use. Do this before adding tasks to prevent save file corruption. You can have a look at the examples folder on github for some example data configurations.
 
-I found a bug. What should I do?
-
-The plugin is work in progress. Feel free to add a bug report on the github page.
-
-Under which license is this?
-
-The plugin is under the MIT license.
-Copyright (c) 2022 Holon Production
 
 Leave a star on Github"
 
 [node name="Settings" type="AcceptDialog" parent="Dialogs"]
-visible = true
 margin_right = 650.0
 margin_bottom = 450.0
 window_title = "Settings"
@@ -274,14 +268,14 @@ size_flags_vertical = 3
 
 [node name="Categories" type="PanelContainer" parent="Dialogs/Settings/ScrollContainer/VBoxContainer"]
 margin_right = 634.0
-margin_bottom = 46.0
+margin_bottom = 406.0
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/ScrollContainer/VBoxContainer/Categories"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 627.0
-margin_bottom = 39.0
+margin_bottom = 399.0
 
 [node name="Header" type="HBoxContainer" parent="Dialogs/Settings/ScrollContainer/VBoxContainer/Categories/VBoxContainer"]
 margin_right = 620.0
@@ -307,4 +301,4 @@ margin_bottom = 28.0
 [node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/ScrollContainer/VBoxContainer/Categories/VBoxContainer"]
 margin_top = 32.0
 margin_right = 620.0
-margin_bottom = 32.0
+margin_bottom = 100.0
