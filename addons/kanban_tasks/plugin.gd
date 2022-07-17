@@ -1,10 +1,14 @@
 tool
 extends EditorPlugin
 
+var editor_only = preload("./editor_only.gd").new()
+
 const main_panel := preload("res://addons/kanban_tasks/board.tscn")
 var main_panel_instance
 
 func _enter_tree():
+	add_export_plugin(editor_only)
+	
 	main_panel_instance = main_panel.instance()
 	# Add the main panel to the editor's main viewport.
 	get_editor_interface().get_editor_viewport().add_child(main_panel_instance)
@@ -13,6 +17,8 @@ func _enter_tree():
 
 
 func _exit_tree():
+	remove_export_plugin(editor_only)
+	
 	if main_panel_instance:
 		main_panel_instance.queue_free()
 
