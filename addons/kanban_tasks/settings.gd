@@ -10,6 +10,99 @@ onready var category_holder: VBoxContainer = $TabContainer/Categories/Categories
 onready var category_add: Button = $TabContainer/Categories/Header/Add
 onready var board = $'../../../VBoxContainer'
 
+onready var column_holder: HBoxContainer = $TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder
+onready var column_add: Button = $TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn/Add
+
+
+class StageEntry extends Control:
+	var board
+	var managed_stage
+	
+	var button
+	var cent
+	
+	func _init(p_board, p_stage):
+		board = p_board
+		managed_stage = p_stage
+	
+	func _ready():
+		button = Button.new()
+		button.set_anchors_preset(Control.PRESET_WIDE)
+		add_child(button)
+		
+		button.focus_mode = Control.FOCUS_NONE
+		set_v_size_flags(SIZE_EXPAND_FILL)
+		rect_min_size = Vector2(70, 50)
+		
+		cent = CenterContainer.new()
+		cent.set_anchors_preset(Control.PRESET_WIDE)
+		cent.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		button.add_child(cent)
+		
+		var plus := TextureRect.new()
+		plus.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cent.add_child(plus)
+		button.connect("pressed", self, "__on_delete")
+	
+	func __on_delete():
+		if get_parent().get_child_count() <= 2:
+			get_parent().queue_free()
+		else:
+			queue_free()
+	
+	func _notification(what):
+		match(what):
+			NOTIFICATION_THEME_CHANGED:
+				if is_instance_valid(cent):
+					cent.get_child(0).texture = get_icon('Remove', 'EditorIcons')
+					button.add_stylebox_override('normal', get_stylebox('panel', 'TabContainer'))
+					button.add_stylebox_override('hover', get_stylebox('read_only', 'LineEdit'))
+					button.add_stylebox_override('pressed', get_stylebox('read_only', 'LineEdit'))
+
+
+class ColumnEntry extends VBoxContainer:
+	var board
+	var managed_column
+	
+	var add: Button
+	
+	func _init(p_board, p_column):
+		board = p_board
+		managed_column = p_column
+	
+	func _ready():
+		add = Button.new()
+		add.rect_min_size = Vector2(70, 40)
+		add_child(add)
+		
+		var cent = CenterContainer.new()
+		cent.set_anchors_preset(Control.PRESET_WIDE)
+		cent.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add.add_child(cent)
+		add.focus_mode = Control.FOCUS_NONE
+		
+		add.connect("pressed", self, "__on_add_stage")
+		
+		var plus := TextureRect.new()
+		plus.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cent.add_child(plus)
+		
+		__on_add_stage()
+	
+	func __on_add_stage():
+		var stage = StageEntry.new(board, null)
+		add_child(stage)
+		move_child(add, get_child_count()-1)
+	
+	func _notification(what):
+		match(what):
+			NOTIFICATION_THEME_CHANGED:
+				if is_instance_valid(add):
+					add.get_child(0).get_child(0).texture = get_icon('Add', 'EditorIcons')
+					add.add_stylebox_override('normal', get_stylebox('panel', 'TabContainer'))
+					add.add_stylebox_override('hover', get_stylebox('read_only', 'LineEdit'))
+					add.add_stylebox_override('pressed', get_stylebox('read_only', 'LineEdit'))
+
 
 class CategoryEntry extends HBoxContainer:
 	var title
@@ -92,6 +185,17 @@ class CategoryEntry extends HBoxContainer:
 
 func _ready():
 	category_add.connect("pressed", self, "__on_add_category")
+	column_add.connect("pressed", self, "__on_add_column")
+	column_add.focus_mode = Control.FOCUS_NONE
+	
+	var cent = CenterContainer.new()
+	cent.set_anchors_preset(Control.PRESET_WIDE)
+	cent.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column_add.add_child(cent)
+		
+	var plus := TextureRect.new()
+	plus.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cent.add_child(plus)
 	
 	yield(board, 'ready')
 	for category in board.categories:
@@ -106,6 +210,16 @@ func _notification(what):
 				category_add.icon = get_icon('Add', 'EditorIcons')
 			if is_instance_valid(stages_container):
 				stages_container.add_stylebox_override('panel', get_stylebox('bg', 'Tree'))
+			if is_instance_valid(column_add):
+				column_add.get_child(0).get_child(0).texture = get_icon('Add', 'EditorIcons')
+				column_add.add_stylebox_override('normal', get_stylebox('panel', 'TabContainer'))
+				column_add.add_stylebox_override('hover', get_stylebox('read_only', 'LineEdit'))
+				column_add.add_stylebox_override('pressed', get_stylebox('read_only', 'LineEdit'))
+
+func __on_add_column():
+	var ent = ColumnEntry.new(board, null)
+	column_holder.add_child(ent)
+	column_holder.move_child(ent, column_holder.get_child_count()-2)
 
 func __on_add_category():
 	var randomizer = RandomNumberGenerator.new()
