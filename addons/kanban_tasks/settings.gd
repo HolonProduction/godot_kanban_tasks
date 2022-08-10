@@ -4,9 +4,10 @@ extends AcceptDialog
 
 const EditLabel = preload('./edit_label/edit_label.gd')
 
-onready var category_container: PanelContainer = $ScrollContainer/VBoxContainer/Categories
-onready var category_holder: VBoxContainer = $ScrollContainer/VBoxContainer/Categories/VBoxContainer/VBoxContainer
-onready var category_add: Button = $ScrollContainer/VBoxContainer/Categories/VBoxContainer/Header/Add
+onready var category_container: PanelContainer = $TabContainer/Categories/Categories
+onready var stages_container: PanelContainer = $TabContainer/Stages/PanelContainer
+onready var category_holder: VBoxContainer = $TabContainer/Categories/Categories/ScrollContainer/VBoxContainer
+onready var category_add: Button = $TabContainer/Categories/Header/Add
 onready var board = $'../../../VBoxContainer'
 
 
@@ -103,6 +104,8 @@ func _notification(what):
 				category_container.add_stylebox_override('panel', get_stylebox('bg', 'Tree'))
 			if is_instance_valid(category_add):
 				category_add.icon = get_icon('Add', 'EditorIcons')
+			if is_instance_valid(stages_container):
+				stages_container.add_stylebox_override('panel', get_stylebox('bg', 'Tree'))
 
 func __on_add_category():
 	var randomizer = RandomNumberGenerator.new()
@@ -114,5 +117,6 @@ func __on_add_category():
 	var ent = CategoryEntry.new(board, cat)
 	category_holder.add_child(ent)
 	
+	yield(get_tree().create_timer(0.0), "timeout")
 	ent.grab_focus()
 	ent.show_edit(preload("./edit_label/edit_label.gd").INTENTION.REPLACE)

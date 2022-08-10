@@ -27,9 +27,6 @@ custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 300.0
@@ -49,13 +46,13 @@ custom_constants/separation = 5
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
 margin_right = 292.0
-margin_bottom = 22.0
+margin_bottom = 20.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="Title" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 margin_right = 280.0
-margin_bottom = 22.0
+margin_bottom = 20.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 alignment = 1
@@ -72,7 +69,7 @@ size_flags_horizontal = 3
 [node name="New" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 margin_left = 280.0
 margin_right = 292.0
-margin_bottom = 22.0
+margin_bottom = 20.0
 hint_tooltip = "Add task."
 focus_mode = 0
 
@@ -84,14 +81,14 @@ margin_bottom = 24.0
 flat = false
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
-margin_top = 27.0
+margin_top = 25.0
 margin_right = 292.0
-margin_bottom = 27.0
+margin_bottom = 25.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
-margin_top = 32.0
+margin_top = 30.0
 margin_right = 292.0
 margin_bottom = 192.0
 mouse_filter = 1
