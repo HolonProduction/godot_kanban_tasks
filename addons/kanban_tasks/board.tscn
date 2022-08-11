@@ -99,8 +99,8 @@ margin_bottom = 564.0
 scroll_vertical_enabled = false
 
 [node name="Columns" type="HBoxContainer" parent="MarginContainer/ScrollContainer"]
-margin_right = 1020.0
-margin_bottom = 547.0
+margin_right = 1014.0
+margin_bottom = 559.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 5
@@ -237,7 +237,6 @@ Currently some features require editing the file to use. Do this before adding t
 Leave a star on Github"
 
 [node name="Settings" type="AcceptDialog" parent="Dialogs"]
-visible = true
 margin_right = 975.0
 margin_bottom = 675.0
 theme_type_variation = "EditorSettingsDialog"
@@ -254,7 +253,53 @@ margin_right = -8.0
 margin_bottom = -36.0
 tab_align = 0
 
+[node name="Categories" type="VBoxContainer" parent="Dialogs/Settings/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+
+[node name="Header" type="HBoxContainer" parent="Dialogs/Settings/TabContainer/Categories"]
+margin_right = 626.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="Dialogs/Settings/TabContainer/Categories/Header"]
+margin_top = 3.0
+margin_right = 610.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Available Categories:"
+
+[node name="Add" type="Button" parent="Dialogs/Settings/TabContainer/Categories/Header"]
+margin_left = 614.0
+margin_right = 626.0
+margin_bottom = 20.0
+
+[node name="Categories" type="PanelContainer" parent="Dialogs/Settings/TabContainer/Categories"]
+margin_top = 24.0
+margin_right = 626.0
+margin_bottom = 370.0
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Dialogs/Settings/TabContainer/Categories/Categories"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 619.0
+margin_bottom = 339.0
+size_flags_vertical = 3
+follow_focus = true
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/TabContainer/Categories/Categories/ScrollContainer"]
+margin_right = 612.0
+margin_bottom = 101.0
+size_flags_horizontal = 3
+
 [node name="Stages" type="VBoxContainer" parent="Dialogs/Settings/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -317,14 +362,14 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColumnHolder" type="HBoxContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer"]
-margin_left = 263.0
+margin_left = 337.0
 margin_top = 202.0
-margin_right = 673.0
+margin_right = 599.0
 margin_bottom = 350.0
 
 [node name="AddColumn" type="VBoxContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder"]
-margin_left = 370.0
-margin_right = 410.0
+margin_left = 222.0
+margin_right = 262.0
 margin_bottom = 148.0
 
 [node name="Add" type="Button" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn"]
@@ -342,48 +387,42 @@ margin_bottom = 148.0
 rect_min_size = Vector2( 40, 40 )
 text = "+"
 
-[node name="Categories" type="VBoxContainer" parent="Dialogs/Settings/TabContainer"]
-visible = false
+[node name="ConfirmNotEmpty" type="ConfirmationDialog" parent="Dialogs"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 337.0
+margin_bottom = 124.0
+rect_min_size = Vector2( 250, 87.5 )
+window_title = "Delete Stage"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/ConfirmNotEmpty"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -36.0
+
+[node name="Label" type="Label" parent="Dialogs/ConfirmNotEmpty/VBoxContainer"]
+margin_right = 320.0
+margin_bottom = 48.0
+text = "You are deleting a stage which has tasks assigned.
+
+The tasks will be assigned to the following stage:"
+align = 1
+
+[node name="OptionButton" type="OptionButton" parent="Dialogs/ConfirmNotEmpty/VBoxContainer"]
+margin_top = 52.0
+margin_right = 320.0
+margin_bottom = 72.0
 size_flags_horizontal = 3
 
-[node name="Header" type="HBoxContainer" parent="Dialogs/Settings/TabContainer/Categories"]
-margin_right = 626.0
-margin_bottom = 20.0
-
-[node name="Label" type="Label" parent="Dialogs/Settings/TabContainer/Categories/Header"]
-margin_top = 3.0
-margin_right = 610.0
-margin_bottom = 17.0
-size_flags_horizontal = 3
-text = "Available Categories:"
-
-[node name="Add" type="Button" parent="Dialogs/Settings/TabContainer/Categories/Header"]
-margin_left = 614.0
-margin_right = 626.0
-margin_bottom = 20.0
-
-[node name="Categories" type="PanelContainer" parent="Dialogs/Settings/TabContainer/Categories"]
-margin_top = 24.0
-margin_right = 626.0
-margin_bottom = 370.0
-size_flags_vertical = 3
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Dialogs/Settings/TabContainer/Categories/Categories"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 619.0
-margin_bottom = 339.0
-size_flags_vertical = 3
-follow_focus = true
-scroll_horizontal_enabled = false
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/TabContainer/Categories/Categories/ScrollContainer"]
-margin_right = 612.0
-margin_bottom = 101.0
-size_flags_horizontal = 3
+[node name="ConfirmEmpty" type="ConfirmationDialog" parent="Dialogs"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 276.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 250, 87.5 )
+window_title = "Delete Stage"
+dialog_text = "Do you really want to delete this stage?
+You can not undo this."

@@ -28,6 +28,7 @@ class StageEntry extends Control:
 	func _ready():
 		button = Button.new()
 		button.set_anchors_preset(Control.PRESET_WIDE)
+		button.hint_tooltip = managed_stage.title
 		add_child(button)
 		
 		button.focus_mode = Control.FOCUS_NONE
@@ -71,11 +72,21 @@ class ColumnEntry extends VBoxContainer:
 	
 	var add: Button
 	
+	var confirm_not_empty: ConfirmationDialog
+	var confirm_not_empty_select: OptionButton
+	var confirm_empty: ConfirmationDialog
+	var confirm_empty_check: CheckBox
+	
 	func _init(p_board, p_column):
 		board = p_board
 		managed_column = p_column
 	
 	func _ready():
+		confirm_not_empty = $"../../../../../../../../ConfirmNotEmpty"
+		confirm_not_empty_select = $"../../../../../../../../ConfirmNotEmpty/VBoxContainer/OptionButton"
+		confirm_empty = $"../../../../../../../../ConfirmEmpty"
+		confirm_empty_check = $"../../../../../../../TabContainer/Stages/Header/CheckBox"
+		
 		add = Button.new()
 		add.rect_min_size = Vector2(70, 40)
 		add_child(add)
@@ -99,6 +110,33 @@ class ColumnEntry extends VBoxContainer:
 				__on_add_stage(stage)
 	
 	func remove_stage(stage):
+		if len(stage.managed_stage.tasks) == 0:
+			if confirm_empty_check.pressed:
+				if confirm_empty.is_connected("confirmed", self, "__on_remove_stage_confirmed"):
+					confirm_empty.disconnect("confirmed", self, "__on_remove_stage_confirmed")
+				confirm_empty.connect("confirmed", self, "__on_remove_stage_confirmed", [stage], CONNECT_ONESHOT)
+				confirm_empty.popup_centered()
+			else:
+				__on_remove_stage_confirmed(stage)
+		else:
+			confirm_not_empty_select.clear()
+			for i in board.stages:
+				if i != stage.managed_stage:
+					confirm_not_empty_select.add_item(i.title, board.stage_index(i))
+			
+			if confirm_not_empty.is_connected("confirmed", self, "__on_move_tasks_confirmed"):
+				confirm_not_empty.disconnect("confirmed", self, "__on_move_tasks_confirmed")
+			confirm_not_empty.connect("confirmed", self, "__on_move_tasks_confirmed", [stage], CONNECT_ONESHOT)
+			
+			confirm_not_empty.popup_centered()
+	
+	func __on_move_tasks_confirmed(stage):
+		var target = board.stages[confirm_not_empty_select.get_item_id(confirm_not_empty_select.selected)]
+		for i in stage.managed_stage.tasks.duplicate():
+			target.add_task(i)
+		__on_remove_stage_confirmed(stage)
+	
+	func __on_remove_stage_confirmed(stage):
 		board.delete_stage(stage.managed_stage)
 		if get_child_count() <= 2:
 			queue_free()

@@ -11,6 +11,8 @@ var board
 # .instance() like it works with .new()
 var stages: Array
 
+onready var stage_holder := $VBoxContainer
+
 signal change()
 
 func init(board, stages):
@@ -26,7 +28,7 @@ func _ready():
 func add_stage(stage: Node, silent = false):
 	if stage.is_inside_tree():
 		stage.get_owner().remove_stage(stage, silent)
-	add_child(stage)
+	stage_holder.add_child(stage)
 	stage.set_owner(self)
 	stages.append(stage)
 	if is_inside_tree() and not silent:
@@ -42,7 +44,7 @@ func serialize():
 	return res
 
 func remove_stage(stage: Node, silent = false):
-	remove_child(stage)
+	stage_holder.remove_child(stage)
 	stages.erase(stage)
 	if is_inside_tree() and not silent:
 		emit_signal("change")
