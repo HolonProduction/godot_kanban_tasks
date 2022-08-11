@@ -195,11 +195,10 @@ bbcode_text = "[u]How to use[/u]
 - Intuitive drag and drop usage utilising the godot build in drag and drop
 - Support for shortcuts *
 - Categories
-- Different stage layouts with multiple stages per column ***
+- Different stage layouts with multiple stages per column
 - Supports all editor themes including light ones
 
 * uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)  
-*** the layout can currently only be changed via editing the data.json file  
 
 [u]Where is the data stored?[/u]
 
@@ -207,7 +206,8 @@ The data is stored inside of the addon folder (res://addons/kanban_tasks/data.js
 Currently some features require editing the file to use. Do this before adding tasks to prevent save file corruption. You can have a look at the examples folder on github for some example data configurations.
 
 
-[center]Leave a star on [url=https://github.com/HolonProduction/godot_kanban_tasks]Github[/url][/center]"
+[center]Leave a star on [url=https://github.com/HolonProduction/godot_kanban_tasks]Github[/url][/center]
+"
 text = "How to use
 
 - Double click on names to change them (works on stages, tasks and categories). Using F2 will also work.
@@ -222,11 +222,10 @@ Features
 - Intuitive drag and drop usage utilising the godot build in drag and drop
 - Support for shortcuts *
 - Categories
-- Different stage layouts with multiple stages per column ***
+- Different stage layouts with multiple stages per column
 - Supports all editor themes including light ones
 
 * uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)  
-*** the layout can currently only be changed via editing the data.json file  
 
 Where is the data stored?
 
@@ -234,10 +233,10 @@ The data is stored inside of the addon folder (res://addons/kanban_tasks/data.js
 Currently some features require editing the file to use. Do this before adding tasks to prevent save file corruption. You can have a look at the examples folder on github for some example data configurations.
 
 
-Leave a star on Github"
+Leave a star on Github
+"
 
 [node name="Settings" type="AcceptDialog" parent="Dialogs"]
-visible = true
 margin_right = 975.0
 margin_bottom = 675.0
 theme_type_variation = "EditorSettingsDialog"
@@ -255,7 +254,6 @@ margin_bottom = -36.0
 tab_align = 0
 
 [node name="Categories" type="VBoxContainer" parent="Dialogs/Settings/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -301,6 +299,7 @@ margin_bottom = 68.0
 size_flags_horizontal = 3
 
 [node name="Stages" type="VBoxContainer" parent="Dialogs/Settings/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0

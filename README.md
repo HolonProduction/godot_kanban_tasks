@@ -8,18 +8,17 @@ Kanban Tasks - Todo Manager is a kanban board addon for the [godot engine](https
 - Intuitive drag and drop usage utilising the godot build in drag and drop
 - Support for shortcuts \*
 - Categories
-- Different stage layouts with multiple stages per column \*\*
+- Different stage layouts with multiple stages per column
 - Supports all editor themes including light ones
 
-\* uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)  
-\*\* the layout can currently only be changed via editing the `data.json` file  
+\* uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)
 
 ## Where is the data stored?
 The data is stored inside of the addon folder (`res://addons/kanban_tasks/data.json`).
-Currently some features require editing the file to use. Do this before adding tasks to prevent save file corruption. You can have a look at the `examples` folder for some example data configurations.
+You can have a look at the `examples` folder for some example data configurations.
 
 ## I found a bug. What should I do?
-The plugin is work in progress. Feel free to add a bug report on the [github](https://github.com/HolonProduction/godot_kanban_tasks) page.
+Feel free to report bugs or feature requests on the [github](https://github.com/HolonProduction/godot_kanban_tasks) page.
 
 ## Motivation
 When managing single projects using an external app like trello is to much. Also I like to keep the todos attached to the project.  
