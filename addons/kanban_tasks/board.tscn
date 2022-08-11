@@ -237,6 +237,7 @@ Currently some features require editing the file to use. Do this before adding t
 Leave a star on Github"
 
 [node name="Settings" type="AcceptDialog" parent="Dialogs"]
+visible = true
 margin_right = 975.0
 margin_bottom = 675.0
 theme_type_variation = "EditorSettingsDialog"
@@ -254,6 +255,7 @@ margin_bottom = -36.0
 tab_align = 0
 
 [node name="Categories" type="VBoxContainer" parent="Dialogs/Settings/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -263,43 +265,42 @@ margin_bottom = -4.0
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="Dialogs/Settings/TabContainer/Categories"]
-margin_right = 626.0
+margin_right = 951.0
 margin_bottom = 20.0
 
 [node name="Label" type="Label" parent="Dialogs/Settings/TabContainer/Categories/Header"]
 margin_top = 3.0
-margin_right = 610.0
+margin_right = 935.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
 text = "Available Categories:"
 
 [node name="Add" type="Button" parent="Dialogs/Settings/TabContainer/Categories/Header"]
-margin_left = 614.0
-margin_right = 626.0
+margin_left = 939.0
+margin_right = 951.0
 margin_bottom = 20.0
 
 [node name="Categories" type="PanelContainer" parent="Dialogs/Settings/TabContainer/Categories"]
 margin_top = 24.0
-margin_right = 626.0
-margin_bottom = 370.0
+margin_right = 951.0
+margin_bottom = 595.0
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Dialogs/Settings/TabContainer/Categories/Categories"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 619.0
-margin_bottom = 339.0
+margin_right = 944.0
+margin_bottom = 564.0
 size_flags_vertical = 3
 follow_focus = true
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/TabContainer/Categories/Categories/ScrollContainer"]
-margin_right = 612.0
-margin_bottom = 101.0
+margin_right = 937.0
+margin_bottom = 68.0
 size_flags_horizontal = 3
 
 [node name="Stages" type="VBoxContainer" parent="Dialogs/Settings/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -332,20 +333,6 @@ margin_top = 28.0
 margin_right = 951.0
 margin_bottom = 595.0
 size_flags_vertical = 3
-
-[node name="Warning" type="Control" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer"]
-visible = false
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 944.0
-margin_bottom = 560.0
-
-[node name="WarningSign" type="Button" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/Warning"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -12.0
-margin_bottom = 20.0
-flat = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer"]
 margin_left = 7.0
@@ -386,6 +373,26 @@ margin_right = 40.0
 margin_bottom = 148.0
 rect_min_size = Vector2( 40, 40 )
 text = "+"
+
+[node name="Warning" type="Control" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 944.0
+margin_bottom = 560.0
+mouse_filter = 2
+
+[node name="WarningSign" type="Button" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/Warning"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -12.0
+margin_bottom = 20.0
+grow_horizontal = 0
+hint_tooltip = "Adding to much stages can overflow the editor.
+
+Recommended maximum: 4*3"
+focus_mode = 0
+flat = true
 
 [node name="ConfirmNotEmpty" type="ConfirmationDialog" parent="Dialogs"]
 margin_left = 8.0

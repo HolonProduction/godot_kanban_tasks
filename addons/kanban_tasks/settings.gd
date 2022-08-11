@@ -13,6 +13,8 @@ onready var board = $'../../../VBoxContainer'
 onready var column_holder: HBoxContainer = $TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder
 onready var column_add: Button = $TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn/Add
 
+onready var warning_sign: Button = $TabContainer/Stages/PanelContainer/Warning/WarningSign
+
 
 class StageEntry extends Control:
 	var board
@@ -245,6 +247,9 @@ class CategoryEntry extends HBoxContainer:
 func _ready():
 	category_add.connect("pressed", self, "__on_add_category")
 	column_add.connect("pressed", self, "__on_add_column")
+	board.connect("stages_changed", self, "__on_stages_changed")
+	board.connect("columns_changed", self, "__on_stages_changed")
+	
 	column_add.focus_mode = Control.FOCUS_NONE
 	
 	var cent = CenterContainer.new()
@@ -277,6 +282,8 @@ func _notification(what):
 				column_add.add_stylebox_override('normal', get_stylebox('panel', 'TabContainer'))
 				column_add.add_stylebox_override('hover', get_stylebox('read_only', 'LineEdit'))
 				column_add.add_stylebox_override('pressed', get_stylebox('read_only', 'LineEdit'))
+			if is_instance_valid(warning_sign):
+				warning_sign.icon = get_icon('NodeWarning', 'EditorIcons')
 
 func __on_add_column(column = null):
 	if column == null:
@@ -284,8 +291,13 @@ func __on_add_column(column = null):
 		board.column_holder.add_child(column)
 	
 	var ent = ColumnEntry.new(board, column)
+	column.connect("change", self, "__on_stages_changed")
+	column.connect("tree_exiting", self, "__on_column_remove", [column])
 	column_holder.add_child(ent)
 	column_holder.move_child(ent, column_holder.get_child_count()-2)
+
+func __on_column_remove(column):
+	column.disconnect("change", self, "__on_stages_changed")
 
 func __on_add_category():
 	var randomizer = RandomNumberGenerator.new()
@@ -300,3 +312,12 @@ func __on_add_category():
 	yield(get_tree().create_timer(0.0), "timeout")
 	ent.grab_focus()
 	ent.show_edit(preload("./edit_label/edit_label.gd").INTENTION.REPLACE)
+
+func __on_stages_changed():
+	var to_high = false
+	
+	for column in board.columns:
+		if len(column.stages) > 3:
+			to_high = true
+	
+	warning_sign.visible = to_high or len(board.columns) > 4
