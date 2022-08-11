@@ -196,7 +196,7 @@ func column_index(column, unsafe = false):
 	return columns.find(column)
 func delete_column(scene):
 	if scene.is_inside_tree():
-		scene.get_owner().remove_column(scene)
+		column_holder.remove_child(scene)
 	columns.erase(scene)
 	scene.queue_free()
 	emit_signal("columns_changed")

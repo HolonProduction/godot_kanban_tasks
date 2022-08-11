@@ -18,7 +18,7 @@ class StageEntry extends Control:
 	var board
 	var managed_stage
 	
-	var button
+	var button: Button
 	var cent
 	
 	func _init(p_board, p_stage):
@@ -43,12 +43,17 @@ class StageEntry extends Control:
 		plus.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cent.add_child(plus)
 		button.connect("pressed", self, "__on_delete")
+		
+		board.connect("columns_changed", self, "__on_stages_changed")
+		board.connect("stages_changed", self, "__on_stages_changed")
+		
+		__on_stages_changed()
+	
+	func __on_stages_changed():
+		button.disabled = len(board.columns) == 1 and len(board.stages) == 1
 	
 	func __on_delete():
-		if get_parent().get_child_count() <= 2:
-			get_parent().queue_free()
-		else:
-			queue_free()
+		get_parent().remove_stage(self)
 	
 	func _notification(what):
 		match(what):
@@ -87,10 +92,26 @@ class ColumnEntry extends VBoxContainer:
 		plus.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cent.add_child(plus)
 		
-		__on_add_stage()
+		if len(managed_column.stages) == 0:
+			__on_add_stage(null)
+		else:
+			for stage in managed_column.stages:
+				__on_add_stage(stage)
 	
-	func __on_add_stage():
-		var stage = StageEntry.new(board, null)
+	func remove_stage(stage):
+		board.delete_stage(stage.managed_stage)
+		if get_child_count() <= 2:
+			queue_free()
+			board.delete_column(managed_column)
+		else:
+			stage.queue_free()
+	
+	func __on_add_stage(st = null):
+		if st == null:
+			st = board.construct_stage("New Stage")
+			managed_column.add_stage(st)
+		
+		var stage = StageEntry.new(board, st)
 		add_child(stage)
 		move_child(add, get_child_count()-1)
 	
@@ -200,6 +221,9 @@ func _ready():
 	yield(board, 'ready')
 	for category in board.categories:
 		category_holder.add_child(CategoryEntry.new(board, category))
+	
+	for column in board.columns:
+		__on_add_column(column)
 
 func _notification(what):
 	match(what):
@@ -216,8 +240,12 @@ func _notification(what):
 				column_add.add_stylebox_override('hover', get_stylebox('read_only', 'LineEdit'))
 				column_add.add_stylebox_override('pressed', get_stylebox('read_only', 'LineEdit'))
 
-func __on_add_column():
-	var ent = ColumnEntry.new(board, null)
+func __on_add_column(column = null):
+	if column == null:
+		column = board.construct_column()
+		board.column_holder.add_child(column)
+	
+	var ent = ColumnEntry.new(board, column)
 	column_holder.add_child(ent)
 	column_holder.move_child(ent, column_holder.get_child_count()-2)
 

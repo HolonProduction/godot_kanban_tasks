@@ -99,8 +99,8 @@ margin_bottom = 564.0
 scroll_vertical_enabled = false
 
 [node name="Columns" type="HBoxContainer" parent="MarginContainer/ScrollContainer"]
-margin_right = 1014.0
-margin_bottom = 559.0
+margin_right = 1020.0
+margin_bottom = 547.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 5
@@ -112,14 +112,11 @@ margin_right = 1024.0
 margin_bottom = 600.0
 
 [node name="Details" type="AcceptDialog" parent="Dialogs"]
-margin_right = 370.0
-margin_bottom = 300.0
+margin_right = 552.0
+margin_bottom = 450.0
 window_title = "Task"
 resizable = true
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Details"]
 anchor_right = 1.0
@@ -135,12 +132,12 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Dialogs/Details/VBoxContainer"]
-margin_right = 354.0
-margin_bottom = 22.0
+margin_right = 536.0
+margin_bottom = 20.0
 
 [node name="OptionButton" type="OptionButton" parent="Dialogs/Details/VBoxContainer/HBoxContainer"]
-margin_right = 354.0
-margin_bottom = 22.0
+margin_right = 536.0
+margin_bottom = 20.0
 size_flags_horizontal = 3
 
 [node name="PopupMenu" type="PopupMenu" parent="Dialogs/Details/VBoxContainer/HBoxContainer"]
@@ -148,9 +145,9 @@ margin_right = 16.0
 margin_bottom = 16.0
 
 [node name="TextEdit" type="TextEdit" parent="Dialogs/Details/VBoxContainer"]
-margin_top = 26.0
-margin_right = 354.0
-margin_bottom = 254.0
+margin_top = 24.0
+margin_right = 536.0
+margin_bottom = 406.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_vertical = 3
 wrap_enabled = true
@@ -159,7 +156,6 @@ __meta__ = {
 }
 
 [node name="Documentation" type="AcceptDialog" parent="Dialogs"]
-visible = true
 margin_right = 650.0
 margin_bottom = 450.0
 window_title = "Documentation"
@@ -292,6 +288,20 @@ margin_right = 951.0
 margin_bottom = 595.0
 size_flags_vertical = 3
 
+[node name="Warning" type="Control" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer"]
+visible = false
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 944.0
+margin_bottom = 560.0
+
+[node name="WarningSign" type="Button" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/Warning"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -12.0
+margin_bottom = 20.0
+flat = true
+
 [node name="ScrollContainer" type="ScrollContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
@@ -307,27 +317,28 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColumnHolder" type="HBoxContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer"]
-margin_left = 448.0
-margin_top = 204.0
-margin_right = 488.0
-margin_bottom = 348.0
+margin_left = 263.0
+margin_top = 202.0
+margin_right = 673.0
+margin_bottom = 350.0
 
 [node name="AddColumn" type="VBoxContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder"]
-margin_right = 40.0
-margin_bottom = 144.0
+margin_left = 370.0
+margin_right = 410.0
+margin_bottom = 148.0
 
 [node name="Add" type="Button" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn"]
 margin_right = 40.0
-margin_bottom = 100.0
+margin_bottom = 104.0
 rect_min_size = Vector2( 40, 100 )
 focus_mode = 0
 size_flags_vertical = 3
 
 [node name="Empty" type="Button" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn"]
 self_modulate = Color( 1, 1, 1, 0 )
-margin_top = 104.0
+margin_top = 108.0
 margin_right = 40.0
-margin_bottom = 144.0
+margin_bottom = 148.0
 rect_min_size = Vector2( 40, 40 )
 text = "+"
 
