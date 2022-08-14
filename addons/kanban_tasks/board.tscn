@@ -182,7 +182,7 @@ bbcode_text = "[u]How to use[/u]
 - Different stage layouts with multiple stages per column
 - Supports all editor themes including light ones
 
-* uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)  
+* uses godot defaults because the custom shortcuts cannot be accessed
 
 [u]Where is the data stored?[/u]
 
@@ -209,7 +209,7 @@ Features
 - Different stage layouts with multiple stages per column
 - Supports all editor themes including light ones
 
-* uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)  
+* uses godot defaults because the custom shortcuts cannot be accessed
 
 Where is the data stored?
 

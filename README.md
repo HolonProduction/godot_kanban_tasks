@@ -1,7 +1,7 @@
 # Kanban Tasks - Todo Manager
 Kanban Tasks - Todo Manager is a kanban board addon for the [godot engine](https://godotengine.org).
 
->The version 1.0 contains a bug that breaks your project when exporting. Upgrade to 1.0.1 as soon as possible.
+>The version 1.0 contains a bug that breaks your project when exporting. Update as soon as possible.
 
 ## Features
 - Renamable stages
@@ -13,7 +13,7 @@ Kanban Tasks - Todo Manager is a kanban board addon for the [godot engine](https
 - Different stage layouts with multiple stages per column
 - Supports all editor themes including light ones
 
-\* uses godot defaults because the custom shortcuts cannot be accessed; not tested on mac (would be nice if someone could test)
+\* uses godot defaults because the custom shortcuts cannot be accessed
 
 ## Where is the data stored?
 The data is stored inside of the addon folder (`res://addons/kanban_tasks/data.json`).
