@@ -4,7 +4,8 @@ extends Control
 const color_width := 8
 
 onready var panel_container := $PanelContainer
-onready var title_label := $PanelContainer/HBoxContainer/MarginContainer/Title
+onready var title_label := $PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Title
+onready var details_label := $PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Details
 onready var edit_button := $PanelContainer/HBoxContainer/EditButton
 onready var context_menu := $ContextMenu
 
@@ -16,7 +17,7 @@ var style_box_panel: StyleBoxFlat
 var board
 
 var title: String setget set_title
-var details: String
+var details: String setget set_details
 var category setget set_category
 
 func set_category(val):
@@ -34,6 +35,15 @@ func set_title(val):
 	title = val
 	if title_label and not title_label.text==val:
 		title_label.text = val
+	
+	if is_inside_tree():
+		emit_signal("change")
+
+func set_details(val):
+	details = val
+	if is_instance_valid(details_label):
+		details_label.visible = not details.strip_edges().empty()
+		details_label.text = details
 	
 	if is_inside_tree():
 		emit_signal("change")
@@ -88,7 +98,7 @@ func show_details():
 func details_changed():
 	var d = board.get_details_dialog()
 	set_title(d.title)
-	details = d.details
+	set_details(d.details)
 	set_category(d.category)
 	emit_signal("change")
 
@@ -103,6 +113,9 @@ func _ready():
 	title_label.text = title
 	title_label.connect("text_changed", self, "set_title")
 	title_label.connect("text_entered", self, "edit_label_entered")
+	
+	details_label.visible = not details.strip_edges().empty()
+	details_label.text = details
 	
 	edit_button.connect("pressed", self, "show_details")
 	

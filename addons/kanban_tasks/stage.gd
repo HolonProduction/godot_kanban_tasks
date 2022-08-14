@@ -154,7 +154,7 @@ func drop_data_fw(position, data, from):
 func can_drop_data(position, data):
 	preview_position.visible = true
 	
-	preview_position.rect_position.y = target_index_from_position(position) * (5 + 50) - 2.5
+	preview_position.rect_position.y = target_height_from_position(position)
 	
 	if data is task_script:
 		return true
@@ -164,14 +164,8 @@ func drop_data(position, data):
 	preview_position.visible = false
 	if not data in tasks:
 		add_task(data)
-	#add_task_at_index(data, index)
+	
 	move_task(tasks.find_last(data), index)
-	#if index == 0:
-	#	move_task_between(data, null, tasks.front())
-	#elif index == len(tasks):
-	#	move_task_between(data, tasks.back(), null)
-	#else:
-	#	move_task_between()
 	
 	data.grab_focus()
 
@@ -202,6 +196,22 @@ func target_index_from_position(pos: Vector2):
 		c += 1
 	
 	return len(tasks)
+
+func target_height_from_position(pos: Vector2):
+	var global_pos = pos + get_global_position()
+	
+	if not scroll_container.get_global_rect().has_point(global_pos):
+		return float(task_holder.get_constant('separation')) / 2.0
+	
+	var scroll_pos = global_pos - task_holder.get_global_position()
+	var c = 0.0
+	for i in tasks:
+		var y = i.rect_position.y + i.rect_size.y/2.0
+		if scroll_pos.y < y:
+			return c - float(task_holder.get_constant('separation')) / 2.0
+		c += i.rect_size.y + task_holder.get_constant('separation')
+	
+	return c
 
 func _notification(what):
 	match(what):
