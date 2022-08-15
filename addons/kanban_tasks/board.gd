@@ -5,6 +5,7 @@ signal categories_changed()
 signal tasks_changed()
 signal stages_changed()
 signal columns_changed()
+signal settings_changed()
 
 const save_path := "res://addons/kanban_tasks/data.json"
 
@@ -16,6 +17,10 @@ var columns = []
 var stages = []
 var tasks = []
 var categories = []
+var show_details_preview: bool = true setget set_show_details_preview
+func set_show_details_preview(val):
+	show_details_preview = val
+	emit_signal('settings_changed')
 
 var shortcut_delete := ShortCut.new()
 var shortcut_duplicate := ShortCut.new()
@@ -119,6 +124,7 @@ func _ready():
 	connect("tasks_changed", self, "save_data")
 	connect("columns_changed", self, "save_data")
 	connect("stages_changed", self, "save_data")
+	connect("settings_changed", self, "save_data")
 	
 	notification(NOTIFICATION_THEME_CHANGED)
 
@@ -251,6 +257,9 @@ func load_data()->Dictionary:
 
 func default_data():
 	return {
+		"settings": {
+			"show_details_preview": true,
+		},
 		"columns": [
 			{
 				"stages": [0],
@@ -284,6 +293,9 @@ func default_data():
 
 func serialze():
 	var res = {
+		"settings": {
+			"show_details_preview": show_details_preview,
+		},
 		"categories": [],
 		"columns": [],
 		"stages": [],
@@ -316,6 +328,10 @@ func setup_board():
 	clear_board()
 	var data = load_data()
 	
+	if data.has("settings"):
+		if data["settings"].has("show_details_preview"):
+			show_details_preview = data["settings"]["show_details_preview"]
+	
 	for c in data["categories"]:
 		construct_category(c["title"],
 				c["color"])
@@ -339,7 +355,8 @@ func setup_board():
 	emit_signal("columns_changed")
 	emit_signal("stages_changed")
 	emit_signal("tasks_changed")
-		
+	emit_signal('settings_changed')
+
 func _notification(what):
 	match(what):
 		NOTIFICATION_THEME_CHANGED:

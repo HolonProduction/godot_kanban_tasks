@@ -6,9 +6,12 @@ const EditLabel = preload('./edit_label/edit_label.gd')
 
 onready var category_container: PanelContainer = $TabContainer/Categories/Categories
 onready var stages_container: PanelContainer = $TabContainer/Stages/PanelContainer
+onready var general_container: PanelContainer = $TabContainer/General/PanelContainer
 onready var category_holder: VBoxContainer = $TabContainer/Categories/Categories/ScrollContainer/VBoxContainer
 onready var category_add: Button = $TabContainer/Categories/Header/Add
 onready var board = $'../../../VBoxContainer'
+
+onready var show_details_check_box: CheckBox = $TabContainer/General/PanelContainer/ScrollContainer/VBoxContainer/ShowDetails
 
 onready var column_holder: HBoxContainer = $TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder
 onready var column_add: Button = $TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn/Add
@@ -249,6 +252,10 @@ func _ready():
 	column_add.connect("pressed", self, "__on_add_column")
 	board.connect("stages_changed", self, "__on_stages_changed")
 	board.connect("columns_changed", self, "__on_stages_changed")
+	board.connect("settings_changed", self, "__on_settings_changed")
+	
+	show_details_check_box.pressed = board.show_details_preview
+	show_details_check_box.connect('pressed', self, '__on_change_show_details')
 	
 	column_add.focus_mode = Control.FOCUS_NONE
 	
@@ -268,6 +275,9 @@ func _ready():
 	for column in board.columns:
 		__on_add_column(column)
 
+func __on_settings_changed():
+	show_details_check_box.pressed = board.show_details_preview
+
 func _notification(what):
 	match(what):
 		NOTIFICATION_THEME_CHANGED:
@@ -277,6 +287,8 @@ func _notification(what):
 				category_add.icon = get_icon('Add', 'EditorIcons')
 			if is_instance_valid(stages_container):
 				stages_container.add_stylebox_override('panel', get_stylebox('bg', 'Tree'))
+			if is_instance_valid(general_container):
+				general_container.add_stylebox_override('panel', get_stylebox('bg', 'Tree'))
 			if is_instance_valid(column_add):
 				column_add.get_child(0).get_child(0).texture = get_icon('Add', 'EditorIcons')
 				column_add.add_stylebox_override('normal', get_stylebox('panel', 'TabContainer'))
@@ -284,6 +296,11 @@ func _notification(what):
 				column_add.add_stylebox_override('pressed', get_stylebox('read_only', 'LineEdit'))
 			if is_instance_valid(warning_sign):
 				warning_sign.icon = get_icon('NodeWarning', 'EditorIcons')
+
+
+func __on_change_show_details():
+	board.show_details_preview = show_details_check_box.pressed
+
 
 func __on_add_column(column = null):
 	if column == null:

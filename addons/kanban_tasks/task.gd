@@ -42,7 +42,7 @@ func set_title(val):
 func set_details(val):
 	details = val
 	if is_instance_valid(details_label):
-		details_label.visible = not details.strip_edges().empty()
+		details_label.visible = board.show_details_preview and not details.strip_edges().empty()
 		details_label.text = details
 	
 	if is_inside_tree():
@@ -114,10 +114,12 @@ func _ready():
 	title_label.connect("text_changed", self, "set_title")
 	title_label.connect("text_entered", self, "edit_label_entered")
 	
-	details_label.visible = not details.strip_edges().empty()
+	details_label.visible = board.show_details_preview and not details.strip_edges().empty()
 	details_label.text = details
 	
 	edit_button.connect("pressed", self, "show_details")
+	
+	board.connect("settings_changed", self, "__on_settings_changed")
 	
 	context_menu.connect("id_pressed", self, "action")
 	
@@ -136,6 +138,10 @@ func _ready():
 	#notification(NOTIFICATION_THEME_CHANGED)
 	update()
 	propagate_notification(NOTIFICATION_THEME_CHANGED)
+
+func __on_settings_changed():
+	details_label.visible = board.show_details_preview and not details.strip_edges().empty()
+	details_label.text = details
 
 #func get_tooltip(at: Vector2 = Vector2.ZERO):
 #	return category.title+": "+title
