@@ -33,6 +33,7 @@ func update_content(val=null):
 
 func _ready():
 	self.alignment = BoxContainer.ALIGN_CENTER
+	self.mouse_filter = Control.MOUSE_FILTER_PASS
 	
 	label = Label.new()
 	label.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -58,8 +59,8 @@ func _ready():
 
 func label_input(event):
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index==BUTTON_LEFT and (event.is_doubleclick() if double_click else true):
-		get_tree().set_input_as_handled()
 		show_edit()
+		label.accept_event()
 
 func edit_input(event):
 	if event is InputEventKey and event.is_pressed() and event.is_action("ui_cancel"):

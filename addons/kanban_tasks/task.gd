@@ -153,7 +153,9 @@ func _gui_input(event):
 		__update_context_menu()
 		context_menu.rect_position = get_global_mouse_position()
 		context_menu.popup()
-		
+	
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed() and event.is_doubleclick():
+		action(ACTIONS.DETAILS)
 
 func _unhandled_key_input(event):
 	if not board.can_handle_shortcut(self):
