@@ -1,22 +1,22 @@
-tool
+@tool
 extends AcceptDialog
 
 
 const EditLabel = preload('./edit_label/edit_label.gd')
 
-onready var category_container: PanelContainer = $TabContainer/Categories/Categories
-onready var stages_container: PanelContainer = $TabContainer/Stages/PanelContainer
-onready var general_container: PanelContainer = $TabContainer/General/PanelContainer
-onready var category_holder: VBoxContainer = $TabContainer/Categories/Categories/ScrollContainer/VBoxContainer
-onready var category_add: Button = $TabContainer/Categories/Header/Add
-onready var board = $'../../../VBoxContainer'
+@onready var category_container: PanelContainer = $TabContainer/Categories/Categories
+@onready var stages_container: PanelContainer = $TabContainer/Stages/PanelContainer
+@onready var general_container: PanelContainer = $TabContainer/General/PanelContainer
+@onready var category_holder: VBoxContainer = $TabContainer/Categories/Categories/ScrollContainer/VBoxContainer
+@onready var category_add: Button = $TabContainer/Categories/Header/Add
+@onready var board = $'../../../VBoxContainer'
 
-onready var show_details_check_box: CheckBox = $TabContainer/General/PanelContainer/ScrollContainer/VBoxContainer/ShowDetails
+@onready var show_details_check_box: CheckBox = $TabContainer/General/PanelContainer/ScrollContainer/VBoxContainer/ShowDetails
 
-onready var column_holder: HBoxContainer = $TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder
-onready var column_add: Button = $TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn/Add
+@onready var column_holder: HBoxContainer = $TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder
+@onready var column_add: Button = $TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn/Add
 
-onready var warning_sign: Button = $TabContainer/Stages/PanelContainer/Warning/WarningSign
+@onready var warning_sign: Button = $TabContainer/Stages/PanelContainer/Warning/WarningSign
 
 
 class StageEntry extends Control:
@@ -32,28 +32,30 @@ class StageEntry extends Control:
 	
 	func _ready():
 		button = Button.new()
-		button.set_anchors_preset(Control.PRESET_WIDE)
-		button.hint_tooltip = managed_stage.title
+		button.set_anchors_preset(Control.PRESET_FULL_RECT)
+		button.tooltip_text = managed_stage.title
 		add_child(button)
 		
 		button.focus_mode = Control.FOCUS_NONE
 		set_v_size_flags(SIZE_EXPAND_FILL)
-		rect_min_size = Vector2(70, 50)
+		custom_minimum_size = Vector2i(70, 50)
 		
 		cent = CenterContainer.new()
-		cent.set_anchors_preset(Control.PRESET_WIDE)
+		cent.set_anchors_preset(Control.PRESET_FULL_RECT)
 		cent.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		button.add_child(cent)
 		
 		var plus := TextureRect.new()
 		plus.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cent.add_child(plus)
-		button.connect("pressed", self, "__on_delete")
+		button.pressed.connect(__on_delete)
 		
-		board.connect("columns_changed", self, "__on_stages_changed")
-		board.connect("stages_changed", self, "__on_stages_changed")
+		board.columns_changed.connect(__on_stages_changed)
+		board.stages_changed.connect(__on_stages_changed)
 		
 		__on_stages_changed()
+		
+		notification(NOTIFICATION_THEME_CHANGED)
 	
 	func __on_stages_changed():
 		button.disabled = len(board.columns) == 1 and len(board.stages) == 1
@@ -65,10 +67,24 @@ class StageEntry extends Control:
 		match(what):
 			NOTIFICATION_THEME_CHANGED:
 				if is_instance_valid(cent):
-					cent.get_child(0).texture = get_icon('Remove', 'EditorIcons')
-					button.add_stylebox_override('normal', get_stylebox('panel', 'TabContainer'))
-					button.add_stylebox_override('hover', get_stylebox('read_only', 'LineEdit'))
-					button.add_stylebox_override('pressed', get_stylebox('read_only', 'LineEdit'))
+					var stylebox_n = button.get_theme_stylebox("normal").duplicate()
+					stylebox_n.border_width_top = 1
+					stylebox_n.border_width_bottom = 1
+					stylebox_n.border_width_left = 1
+					stylebox_n.border_width_right = 1
+					stylebox_n.border_color = Color8(32, 32, 32, 255)
+					
+					var stylebox_hp = button.get_theme_stylebox("read_only", "LineEdit").duplicate()
+					stylebox_hp.border_width_top = 1
+					stylebox_hp.border_width_bottom = 1
+					stylebox_hp.border_width_left = 1
+					stylebox_hp.border_width_right = 1
+					stylebox_hp.border_color = Color8(32, 32, 32, 128)
+					
+					cent.get_child(0).texture = get_theme_icon("Remove", "EditorIcons")
+					button.add_theme_stylebox_override('normal', stylebox_n)
+					button.add_theme_stylebox_override('hover', stylebox_hp)
+					button.add_theme_stylebox_override('pressed', stylebox_hp)
 
 
 class ColumnEntry extends VBoxContainer:
@@ -93,16 +109,16 @@ class ColumnEntry extends VBoxContainer:
 		confirm_empty_check = $"../../../../../../../TabContainer/Stages/Header/CheckBox"
 		
 		add = Button.new()
-		add.rect_min_size = Vector2(70, 40)
+		add.custom_minimum_size = Vector2i(70, 40)
 		add_child(add)
 		
 		var cent = CenterContainer.new()
-		cent.set_anchors_preset(Control.PRESET_WIDE)
+		cent.set_anchors_preset(Control.PRESET_FULL_RECT)
 		cent.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add.add_child(cent)
 		add.focus_mode = Control.FOCUS_NONE
 		
-		add.connect("pressed", self, "__on_add_stage")
+		add.pressed.connect(__on_add_stage)
 		
 		var plus := TextureRect.new()
 		plus.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -113,13 +129,15 @@ class ColumnEntry extends VBoxContainer:
 		else:
 			for stage in managed_column.stages:
 				__on_add_stage(stage)
+				
+		notification(NOTIFICATION_THEME_CHANGED)
 	
 	func remove_stage(stage):
 		if len(stage.managed_stage.tasks) == 0:
-			if confirm_empty_check.pressed:
-				if confirm_empty.is_connected("confirmed", self, "__on_remove_stage_confirmed"):
-					confirm_empty.disconnect("confirmed", self, "__on_remove_stage_confirmed")
-				confirm_empty.connect("confirmed", self, "__on_remove_stage_confirmed", [stage], CONNECT_ONESHOT)
+			if confirm_empty_check.button_pressed:
+				if confirm_empty.confirmed.is_connected(__on_remove_stage_confirmed):
+					confirm_empty.confirmed.disconnect(__on_remove_stage_confirmed)
+				confirm_empty.confirmed.connect(__on_remove_stage_confirmed.bind(stage), CONNECT_ONE_SHOT)
 				confirm_empty.popup_centered()
 			else:
 				__on_remove_stage_confirmed(stage)
@@ -129,9 +147,9 @@ class ColumnEntry extends VBoxContainer:
 				if i != stage.managed_stage:
 					confirm_not_empty_select.add_item(i.title, board.stage_index(i))
 			
-			if confirm_not_empty.is_connected("confirmed", self, "__on_move_tasks_confirmed"):
-				confirm_not_empty.disconnect("confirmed", self, "__on_move_tasks_confirmed")
-			confirm_not_empty.connect("confirmed", self, "__on_move_tasks_confirmed", [stage], CONNECT_ONESHOT)
+			if confirm_not_empty.confirmed.is_connected(__on_move_tasks_confirmed):
+				confirm_not_empty.confirmed.disconnect(__on_move_tasks_confirmed)
+			confirm_not_empty.confirmed.connect(__on_move_tasks_confirmed.bind(stage), CONNECT_ONE_SHOT)
 			
 			confirm_not_empty.popup_centered()
 	
@@ -162,10 +180,24 @@ class ColumnEntry extends VBoxContainer:
 		match(what):
 			NOTIFICATION_THEME_CHANGED:
 				if is_instance_valid(add):
-					add.get_child(0).get_child(0).texture = get_icon('Add', 'EditorIcons')
-					add.add_stylebox_override('normal', get_stylebox('panel', 'TabContainer'))
-					add.add_stylebox_override('hover', get_stylebox('read_only', 'LineEdit'))
-					add.add_stylebox_override('pressed', get_stylebox('read_only', 'LineEdit'))
+					var stylebox_n = add.get_theme_stylebox("normal").duplicate()
+					stylebox_n.border_width_top = 1
+					stylebox_n.border_width_bottom = 1
+					stylebox_n.border_width_left = 1
+					stylebox_n.border_width_right = 1
+					stylebox_n.border_color = Color8(32, 32, 32, 255)
+					
+					var stylebox_hp = add.get_theme_stylebox('read_only', 'LineEdit').duplicate()
+					stylebox_hp.border_width_top = 1
+					stylebox_hp.border_width_bottom = 1
+					stylebox_hp.border_width_left = 1
+					stylebox_hp.border_width_right = 1
+					stylebox_hp.border_color = Color8(32, 32, 32, 128)
+					
+					add.get_child(0).get_child(0).texture = get_theme_icon('Add', 'EditorIcons')
+					add.add_theme_stylebox_override('normal', stylebox_n)
+					add.add_theme_stylebox_override('hover', stylebox_hp)
+					add.add_theme_stylebox_override('pressed', stylebox_hp)
 
 
 class CategoryEntry extends HBoxContainer:
@@ -187,20 +219,20 @@ class CategoryEntry extends HBoxContainer:
 		title = EditLabel.new()
 		title.set_h_size_flags(SIZE_EXPAND_FILL)
 		title.text = managed_category.title
-		title.connect("text_changed", managed_category, "set_title")
+		title.text_changed.connect(managed_category.set_title)
 		add_child(title)
 		
 		color_picker = ColorPickerButton.new()
-		color_picker.rect_min_size.x = 100
+		color_picker.custom_minimum_size.x = 100
 		color_picker.edit_alpha = false
 		color_picker.color = managed_category.color
-		color_picker.connect("color_changed", managed_category, "set_color")
+		color_picker.color_changed.connect(managed_category.set_color)
 		color_picker.focus_mode = Control.FOCUS_NONE
 		color_picker.flat = true
 		add_child(color_picker)
 		
 		delete = Button.new()
-		delete.connect("pressed", self, "__on_delete")
+		delete.pressed.connect(__on_delete)
 		delete.focus_mode = FOCUS_NONE
 		delete.flat = true
 		add_child(delete)
@@ -208,26 +240,28 @@ class CategoryEntry extends HBoxContainer:
 		focus_box = StyleBoxFlat.new()
 		focus_box.bg_color = Color(1, 1, 1, 0.1)
 		
-		board.connect("categories_changed", self, "__on_categories_changed")
+		board.categories_changed.connect(__on_categories_changed)
 		
 		__on_categories_changed()
+		
+		notification(NOTIFICATION_THEME_CHANGED)
 	
 	func _exit_tree():
-		board.disconnect("categories_changed", self, "__on_categories_changed")
+		board.categories_changed.disconnect(__on_categories_changed)
 	
 	func _unhandled_key_input(event):
 		if not board.can_handle_shortcut(self):
 			return
 			
 		if not event.is_echo() and event.is_pressed():
-			if board.shortcut_rename.is_shortcut(event):
+			if board.shortcut_rename.matches_event(event):
 				title.show_edit()
 	
 	func _notification(what):
 		match(what):
 			NOTIFICATION_THEME_CHANGED:
 				if is_instance_valid(delete):
-					delete.icon = get_icon('Remove', 'EditorIcons')
+					delete.icon = get_theme_icon("Remove", "EditorIcons")
 			NOTIFICATION_DRAW:
 				if has_focus():
 					focus_box.draw(get_canvas_item(), Rect2(Vector2.ZERO, get_rect().size))
@@ -248,19 +282,19 @@ class CategoryEntry extends HBoxContainer:
 		
 
 func _ready():
-	category_add.connect("pressed", self, "__on_add_category")
-	column_add.connect("pressed", self, "__on_add_column")
-	board.connect("stages_changed", self, "__on_stages_changed")
-	board.connect("columns_changed", self, "__on_stages_changed")
-	board.connect("settings_changed", self, "__on_settings_changed")
+	category_add.pressed.connect(__on_add_category)
+	column_add.pressed.connect(__on_add_column)
+	board.stages_changed.connect(__on_stages_changed)
+	board.columns_changed.connect(__on_stages_changed)
+	board.settings_changed.connect(__on_settings_changed)
 	
-	show_details_check_box.pressed = board.show_details_preview
-	show_details_check_box.connect('pressed', self, '__on_change_show_details')
+	show_details_check_box.button_pressed = board.show_details_preview
+	show_details_check_box.pressed.connect(__on_change_show_details)
 	
 	column_add.focus_mode = Control.FOCUS_NONE
 	
 	var cent = CenterContainer.new()
-	cent.set_anchors_preset(Control.PRESET_WIDE)
+	cent.set_anchors_preset(Control.PRESET_FULL_RECT)
 	cent.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column_add.add_child(cent)
 		
@@ -268,38 +302,56 @@ func _ready():
 	plus.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	cent.add_child(plus)
 	
-	yield(board, 'ready')
+	await board.ready
 	for category in board.categories:
 		category_holder.add_child(CategoryEntry.new(board, category))
 	
 	for column in board.columns:
 		__on_add_column(column)
+	
+	notification(NOTIFICATION_THEME_CHANGED)
 
 func __on_settings_changed():
-	show_details_check_box.pressed = board.show_details_preview
+	show_details_check_box.button_pressed = board.show_details_preview
+	pass
 
 func _notification(what):
 	match(what):
 		NOTIFICATION_THEME_CHANGED:
 			if is_instance_valid(category_container):
-				category_container.add_stylebox_override('panel', get_stylebox('bg', 'Tree'))
+				category_container.add_theme_stylebox_override('Panel', get_theme_stylebox('Panel', 'Tree'))
 			if is_instance_valid(category_add):
-				category_add.icon = get_icon('Add', 'EditorIcons')
+				category_add.icon = get_theme_icon('Add', 'EditorIcons')
 			if is_instance_valid(stages_container):
-				stages_container.add_stylebox_override('panel', get_stylebox('bg', 'Tree'))
+				stages_container.add_theme_stylebox_override('Panel', get_theme_stylebox('Panel', 'Tree'))
 			if is_instance_valid(general_container):
-				general_container.add_stylebox_override('panel', get_stylebox('bg', 'Tree'))
+				pass
+				#general_container.add_theme_stylebox_override('panel', get_theme_stylebox('Panel', 'Tree'))
 			if is_instance_valid(column_add):
-				column_add.get_child(0).get_child(0).texture = get_icon('Add', 'EditorIcons')
-				column_add.add_stylebox_override('normal', get_stylebox('panel', 'TabContainer'))
-				column_add.add_stylebox_override('hover', get_stylebox('read_only', 'LineEdit'))
-				column_add.add_stylebox_override('pressed', get_stylebox('read_only', 'LineEdit'))
+				var stylebox_n = column_add.get_theme_stylebox("normal").duplicate()
+				stylebox_n.border_width_top = 1
+				stylebox_n.border_width_bottom = 1
+				stylebox_n.border_width_left = 1
+				stylebox_n.border_width_right = 1
+				stylebox_n.border_color = Color8(32, 32, 32, 255)
+				
+				var stylebox_hp = column_add.get_theme_stylebox("read_only", "LineEdit").duplicate()
+				stylebox_hp.border_width_top = 1
+				stylebox_hp.border_width_bottom = 1
+				stylebox_hp.border_width_left = 1
+				stylebox_hp.border_width_right = 1
+				stylebox_hp.border_color = Color8(32, 32, 32, 128)
+				
+				column_add.get_child(0).get_child(0).texture = get_theme_icon('Add', 'EditorIcons')
+				column_add.add_theme_stylebox_override("normal", stylebox_n)
+				column_add.add_theme_stylebox_override("hover", stylebox_hp)
+				column_add.add_theme_stylebox_override("pressed", stylebox_hp)
 			if is_instance_valid(warning_sign):
-				warning_sign.icon = get_icon('NodeWarning', 'EditorIcons')
+				warning_sign.icon = get_theme_icon('NodeWarning', 'EditorIcons')
 
 
 func __on_change_show_details():
-	board.show_details_preview = show_details_check_box.pressed
+	board.show_details_preview = show_details_check_box.button_pressed
 
 
 func __on_add_column(column = null):
@@ -308,13 +360,13 @@ func __on_add_column(column = null):
 		board.column_holder.add_child(column)
 	
 	var ent = ColumnEntry.new(board, column)
-	column.connect("change", self, "__on_stages_changed")
-	column.connect("tree_exiting", self, "__on_column_remove", [column])
+	column.change.connect(__on_stages_changed)
+	column.tree_exiting.connect(__on_column_remove.bind(column))
 	column_holder.add_child(ent)
 	column_holder.move_child(ent, column_holder.get_child_count()-2)
 
 func __on_column_remove(column):
-	column.disconnect("change", self, "__on_stages_changed")
+	column.change.disconnect(__on_stages_changed)
 
 func __on_add_category():
 	var randomizer = RandomNumberGenerator.new()
@@ -326,7 +378,7 @@ func __on_add_category():
 	var ent = CategoryEntry.new(board, cat)
 	category_holder.add_child(ent)
 	
-	yield(get_tree().create_timer(0.0), "timeout")
+	await get_tree().create_timer(0.0).timeout
 	ent.grab_focus()
 	ent.show_edit(preload("./edit_label/edit_label.gd").INTENTION.REPLACE)
 

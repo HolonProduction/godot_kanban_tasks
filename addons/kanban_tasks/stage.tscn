@@ -1,137 +1,183 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=11 format=3 uid="uid://cqro72pcv6hn7"]
 
-[ext_resource path="res://addons/kanban_tasks/stage.gd" type="Script" id=1]
-[ext_resource path="res://addons/kanban_tasks/edit_label/edit_label.gd" type="Script" id=2]
+[ext_resource type="Script" path="res://addons/kanban_tasks/stage.gd" id="1"]
+[ext_resource type="Script" path="res://addons/kanban_tasks/edit_label/edit_label.gd" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_umagb"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 1)
+
+[sub_resource type="Image" id="Image_5v060"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_apvj7"]
+image = SubResource("Image_5v060")
+
+[sub_resource type="StyleBoxEmpty" id="67"]
+
+[sub_resource type="StyleBoxEmpty" id="83"]
+
+[sub_resource type="StyleBoxEmpty" id="82"]
+
+[sub_resource type="StyleBoxEmpty" id="80"]
+
+[sub_resource type="StyleBoxEmpty" id="81"]
 
 [node name="Stage" type="MarginContainer"]
-margin_right = 300.0
-margin_bottom = 37.0
-rect_min_size = Vector2( 200, 200 )
-focus_mode = 1
+custom_minimum_size = Vector2i(200, 200)
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/margin_right = 0
-custom_constants/margin_top = 0
-custom_constants/margin_left = 0
-custom_constants/margin_bottom = 0
-script = ExtResource( 1 )
+focus_mode = 1
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-margin_right = 300.0
-margin_bottom = 200.0
-mouse_filter = 2
-size_flags_horizontal = 3
+layout_mode = 2
+offset_right = 200.0
+offset_bottom = 200.0
 size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_umagb")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 293.0
-margin_bottom = 193.0
+layout_mode = 2
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 199.0
+offset_bottom = 199.0
 mouse_filter = 2
-custom_constants/separation = 5
+theme_override_constants/separation = 5
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 286.0
-margin_bottom = 20.0
+layout_mode = 2
+offset_right = 198.0
+offset_bottom = 16.0
 mouse_filter = 2
-custom_constants/separation = 0
+theme_override_constants/separation = 0
 
 [node name="Title" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer"]
-margin_right = 274.0
-margin_bottom = 20.0
+layout_mode = 2
+offset_right = 182.0
+offset_bottom = 16.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 alignment = 1
-script = ExtResource( 2 )
+script = ExtResource("2")
 default_intention = 0
 
 [node name="Title2" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 visible = false
-margin_left = 126.0
-margin_top = 1.0
-margin_right = 252.0
-margin_bottom = 23.0
+layout_mode = 2
+offset_left = 91.0
+offset_right = 182.0
+offset_bottom = 16.0
 size_flags_horizontal = 3
 
 [node name="New" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
-margin_left = 274.0
-margin_right = 286.0
-margin_bottom = 20.0
-hint_tooltip = "Add task."
+layout_mode = 2
+offset_left = 182.0
+offset_right = 198.0
+offset_bottom = 16.0
+tooltip_text = "Add task."
 focus_mode = 0
+icon = SubResource("ImageTexture_apvj7")
 
 [node name="NewCategory" type="MenuButton" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 visible = false
-margin_left = 280.0
-margin_right = 292.0
-margin_bottom = 24.0
+layout_mode = 2
+offset_left = 184.0
+offset_right = 200.0
+offset_bottom = 16.0
+theme_override_styles/normal = SubResource("67")
+theme_override_styles/pressed = SubResource("83")
+theme_override_styles/hover = SubResource("82")
+theme_override_styles/disabled = SubResource("80")
+theme_override_styles/focus = SubResource("81")
+icon = SubResource("ImageTexture_apvj7")
 flat = false
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
-margin_top = 25.0
-margin_right = 286.0
-margin_bottom = 25.0
+layout_mode = 2
+offset_top = 21.0
+offset_right = 198.0
+offset_bottom = 21.0
 mouse_filter = 2
-custom_constants/separation = 0
+theme_override_constants/separation = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
-margin_top = 30.0
-margin_right = 286.0
-margin_bottom = 186.0
-mouse_filter = 1
+layout_mode = 2
+offset_top = 26.0
+offset_right = 198.0
+offset_bottom = 198.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 follow_focus = true
-scroll_horizontal_enabled = false
+horizontal_scroll_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/ScrollContainer"]
-margin_right = 286.0
-margin_bottom = 10.0
-mouse_filter = 2
+layout_mode = 2
+offset_right = 198.0
+offset_bottom = 10.0
 size_flags_horizontal = 3
-custom_constants/margin_right = 5
-custom_constants/margin_top = 5
-custom_constants/margin_left = 5
-custom_constants/margin_bottom = 5
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
 [node name="TaskHolder" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer/MarginContainer"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 281.0
-margin_bottom = 5.0
-mouse_filter = 2
+layout_mode = 2
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 193.0
+offset_bottom = 5.0
 size_flags_horizontal = 3
-custom_constants/separation = 5
+mouse_filter = 2
+theme_override_constants/separation = 5
 
 [node name="PreviewHolder" type="Control" parent="PanelContainer/VBoxContainer/ScrollContainer/MarginContainer"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 281.0
-margin_bottom = 5.0
-mouse_filter = 2
+layout_mode = 2
+anchors_preset = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 193.0
+offset_bottom = 5.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="PreviewPosition" type="Control" parent="PanelContainer/VBoxContainer/ScrollContainer/MarginContainer/PreviewHolder"]
 visible = false
+layout_mode = 1
+anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/ScrollContainer/MarginContainer/PreviewHolder/PreviewPosition"]
+layout_mode = 1
+anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
+grow_horizontal = 2
 grow_vertical = 2
-rect_min_size = Vector2( 0, 1 )
 mouse_filter = 2
-color = Color( 0.8, 0.8075, 0.8275, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color(0.95, 0.95, 0.95, 1)

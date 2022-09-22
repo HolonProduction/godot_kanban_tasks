@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 
@@ -11,7 +11,7 @@ var board
 # .instance() like it works with .new()
 var stages: Array
 
-onready var stage_holder := $VBoxContainer
+@onready var stage_holder := $VBoxContainer
 
 signal change()
 
