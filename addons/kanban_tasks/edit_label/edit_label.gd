@@ -1,4 +1,4 @@
-tool
+@tool
 extends VBoxContainer
 
 ## A label with editable content.
@@ -79,6 +79,7 @@ func _ready() -> void:
 	__label.size_flags_vertical = SIZE_SHRINK_CENTER
 	__label.mouse_filter = Control.MOUSE_FILTER_PASS
 	
+
 	# Alternative to clip text. But no cuts in the middle of a char.
 	__label.autowrap = true
 	__label.max_lines_visible = 1

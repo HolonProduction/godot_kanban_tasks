@@ -1,84 +1,87 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://ddcae2whfr12o"]
 
-[ext_resource path="res://addons/kanban_tasks/task.gd" type="Script" id=1]
-[ext_resource path="res://addons/kanban_tasks/edit_label/edit_label.gd" type="Script" id=2]
+[ext_resource type="Script" path="res://addons/kanban_tasks/task.gd" id="1"]
+[ext_resource type="Script" path="res://addons/kanban_tasks/edit_label/edit_label.gd" id="2"]
 
-[sub_resource type="StyleBoxFlat" id=500]
-bg_color = Color( 0.2, 0.23, 0.31, 1 )
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cyvpf"]
+bg_color = Color(0.2, 0.231373, 0.309804, 1)
 border_width_left = 8
-border_color = Color( 0.39, 0.58, 0.93, 1 )
+border_color = Color(0.388235, 0.580392, 0.929412, 1)
 
 [node name="Task" type="MarginContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 150, 0 )
-focus_mode = 2
+custom_minimum_size = Vector2i(150, 0)
+offset_right = 150.0
+offset_bottom = 50.0
 size_flags_horizontal = 3
-script = ExtResource( 1 )
+focus_mode = 2
+script = ExtResource("1")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 show_behind_parent = true
-margin_right = 150.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 0, 50 )
-mouse_filter = 2
+custom_minimum_size = Vector2i(0, 50)
+layout_mode = 2
+offset_right = 150.0
+offset_bottom = 50.0
 size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 500 )
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cyvpf")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
-margin_left = 8.0
-margin_right = 150.0
-margin_bottom = 50.0
-mouse_filter = 2
+layout_mode = 2
+offset_left = 8.0
+offset_right = 150.0
+offset_bottom = 50.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 0
+mouse_filter = 2
+theme_override_constants/separation = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
-margin_right = 130.0
-margin_bottom = 50.0
-mouse_filter = 2
+layout_mode = 2
+offset_right = 142.0
+offset_bottom = 50.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/margin_right = 0
-custom_constants/margin_top = 5
-custom_constants/margin_left = 5
-custom_constants/margin_bottom = 5
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/MarginContainer"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 130.0
-margin_bottom = 45.0
-custom_constants/separation = -8
+layout_mode = 2
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 142.0
+offset_bottom = 45.0
+theme_override_constants/separation = -8
 alignment = 1
 
 [node name="Title" type="VBoxContainer" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
-margin_top = 10.0
-margin_right = 125.0
-margin_bottom = 24.0
-custom_constants/separation = 0
+layout_mode = 2
+offset_top = 8.0
+offset_right = 137.0
+offset_bottom = 24.0
+theme_override_constants/separation = 0
 alignment = 1
-script = ExtResource( 2 )
+script = ExtResource("2")
 
 [node name="Details" type="Label" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
-modulate = Color( 1, 1, 1, 0.443137 )
-margin_top = 16.0
-margin_right = 125.0
-margin_bottom = 30.0
+modulate = Color(1, 1, 1, 0.443137)
+layout_mode = 2
+offset_top = 16.0
+offset_right = 137.0
+offset_bottom = 32.0
 size_flags_horizontal = 3
-clip_text = true
 max_lines_visible = 1
 
 [node name="EditButton" type="Button" parent="PanelContainer/HBoxContainer"]
-margin_left = 130.0
-margin_right = 142.0
-margin_bottom = 50.0
-hint_tooltip = "Edit task details."
+layout_mode = 2
+offset_left = 142.0
+offset_right = 142.0
+offset_bottom = 50.0
 focus_mode = 0
 flat = true
 
 [node name="ContextMenu" type="PopupMenu" parent="."]
-margin_right = 150.0
-margin_bottom = 50.0
+allow_search = false
