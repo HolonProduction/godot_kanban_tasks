@@ -1,116 +1,182 @@
 @tool
 extends VBoxContainer
 
-enum INTENTION {REPLACE, ADDITION}
+## A label with editable content.
+##
+## While not editing the text is displayed in a label. So it does not stick out
+## of some layout to much. Only while editing the label it is replaced with an
+## line edit.
+## Click onto the label to start editing it or start the editing mode via code
+## by using [member show_edit]. When editing press [kbd]Enter[kbd] to finish
+## editing or press [kbd]Esc[kbd] to discard your changes.
 
-var edit: LineEdit
-var label: Label
-var old_focus: Control = null
 
-@export var text: String = "":
-	set(value):
-		text = value
-		update_content()
-		emit_signal("text_changed", text)
-		
-	get:
-		return text
-
-@export_enum("Replace:0", "Addition:1") var default_intention : int = INTENTION.ADDITION
-@export var double_click := true
-
+## Emitted when the text changed.
+##
+## [b]Note:[/b] This is only emitted when you confirem your editing by pressing
+## [kbd]Enter[kbd]. If you need access to all changes while editing use the
+## line edit directly. You can get it by calling [method get_edit].
 signal text_changed(new_text)
-signal text_entered(new_text)
 
-func update_content(val=null):
-	if val is String:
-		text = val
-	if label:
-		label.text = text
-	if edit:
-		edit.text = text
+## The intentions with which the label can be edited.
+enum INTENTION {
+	REPLACE,	## The text will be marked completly when editing.
+	ADDITION,	## The cursor is placed at the end when the editing.
+}
 
-func _ready():
-	self.alignment = BoxContainer.ALIGNMENT_CENTER
-	self.mouse_filter = Control.MOUSE_FILTER_PASS
+## The text to display and edit.
+export var text: String = "" setget set_text
+
+## The default intention when editing the [member text].
+export(INTENTION) var default_intention := INTENTION.ADDITION
+
+## Whether a double click is needed for editing. If [code]false[/code] a single
+## click is enough.
+export var doubleclick := true
+
+# The line edit which is used to edit the text.
+var __edit: LineEdit
+
+# The label which is used to display the text.
+var __label: Label
+
+# The node which had focus before editing started. Used
+# to give focus back to it, when [kbd]Enter[/kbd] is used.
+var __old_focus: Control = null
+
+
+func set_text(value: String) -> void:
+	text = value
+	__update_content()
+	emit_signal("text_changed", text)
+
+
+## Returns the [LineEdit] used to edit the text.
+##
+## [b]Warning:[/b] This is a required internal node, romoving and freeing it 
+## may cause a crash. Feel free to edit its parameters to change, how the 
+## [member text] is displayed.
+func get_edit() -> LineEdit:
+	return __edit
+
+
+## Returns the [Label] used display the text.
+##
+## [b]Warning:[/b] This is a required internal node, romoving and freeing it 
+## may cause a crash. Feel free to edit its parameters to change, how the 
+## [member text] is displayed.
+func get_label() -> Label:
+	return __label
+
+
+func _ready() -> void:
+	alignment = BoxContainer.ALIGN_CENTER
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	
-	label = Label.new()
-	label.size_flags_horizontal = SIZE_EXPAND_FILL
-	label.size_flags_vertical = SIZE_SHRINK_CENTER
-	label.mouse_filter = Control.MOUSE_FILTER_PASS
+	# Setup the internal label.
+	__label = Label.new()
+	__label.size_flags_horizontal = SIZE_EXPAND_FILL
+	__label.size_flags_vertical = SIZE_SHRINK_CENTER
+	__label.mouse_filter = Control.MOUSE_FILTER_PASS
 	
-	#TODO forward to settings
-	label.autowrap_mode = true
-	label.max_lines_visible = 2
+
+	# Alternative to clip text. But no cuts in the middle of a char.
+	__label.autowrap = true
+	__label.max_lines_visible = 1
 	
-	label.gui_input.connect(label_input)
-	add_child(label)
+	__label.connect("gui_input", self, "__on_label_gui_input")
+	add_child(__label)
 	
-	edit = LineEdit.new()
-	edit.visible = false
-	edit.size_flags_horizontal = SIZE_EXPAND_FILL
-	edit.size_flags_vertical = SIZE_FILL
-	edit.text_submitted.connect(edit_text_entered)
-	edit.gui_input.connect(edit_input)
-	add_child(edit)
+	# Setup the internal line edit.
+	__edit = LineEdit.new()
+	__edit.visible = false
+	__edit.size_flags_horizontal = SIZE_EXPAND_FILL
+	__edit.size_flags_vertical = SIZE_FILL
+	__edit.connect("text_entered", self, "__on_edit_text_entered")
+	__edit.connect("gui_input", self, "__on_edit_gui_input")
+	add_child(__edit)
 	
-	update_content()
+	__update_content()
 
-func label_input(event):
-	if event is InputEventMouseButton and event.is_pressed() and event.button_index==MOUSE_BUTTON_LEFT and (event.is_double_click() if double_click else true):
-		show_edit()
-		label.accept_event()
 
-func edit_input(event):
-	if event is InputEventKey and event.is_pressed() and event.is_action("ui_cancel"):
-		show_label(false)
-
-func edit_text_entered(_new):
-	update_content(edit.text)
-	show_label()
-	emit_signal("text_entered")
-
-func _input(event):
-	if (event is InputEventMouseButton) and event.pressed and edit.visible:
-		var local = edit.make_input_local(event)
-		if not Rect2(Vector2(0,0), edit.size).has_point(local.position):
+func _input(event) -> void:
+	# End the editing when somewhere else was clicked.
+	if (event is InputEventMouseButton) and event.pressed and __edit.visible:
+		var local = __edit.make_input_local(event)
+		if not Rect2(Vector2.ZERO, __edit.rect_size).has_point(local.position):
 			show_label()
 
-func show_edit(p_intention=null):
-	if edit.visible:
+
+## Start editing the text and pass an optional intention.
+## This can be used to open the edit interface via code.
+func show_edit(intention := default_intention) -> void:
+	if __edit.visible:
 		return
 	
-	if focus_mode == FOCUS_NONE:
-		old_focus = get_viewport().gui_get_focus_owner()
+	# When this node can grab focus the focus should not be given back to the
+	# old focus owner.
+	__old_focus = get_focus_owner() if focus_mode == FOCUS_NONE else null
+
+	__update_content()
+	__label.visible = false
+	__edit.visible = true
 	
-	var intention = p_intention
-	if intention == null:
-		intention = default_intention
-	update_content()
-	label.visible = false
-	edit.visible = true
-	edit.grab_focus()
+	__edit.grab_focus()
+	
 	match intention:
 		INTENTION.ADDITION:
-			edit.caret_column = len(edit.text)
+			__edit.caret_position = len(__edit.text)
 		INTENTION.REPLACE:
-			edit.select_all()
+			__edit.select_all()
 
-func show_label(apply_changes=true):
-	if label.visible:
+
+## Ends editing. If [code]apply_changes[/code] is [code]true[/code] the changed
+## text will be applied to the own [member text]. Otherwise the changes will
+## be discarded.
+func show_label(apply_changes: bool = true) -> void:
+	if __label.visible:
 		return
 	
 	if apply_changes:
-		update_content(edit.text)
-		emit_signal("text_changed", text)
+		set_text(__edit.text)
 	
-	if not is_instance_valid(old_focus):
+	if is_instance_valid(__old_focus):
+		__old_focus.grab_focus()
+	else:
 		if focus_mode == FOCUS_NONE:
-			edit.release_focus()
+			__edit.release_focus()
 		else:
 			grab_focus()
-	else:
-		old_focus.grab_focus()
 	
-	edit.visible = false
-	label.visible = true
+	__edit.visible = false
+	__label.visible = true
+
+
+# Updates the diplayed text of [member __edit] and 
+# [member __label] based on [member text].
+func __update_content() -> void:
+	if __label:
+		__label.text = text
+	if __edit:
+		__edit.text = text
+
+
+func __on_label_gui_input(event: InputEvent) -> void:
+	# Edit when the label is clicked.
+	if event is InputEventMouseButton:
+		if event.is_pressed() and event.button_index==BUTTON_LEFT:
+			if doubleclick == event.is_doubleclick():
+				# Mark event as handled.
+				__label.accept_event()
+				show_edit()
+
+
+func __on_edit_gui_input(event: InputEvent) -> void:
+	# Discard changes if ui_cancel action is pressed.
+	if event is InputEventKey and event.is_pressed():
+		if event.is_action("ui_cancel"):
+			show_label(false)
+
+
+func __on_edit_text_entered(_new_text: String) -> void:
+	show_label()

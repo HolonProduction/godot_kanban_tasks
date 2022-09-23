@@ -113,13 +113,9 @@ func details_hidden():
 	var d = board.get_details_dialog()
 	d.change.disconnect(details_changed)
 
-func edit_label_entered():
-	grab_focus()
-
 func _ready():
 	title_label.text = title
 	title_label.text_changed.connect(set_title)
-	title_label.text_entered.connect(edit_label_entered)
 	
 	details_label.visible = board.show_details_preview and not details.strip_edges().length() == 0
 	details_label.text = details
