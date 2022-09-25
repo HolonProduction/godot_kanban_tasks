@@ -149,6 +149,8 @@ func update():
 	if is_instance_valid(style_box_panel):
 		style_box_panel.border_color = category.color
 
+	queue_redraw()
+
 func _gui_input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		accept_event()

@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://addons/kanban_tasks/details_dialog.gd" id="3"]
 [ext_resource type="Script" path="res://addons/kanban_tasks/settings.gd" id="5"]
 
-[sub_resource type="Image" id="Image_rccj1"]
+[sub_resource type="Image" id="Image_ynes5"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -14,46 +14,39 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_7aksj"]
-image = SubResource("Image_rccj1")
+[sub_resource type="ImageTexture" id="ImageTexture_qjhsj"]
+image = SubResource("Image_ynes5")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dip7u"]
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0, 0, 0, 1)
-border_blend = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eqhnn"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rdbjq"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 5.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.12549, 0.12549, 0.12549, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ytn6a"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cg6m3"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r26ta"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.1, 0.1, 0.1, 0.3)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -97,7 +90,7 @@ offset_bottom = 31.0
 size_flags_horizontal = 3
 placeholder_text = "Search"
 clear_button_enabled = true
-right_icon = SubResource("ImageTexture_7aksj")
+right_icon = SubResource("ImageTexture_qjhsj")
 
 [node name="SearchDetails" type="Button" parent="Header/HBoxContainer"]
 layout_mode = 2
@@ -106,7 +99,7 @@ offset_right = 1079.0
 offset_bottom = 31.0
 tooltip_text = "Search in details."
 toggle_mode = true
-icon = SubResource("ImageTexture_7aksj")
+icon = SubResource("ImageTexture_qjhsj")
 
 [node name="VSeparator" type="VSeparator" parent="Header/HBoxContainer"]
 layout_mode = 2
@@ -121,7 +114,7 @@ offset_left = 1089.0
 offset_right = 1113.0
 offset_bottom = 31.0
 tooltip_text = "Open documentation."
-icon = SubResource("ImageTexture_7aksj")
+icon = SubResource("ImageTexture_qjhsj")
 flat = true
 
 [node name="Settings" type="Button" parent="Header/HBoxContainer"]
@@ -130,7 +123,7 @@ offset_left = 1118.0
 offset_right = 1142.0
 offset_bottom = 31.0
 tooltip_text = "Manage board settings."
-icon = SubResource("ImageTexture_7aksj")
+icon = SubResource("ImageTexture_qjhsj")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -283,6 +276,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="General" type="VBoxContainer" parent="Dialogs/Settings/TabContainer"]
+visible = false
 layout_mode = 2
 anchors_preset = 15
 anchor_right = 1.0
@@ -303,25 +297,25 @@ offset_top = 30.0
 offset_right = 959.0
 offset_bottom = 587.0
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_dip7u")
+theme_override_styles/panel = SubResource("StyleBoxFlat_rdbjq")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Dialogs/Settings/TabContainer/General/PanelContainer"]
 layout_mode = 2
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 958.0
-offset_bottom = 556.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 955.0
+offset_bottom = 552.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/TabContainer/General/PanelContainer/ScrollContainer"]
 layout_mode = 2
-offset_right = 957.0
-offset_bottom = 555.0
+offset_right = 951.0
+offset_bottom = 548.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ShowDetails" type="CheckBox" parent="Dialogs/Settings/TabContainer/General/PanelContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-offset_right = 957.0
+offset_right = 951.0
 offset_bottom = 31.0
 focus_mode = 0
 button_pressed = true
@@ -333,6 +327,7 @@ layout_mode = 2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -340,51 +335,51 @@ size_flags_horizontal = 3
 [node name="Header" type="HBoxContainer" parent="Dialogs/Settings/TabContainer/Categories"]
 layout_mode = 2
 offset_right = 959.0
-offset_bottom = 19.0
+offset_bottom = 26.0
 
 [node name="Label" type="Label" parent="Dialogs/Settings/TabContainer/Categories/Header"]
 layout_mode = 2
-offset_right = 943.0
-offset_bottom = 19.0
+offset_right = 931.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Available Categories:"
 
 [node name="Add" type="Button" parent="Dialogs/Settings/TabContainer/Categories/Header"]
 layout_mode = 2
-offset_left = 959.0
+offset_left = 935.0
 offset_right = 959.0
-offset_bottom = 19.0
-icon = SubResource("ImageTexture_7aksj")
+offset_bottom = 26.0
+icon = SubResource("ImageTexture_qjhsj")
 
 [node name="Categories" type="PanelContainer" parent="Dialogs/Settings/TabContainer/Categories"]
 layout_mode = 2
-offset_top = 35.0
+offset_top = 30.0
 offset_right = 959.0
-offset_bottom = 617.0
+offset_bottom = 587.0
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_dip7u")
+theme_override_styles/panel = SubResource("StyleBoxFlat_rdbjq")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Dialogs/Settings/TabContainer/Categories/Categories"]
 layout_mode = 2
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 955.0
-offset_bottom = 578.0
+offset_bottom = 552.0
 size_flags_vertical = 3
 follow_focus = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Dialogs/Settings/TabContainer/Categories/Categories/ScrollContainer"]
 layout_mode = 2
 offset_right = 951.0
-offset_bottom = 56.0
+offset_bottom = 66.0
 size_flags_horizontal = 3
 
 [node name="Stages" type="VBoxContainer" parent="Dialogs/Settings/TabContainer"]
-visible = false
 layout_mode = 2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -415,56 +410,59 @@ text = "Warn about empty deletion."
 layout_mode = 2
 offset_top = 35.0
 offset_right = 959.0
-offset_bottom = 618.0
+offset_bottom = 587.0
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_dip7u")
+theme_override_styles/panel = SubResource("StyleBoxFlat_rdbjq")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer"]
 layout_mode = 2
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 955.0
-offset_bottom = 579.0
+offset_bottom = 547.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="CenterContainer" type="CenterContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer"]
 layout_mode = 2
 offset_right = 951.0
-offset_bottom = 575.0
+offset_bottom = 543.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColumnHolder" type="HBoxContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer"]
 layout_mode = 2
-offset_left = 355.0
-offset_top = 240.0
-offset_right = 595.0
-offset_bottom = 334.0
+offset_left = 318.0
+offset_top = 224.0
+offset_right = 632.0
+offset_bottom = 318.0
+theme_override_constants/separation = 5
 
 [node name="AddColumn" type="VBoxContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder"]
 layout_mode = 2
 offset_left = 296.0
 offset_right = 314.0
-offset_bottom = 148.0
-theme_override_constants/separation = 13
+offset_bottom = 94.0
+theme_override_constants/separation = 5
 
 [node name="Add" type="Button" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn"]
+custom_minimum_size = Vector2i(40, 105)
 layout_mode = 2
 offset_right = 18.0
-offset_bottom = 104.0
+offset_bottom = 50.0
 size_flags_vertical = 3
 focus_mode = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_eqhnn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_ytn6a")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ytn6a")
+theme_override_styles/normal = SubResource("StyleBoxFlat_cg6m3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_r26ta")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_r26ta")
 
 [node name="Empty" type="Button" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn"]
 self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2i(40, 40)
 layout_mode = 2
-offset_top = 117.0
+offset_top = 63.0
 offset_right = 18.0
-offset_bottom = 148.0
+offset_bottom = 94.0
 text = "+"
 
 [node name="Warning" type="Control" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer"]
@@ -473,7 +471,7 @@ anchors_preset = 0
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 955.0
-offset_bottom = 579.0
+offset_bottom = 547.0
 mouse_filter = 2
 
 [node name="WarningSign" type="Button" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/Warning"]
@@ -487,7 +485,7 @@ tooltip_text = "Adding to much stages can overflow the editor.
 
 Recommended maximum: 4*3"
 focus_mode = 0
-icon = SubResource("ImageTexture_7aksj")
+icon = SubResource("ImageTexture_qjhsj")
 flat = true
 
 [node name="ConfirmNotEmpty" type="ConfirmationDialog" parent="Dialogs"]
