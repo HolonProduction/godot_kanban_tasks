@@ -95,6 +95,11 @@ func _ready() -> void:
 
 	__update_content()
 
+	# Wait for the label to get its true size.
+	await get_tree().process_frame
+	# Keep the same size when changing the edit mode.
+	custom_minimum_size.y = min(__label.size.y, __edit.size.y)
+
 
 func _input(event) -> void:
 	# End the editing when somewhere else was clicked.

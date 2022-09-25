@@ -131,7 +131,7 @@ func _ready():
 	style_box_panel.border_width_left = color_width
 	style_box_panel.border_color = category.color
 	style_box_panel.draw_center = false
-	panel_container.add_theme_stylebox_override("Panel", style_box_panel)
+	panel_container.add_theme_stylebox_override("panel", style_box_panel)
 
 	#notification(NOTIFICATION_THEME_CHANGED)
 	update()
@@ -141,8 +141,6 @@ func __on_settings_changed():
 	details_label.visible = board.show_details_preview and not details.strip_edges().length() == 0
 	details_label.text = details
 
-#func get_tooltip(at: Vector2 = Vector2.ZERO):
-#	return category.title+": "+title
 func update():
 	tooltip_text = category.title+": "+title
 
