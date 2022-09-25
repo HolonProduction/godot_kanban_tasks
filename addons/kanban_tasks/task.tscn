@@ -16,14 +16,14 @@ show_behind_parent = true
 custom_minimum_size = Vector2i(0, 50)
 layout_mode = 2
 offset_right = 150.0
-offset_bottom = 50.0
+offset_bottom = 56.0
 size_flags_horizontal = 3
 mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
 layout_mode = 2
 offset_right = 150.0
-offset_bottom = 50.0
+offset_bottom = 56.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
@@ -32,7 +32,7 @@ theme_override_constants/separation = 0
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2
 offset_right = 142.0
-offset_bottom = 50.0
+offset_bottom = 56.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
@@ -46,15 +46,15 @@ layout_mode = 2
 offset_left = 5.0
 offset_top = 5.0
 offset_right = 142.0
-offset_bottom = 45.0
+offset_bottom = 51.0
 theme_override_constants/separation = -8
 alignment = 1
 
 [node name="Title" type="VBoxContainer" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2i(0, 31)
 layout_mode = 2
-offset_top = 1.0
 offset_right = 137.0
-offset_bottom = 24.0
+offset_bottom = 31.0
 theme_override_constants/separation = 0
 alignment = 1
 script = ExtResource("2")
@@ -62,17 +62,18 @@ script = ExtResource("2")
 [node name="Details" type="Label" parent="PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 modulate = Color(1, 1, 1, 0.443137)
 layout_mode = 2
-offset_top = 16.0
+offset_top = 23.0
 offset_right = 137.0
-offset_bottom = 39.0
+offset_bottom = 46.0
 size_flags_horizontal = 3
-max_lines_visible = 1
+clip_text = true
+text_overrun_behavior = 3
 
 [node name="EditButton" type="Button" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2
 offset_left = 142.0
 offset_right = 150.0
-offset_bottom = 50.0
+offset_bottom = 56.0
 focus_mode = 0
 flat = true
 
