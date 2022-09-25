@@ -68,6 +68,7 @@ offset_bottom = 46.0
 size_flags_horizontal = 3
 clip_text = true
 text_overrun_behavior = 3
+max_lines_visible = 1
 
 [node name="EditButton" type="Button" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2
