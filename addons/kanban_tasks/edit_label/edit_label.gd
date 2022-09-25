@@ -16,7 +16,7 @@ extends VBoxContainer
 ## [b]Note:[/b] This is only emitted when you confirem your editing by pressing
 ## [kbd]Enter[kbd]. If you need access to all changes while editing use the
 ## line edit directly. You can get it by calling [method get_edit].
-signal text_changed(new_text)
+signal text_changed(new_text: String)
 
 ## The intentions with which the label can be edited.
 enum INTENTION {
@@ -25,14 +25,18 @@ enum INTENTION {
 }
 
 ## The text to display and edit.
-export var text: String = "" setget set_text
+@export var text: String = "":
+	set(value):
+		text = value
+		__update_content()
+		text_changed.emit(text)
 
 ## The default intention when editing the [member text].
-export(INTENTION) var default_intention := INTENTION.ADDITION
+@export var default_intention := INTENTION.ADDITION
 
 ## Whether a double click is needed for editing. If [code]false[/code] a single
 ## click is enough.
-export var doubleclick := true
+@export var double_click: bool = true
 
 # The line edit which is used to edit the text.
 var __edit: LineEdit
@@ -45,16 +49,10 @@ var __label: Label
 var __old_focus: Control = null
 
 
-func set_text(value: String) -> void:
-	text = value
-	__update_content()
-	emit_signal("text_changed", text)
-
-
 ## Returns the [LineEdit] used to edit the text.
 ##
-## [b]Warning:[/b] This is a required internal node, romoving and freeing it 
-## may cause a crash. Feel free to edit its parameters to change, how the 
+## [b]Warning:[/b] This is a required internal node, romoving and freeing it
+## may cause a crash. Feel free to edit its parameters to change, how the
 ## [member text] is displayed.
 func get_edit() -> LineEdit:
 	return __edit
@@ -62,40 +60,39 @@ func get_edit() -> LineEdit:
 
 ## Returns the [Label] used display the text.
 ##
-## [b]Warning:[/b] This is a required internal node, romoving and freeing it 
-## may cause a crash. Feel free to edit its parameters to change, how the 
+## [b]Warning:[/b] This is a required internal node, romoving and freeing it
+## may cause a crash. Feel free to edit its parameters to change, how the
 ## [member text] is displayed.
 func get_label() -> Label:
 	return __label
 
 
 func _ready() -> void:
-	alignment = BoxContainer.ALIGN_CENTER
+	alignment = BoxContainer.ALIGNMENT_CENTER
 	mouse_filter = Control.MOUSE_FILTER_PASS
-	
+
 	# Setup the internal label.
 	__label = Label.new()
 	__label.size_flags_horizontal = SIZE_EXPAND_FILL
 	__label.size_flags_vertical = SIZE_SHRINK_CENTER
 	__label.mouse_filter = Control.MOUSE_FILTER_PASS
-	
 
 	# Alternative to clip text. But no cuts in the middle of a char.
-	__label.autowrap = true
+	__label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
 	__label.max_lines_visible = 1
-	
-	__label.connect("gui_input", self, "__on_label_gui_input")
+
+	__label.gui_input.connect(__on_label_gui_input)
 	add_child(__label)
-	
+
 	# Setup the internal line edit.
 	__edit = LineEdit.new()
 	__edit.visible = false
 	__edit.size_flags_horizontal = SIZE_EXPAND_FILL
 	__edit.size_flags_vertical = SIZE_FILL
-	__edit.connect("text_entered", self, "__on_edit_text_entered")
-	__edit.connect("gui_input", self, "__on_edit_gui_input")
+	__edit.text_submitted.connect(__on_edit_text_submitted)
+	__edit.gui_input.connect(__on_edit_gui_input)
 	add_child(__edit)
-	
+
 	__update_content()
 
 
@@ -103,7 +100,7 @@ func _input(event) -> void:
 	# End the editing when somewhere else was clicked.
 	if (event is InputEventMouseButton) and event.pressed and __edit.visible:
 		var local = __edit.make_input_local(event)
-		if not Rect2(Vector2.ZERO, __edit.rect_size).has_point(local.position):
+		if not Rect2(Vector2.ZERO, __edit.size).has_point(local.position):
 			show_label()
 
 
@@ -112,20 +109,20 @@ func _input(event) -> void:
 func show_edit(intention := default_intention) -> void:
 	if __edit.visible:
 		return
-	
+
 	# When this node can grab focus the focus should not be given back to the
 	# old focus owner.
-	__old_focus = get_focus_owner() if focus_mode == FOCUS_NONE else null
+	__old_focus = get_viewport().gui_get_focus_owner() if focus_mode == FOCUS_NONE else null
 
 	__update_content()
 	__label.visible = false
 	__edit.visible = true
-	
+
 	__edit.grab_focus()
-	
+
 	match intention:
 		INTENTION.ADDITION:
-			__edit.caret_position = len(__edit.text)
+			__edit.caret_column = len(__edit.text)
 		INTENTION.REPLACE:
 			__edit.select_all()
 
@@ -136,10 +133,10 @@ func show_edit(intention := default_intention) -> void:
 func show_label(apply_changes: bool = true) -> void:
 	if __label.visible:
 		return
-	
+
 	if apply_changes:
-		set_text(__edit.text)
-	
+		text = __edit.text
+
 	if is_instance_valid(__old_focus):
 		__old_focus.grab_focus()
 	else:
@@ -147,12 +144,12 @@ func show_label(apply_changes: bool = true) -> void:
 			__edit.release_focus()
 		else:
 			grab_focus()
-	
+
 	__edit.visible = false
 	__label.visible = true
 
 
-# Updates the diplayed text of [member __edit] and 
+# Updates the diplayed text of [member __edit] and
 # [member __label] based on [member text].
 func __update_content() -> void:
 	if __label:
@@ -164,8 +161,8 @@ func __update_content() -> void:
 func __on_label_gui_input(event: InputEvent) -> void:
 	# Edit when the label is clicked.
 	if event is InputEventMouseButton:
-		if event.is_pressed() and event.button_index==BUTTON_LEFT:
-			if doubleclick == event.is_doubleclick():
+		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
+			if double_click == event.is_double_click():
 				# Mark event as handled.
 				__label.accept_event()
 				show_edit()
@@ -178,5 +175,5 @@ func __on_edit_gui_input(event: InputEvent) -> void:
 			show_label(false)
 
 
-func __on_edit_text_entered(_new_text: String) -> void:
+func __on_edit_text_submitted(_new_text: String) -> void:
 	show_label()
