@@ -21,7 +21,7 @@ var title: String:
 		title = val
 		if title_label and not title_label.text==val:
 			title_label.text = val
-		
+
 		if is_inside_tree():
 			emit_signal("change")
 
@@ -29,20 +29,20 @@ func set_title(val):
 	title = val
 	if title_label and not title_label.text==val:
 		title_label.text = val
-	
+
 	if is_inside_tree():
 		emit_signal("change")
-	
+
 var details: String:
 	set(val):
 		details = val
 		if is_instance_valid(details_label):
 			details_label.visible = board.show_details_preview and not details.strip_edges().length() == 0
 			details_label.text = details
-		
+
 		if is_inside_tree():
 			emit_signal("change")
-	
+
 var category:
 	set(val):
 		if is_instance_valid(category):
@@ -61,7 +61,7 @@ func show_edit(intention):
 
 func init(board, title, details, category):
 	self.board = board
-	
+
 	self.title = title
 	self.details = details
 	self.category = category
@@ -78,14 +78,14 @@ func apply_filter(filter: String, descriptions: bool):
 	if filter.length() == 0:
 		visible = true
 		return
-	
+
 	var title_simple := __simplify_string(title)
 	var details_simple := __simplify_string(details)
 	var filter_simple := __simplify_string(filter)
-	
+
 	if (
 			title_simple.matchn("*"+filter_simple+"*")
-			or 
+			or
 			(details_simple.matchn("*"+filter_simple+"*")
 			and descriptions)
 	):
@@ -116,28 +116,28 @@ func details_hidden():
 func _ready():
 	title_label.text = title
 	title_label.text_changed.connect(set_title)
-	
+
 	details_label.visible = board.show_details_preview and not details.strip_edges().length() == 0
 	details_label.text = details
-	
+
 	edit_button.pressed.connect(show_details)
-	
+
 	board.settings_changed.connect(__on_settings_changed)
-	
+
 	context_menu.id_pressed.connect(action)
-	
+
 	style_box_focus = StyleBoxFlat.new()
 	style_box_focus.set_border_width_all(1)
 	style_box_focus.draw_center = false
 	style_box_focus.border_color = category.color
-	
+
 	style_box_panel = StyleBoxFlat.new()
 	style_box_panel.set_border_width_all(0)
 	style_box_panel.border_width_left = color_width
 	style_box_panel.border_color = category.color
 	style_box_panel.draw_center = false
 	panel_container.add_theme_stylebox_override("Panel", style_box_panel)
-	
+
 	#notification(NOTIFICATION_THEME_CHANGED)
 	update()
 	propagate_notification(NOTIFICATION_THEME_CHANGED)
@@ -150,7 +150,7 @@ func __on_settings_changed():
 #	return category.title+": "+title
 func update():
 	tooltip_text = category.title+": "+title
-	
+
 	if is_instance_valid(style_box_focus):
 		style_box_focus.border_color = category.color
 	if is_instance_valid(style_box_panel):
@@ -162,23 +162,23 @@ func _gui_input(event):
 		__update_context_menu()
 		context_menu.position = get_global_mouse_position()
 		context_menu.popup()
-	
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and event.is_double_click():
 		action(ACTIONS.DETAILS)
 
-func _input(event: InputEvent) -> void:
+func _shortcut_input(event: InputEvent) -> void:
 	if not board.can_handle_shortcut(self):
 		return
 	if not event.is_echo() and event.is_pressed():
 		if board.shortcut_delete.matches_event(event):
 			get_viewport().set_input_as_handled()
 			action(ACTIONS.DELETE)
-		elif board.shortcut_rename.matches_event(event):
-			get_viewport().set_input_as_handled()
-			action(ACTIONS.RENAME)
 		elif board.shortcut_confirm.matches_event(event):
 			get_viewport().set_input_as_handled()
 			action(ACTIONS.DETAILS)
+		elif board.shortcut_rename.matches_event(event):
+			get_viewport().set_input_as_handled()
+			action(ACTIONS.RENAME)
 		elif board.shortcut_duplicate.matches_event(event):
 			get_viewport().set_input_as_handled()
 			action(ACTIONS.DUPLICATE)
@@ -203,15 +203,15 @@ enum ACTIONS {
 func __update_context_menu():
 	context_menu.clear()
 	context_menu.add_item("Details", ACTIONS.DETAILS)
-	
+
 	context_menu.add_separator()
-	
+
 	context_menu.add_icon_item(get_theme_icon("Rename", "EditorIcons"), "Rename", ACTIONS.RENAME)
 	context_menu.set_item_shortcut(context_menu.get_item_index(ACTIONS.RENAME), board.shortcut_rename)
-		
+
 	context_menu.add_icon_item(get_theme_icon("Duplicate", "EditorIcons"), "Duplicate", ACTIONS.DUPLICATE)
 	context_menu.set_item_shortcut(context_menu.get_item_index(ACTIONS.DUPLICATE), board.shortcut_duplicate)
-	
+
 	context_menu.add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Delete", ACTIONS.DELETE)
 	context_menu.set_item_shortcut(context_menu.get_item_index(ACTIONS.DELETE), board.shortcut_delete)
 

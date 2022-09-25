@@ -22,7 +22,7 @@ var title: String:
 		title = val
 		if label_title and not label_title.text==val:
 			label_title.text = val
-		
+
 		if is_inside_tree():
 			emit_signal("change")
 	get:
@@ -32,14 +32,14 @@ func set_title(val):
 	title = val
 	if label_title and not label_title.text==val:
 		label_title.text = val
-	
+
 	if is_inside_tree():
 		emit_signal("change")
 
 # currently the array is filled with indexes in the init call
 # but upon _ready objects get stored inside (when they where loaded)
 # this behaviour results in the unusability of it before the _ready call
-# this could be changed when/if godot supports parameters for 
+# this could be changed when/if godot supports parameters for
 # .instance() like it works with .new()
 var tasks: Array
 
@@ -48,28 +48,28 @@ signal change()
 
 func init(board, title, tasks):
 	self.board = board
-	
+
 	self.title = title
 	self.tasks = tasks
 
 func _ready():
 	label_title.text = title
 	label_title.text_changed.connect(set_title)
-	
+
 	scroll_container.set_drag_forwarding(self)
 	button_new.pressed.connect(__on_add_button_pressed)
-	
+
 	menu_button_new.about_to_popup.connect(__on_popup_about_to_show)
 	menu_button_new.get_popup().id_pressed.connect(__on_category_popup_selected)
 
 	board.categories_changed.connect(__update_add_buttons)
-	
+
 	for t in tasks.duplicate():
 		add_task(board.tasks[t], true)
 		tasks.erase(t)
-	
+
 	__update_add_buttons()
-	
+
 	notification(NOTIFICATION_THEME_CHANGED)
 
 #func mouse_exited():
@@ -95,7 +95,7 @@ func add_task(task, silent=false):
 	task.set_owner(self)
 	task.set_drag_forwarding(self)
 	tasks.append(task)
-	
+
 	if is_inside_tree() and not silent:
 		emit_signal("change")
 
@@ -124,28 +124,27 @@ func new_task(category_index=0):
 	var task = board.construct_task()
 	task.category = board.categories[category_index]
 	add_task(task)
-	
+
 	board.reset_filter()
-	
+
 	await get_tree().create_timer(0.0).timeout
 	task.grab_focus()
 	task.show_edit(edit_label_script.INTENTION.REPLACE)
 
-func _unhandled_key_input(event):
+func _shortcut_input(event):
 	if not board.can_handle_shortcut(self):
 		return
-	
 	if not event.is_echo() and event.is_pressed():
 		if board.shortcut_new.matches_event(event):
 			get_viewport().set_input_as_handled()
-			
+
 			#if menu_button_new.visible:
 			__on_popup_about_to_show()
 			menu_button_new.get_popup().position = get_global_mouse_position()
 			menu_button_new.get_popup().popup()
 			#else:
 			#	new_task()
-				
+
 		elif board.shortcut_rename.matches_event(event):
 			get_viewport().set_input_as_handled()
 			label_title.show_edit()
@@ -161,12 +160,12 @@ func _get_drag_data_fw(position, from_control):
 func _drop_data_fw(position, data, from):
 	var local_pos = (position + from.get_global_rect().position) - get_global_rect().position
 	return _drop_data(local_pos, data)
-	
+
 func _can_drop_data(position, data):
 	preview_position.visible = true
-	
+
 	preview_position.position.y = target_height_from_position(position)
-	
+
 	if data is task_script:
 		return true
 	return false
@@ -175,9 +174,9 @@ func _drop_data(position, data):
 	preview_position.visible = false
 	if not data in tasks:
 		add_task(data)
-	
+
 	move_task(tasks.find_last(data), index)
-	
+
 	data.grab_focus()
 
 func move_task(from: int, to: int, silent=false):
@@ -188,16 +187,16 @@ func move_task(from: int, to: int, silent=false):
 
 	#HACK proper moving should be implemented
 	tasks = task_holder.get_children()
-	
+
 	if is_inside_tree() and not silent:
 		emit_signal("change")
 
 func target_index_from_position(pos: Vector2):
 	var global_pos = pos + get_global_position()
-	
+
 	if not scroll_container.get_global_rect().has_point(global_pos):
 		return 0
-	
+
 	var scroll_pos = global_pos - task_holder.get_global_position()
 	var c = 0
 	for i in tasks:
@@ -205,15 +204,15 @@ func target_index_from_position(pos: Vector2):
 		if scroll_pos.y < y:
 			return c
 		c += 1
-	
+
 	return len(tasks)
 
 func target_height_from_position(pos: Vector2):
 	var global_pos = pos + get_global_position()
-	
+
 	if not scroll_container.get_global_rect().has_point(global_pos):
 		return - float(task_holder.get_theme_constant('separation')) / 2.0
-	
+
 	var scroll_pos = global_pos - task_holder.get_global_position()
 	var c = 0.0
 	for i in tasks:
@@ -221,7 +220,7 @@ func target_height_from_position(pos: Vector2):
 		if scroll_pos.y < y:
 			return c - float(task_holder.get_theme_constant('separation')) / 2.0
 		c += i.size.y + task_holder.get_theme_constant('separation')
-	
+
 	return c
 
 func _notification(what):

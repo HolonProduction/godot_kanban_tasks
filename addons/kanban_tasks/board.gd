@@ -52,15 +52,15 @@ class Category:
 		set(val):
 			color = val
 			emit_signal("changed")
-			
+
 	func set_title(val):
 		title = val
 		emit_signal("changed")
-	
+
 	func set_color(val):
 		color = val
 		emit_signal("changed")
-	
+
 	func _init(title: String, color: Color):
 		self.title = title
 		self.color = color
@@ -78,8 +78,8 @@ func setup_shortcuts():
 		delete.command = true
 	else:
 		delete.keycode = KEY_DELETE
-	shortcut_delete.events.append(delete) 
-	
+	shortcut_delete.events.append(delete)
+
 	# duplicate
 	var dupe = InputEventKey.new()
 	if OS.get_name() == "OSX":
@@ -89,7 +89,7 @@ func setup_shortcuts():
 		dupe.keycode = KEY_D
 		dupe.ctrl_pressed = true
 	shortcut_duplicate.events.append(dupe)
-	
+
 	# new
 	var new = InputEventKey.new()
 	if OS.get_name() == "OSX":
@@ -99,12 +99,12 @@ func setup_shortcuts():
 		new.keycode = KEY_A
 		new.ctrl_pressed = true
 	shortcut_new.events.append(new)
-	
+
 	# rename
 	var rename = InputEventKey.new()
 	rename.keycode = KEY_F2
 	shortcut_rename.events.append(rename)
-	
+
 	# search
 	var search = InputEventKey.new()
 	if OS.get_name() == "OSX":
@@ -114,29 +114,29 @@ func setup_shortcuts():
 		search.keycode = KEY_F
 		search.ctrl_pressed = true
 	shortcut_search.events.append(search)
-	
+
 	# confirm
 	var confirm = InputEventKey.new()
 	confirm.keycode = KEY_ENTER
 	shortcut_confirm.events.append(confirm)
-	
+
 
 func _ready():
 	setup_shortcuts()
 	setup_board()
-	
+
 	search_bar.text_changed.connect(__on_filter_changed)
 	search_bar.text_submitted.connect(__on_filter_entered)
 	button_search_details.toggled.connect(__on_filter_changed)
 	button_help.pressed.connect(__on_documentation_button_clicked)
 	button_settings.pressed.connect(__on_settings_button_clicked)
-	
+
 	categories_changed.connect(save_data)
 	tasks_changed.connect(save_data)
 	columns_changed.connect(save_data)
 	stages_changed.connect(save_data)
 	settings_changed.connect(save_data)
-	
+
 	notification(NOTIFICATION_THEME_CHANGED)
 
 func get_details_dialog():
@@ -156,10 +156,9 @@ func delete_category(cat):
 	categories.erase(cat)
 	emit_signal("categories_changed")
 
-func _unhandled_key_input(event):
+func _shortcut_input(event: InputEvent) -> void:
 	if not can_handle_shortcut(self):
 		return
-		
 	if not event.is_echo() and event.is_pressed() and shortcut_search.matches_event(event):
 		search_bar.grab_focus()
 		get_viewport().set_input_as_handled()
@@ -239,33 +238,32 @@ func load_data()->Dictionary:
 	var res = file.open(save_path, File.READ)
 	if res != OK:
 		return default_data()
-	
+
 	res = json.parse(file.get_as_text())
 	if res != OK:
 		return default_data()
 	file.close()
-	
+
 	res = json.get_data()
-	
+
 	for category in res["categories"]:
 		category["color"] = Color(category["color"])
-	
+
 	for task in res["tasks"]:
 		task["category"] = int(task["category"])
-	
+
 	for stage in res["stages"]:
 		var tasks_i = []
 		for t in stage["tasks"]:
 			tasks_i.append(int(t))
 		stage["tasks"] = tasks_i
-	
+
 	for column in res["columns"]:
 		var stages_i = []
 		for t in column["stages"]:
 			stages_i.append(int(t))
 		column["stages"] = stages_i
-		
-	
+
 	return res
 
 func default_data():
@@ -326,45 +324,45 @@ func serialze():
 
 func save_data():
 	var data = serialze()
-	
+
 	var file := File.new()
 	var res = file.open(save_path, File.WRITE)
 	if res != OK:
 		push_warning("Could not save board data.")
-	
+
 	var json := JSON.new()
 	var string = json.stringify(data, "  ")
-	
+
 	file.store_string(string)
 	file.close()
 
 func setup_board():
 	clear_board()
 	var data = load_data()
-	
+
 	if data.has("settings"):
 		if data["settings"].has("show_details_preview"):
 			show_details_preview = data["settings"]["show_details_preview"]
-	
+
 	for c in data["categories"]:
 		construct_category(c["title"],
 				c["color"])
-	
+
 	for t in data["tasks"]:
 		construct_task(
 			t["title"],
 			t["details"],
 			categories[t["category"]])
-		
+
 	for s in data["stages"]:
 		construct_stage(
 			s["title"],
 			s["tasks"])
-		
+
 	for c in data["columns"]:
 		var column = construct_column(c["stages"])
 		column_holder.add_child(column)
-	
+
 	emit_signal("categories_changed")
 	emit_signal("columns_changed")
 	emit_signal("stages_changed")

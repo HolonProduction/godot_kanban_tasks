@@ -7,7 +7,7 @@ var board
 # currently the array is filled with indexes in the init call
 # but upon _ready objects get stored inside (when they where loaded)
 # this behaviour results in the unusability of it before the _ready call
-# this could be changed when/if godot supports parameters for 
+# this could be changed when/if godot supports parameters for
 # .instance() like it works with .new()
 var stages: Array
 
@@ -17,7 +17,7 @@ signal change()
 
 func init(board, stages):
 	self.board = board
-	
+
 	self.stages = stages
 
 func _ready():

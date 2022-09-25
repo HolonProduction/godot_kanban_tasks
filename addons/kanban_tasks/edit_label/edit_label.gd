@@ -7,21 +7,21 @@ extends VBoxContainer
 ## of some layout to much. Only while editing the label it is replaced with an
 ## line edit.
 ## Click onto the label to start editing it or start the editing mode via code
-## by using [member show_edit]. When editing press [kbd]Enter[kbd] to finish
-## editing or press [kbd]Esc[kbd] to discard your changes.
+## by using [member show_edit]. When editing press [kbd]Enter[/kbd] to finish
+## editing or press [kbd]Esc[/kbd] to discard your changes.
 
 
 ## Emitted when the text changed.
 ##
-## [b]Note:[/b] This is only emitted when you confirem your editing by pressing
-## [kbd]Enter[kbd]. If you need access to all changes while editing use the
+## [b]Note:[/b] This is only emitted when you confirm your editing by pressing
+## [kbd]Enter[/kbd]. If you need access to all changes while editing use the
 ## line edit directly. You can get it by calling [method get_edit].
 signal text_changed(new_text: String)
 
 ## The intentions with which the label can be edited.
 enum INTENTION {
 	REPLACE,	## The text will be marked completly when editing.
-	ADDITION,	## The cursor is placed at the end when the editing.
+	ADDITION,	## The cursor is placed at the end when editing.
 }
 
 ## The text to display and edit.
@@ -176,4 +176,6 @@ func __on_edit_gui_input(event: InputEvent) -> void:
 
 
 func __on_edit_text_submitted(_new_text: String) -> void:
+	# For some reason line edit does not accept the event on its own in GD4.
+	__edit.accept_event()
 	show_label()
