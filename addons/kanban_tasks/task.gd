@@ -1,15 +1,10 @@
 @tool
 extends Control
 
-const color_width := 8
-
-@onready var panel_container := $PanelContainer
-@onready var title_label := $PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Title
-@onready var details_label := $PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Details
-@onready var edit_button := $PanelContainer/HBoxContainer/EditButton
-@onready var context_menu := $ContextMenu
 
 signal change()
+
+const color_width := 8
 
 var style_box_focus: StyleBoxFlat
 var style_box_panel: StyleBoxFlat
@@ -17,21 +12,13 @@ var style_box_panel: StyleBoxFlat
 var board
 
 var title: String:
-	set(val):
-		title = val
-		if title_label and not title_label.text==val:
-			title_label.text = val
-
-		if is_inside_tree():
-			emit_signal("change")
-
-func set_title(val):
+	set = set_text
+func set_text(val: String):
 	title = val
-	if title_label and not title_label.text==val:
+	if title_label and not title_label.text == val:
 		title_label.text = val
-
 	if is_inside_tree():
-		emit_signal("change")
+		change.emit()
 
 var details: String:
 	set(val):
@@ -50,6 +37,13 @@ var category:
 		category = val
 		category.changed.connect(update)
 		update()
+
+@onready var panel_container := $PanelContainer
+@onready var title_label := $PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Title
+@onready var details_label := $PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/Details
+@onready var edit_button := $PanelContainer/HBoxContainer/EditButton
+@onready var context_menu := $ContextMenu
+
 
 func copy():
 	var t = board.construct_task(title, details, category)
@@ -100,22 +94,23 @@ func show_details():
 	var d = board.get_details_dialog()
 	d.show_popup(title, details, category)
 	d.change.connect(details_changed)
-	d.cancelled.connect(details_hidden, CONNECT_ONE_SHOT)
+	d.visibility_changed.connect(details_hidden, CONNECT_ONE_SHOT)
 
 func details_changed():
 	var d = board.get_details_dialog()
 	title = d.title
 	details = d.details
 	category = d.category
-	emit_signal("change")
+	change.emit()
 
 func details_hidden():
 	var d = board.get_details_dialog()
 	d.change.disconnect(details_changed)
 
+
 func _ready():
 	title_label.text = title
-	title_label.text_changed.connect(set_title)
+	title_label.text_changed.connect(set_text)
 
 	details_label.visible = board.show_details_preview and not details.strip_edges().length() == 0
 	details_label.text = details

@@ -16,7 +16,7 @@ var details: String:
 			and not details_edit.text == val
 		):
 			details_edit.text = val
-		
+
 var category
 
 @onready var details_edit: TextEdit = $VBoxContainer/TextEdit
@@ -29,13 +29,13 @@ func _ready():
 func show_popup(title, details, category):
 	if visible:
 		hide()
-	
+
 	self.title = title
 	self.details = details
 	self.category = category
-	
+
 	category_option.clear()
-	
+
 	for c in len(board.categories):
 		var i = Image.new()
 		i.create(16, 16, false, Image.FORMAT_RGB8)
@@ -43,12 +43,12 @@ func show_popup(title, details, category):
 		var t = ImageTexture.new()
 		t.create_from_image(i)
 		category_option.add_icon_item(t, board.categories[c].title, c)
-	
+
 	category_option.select(board.category_index(category))
-	
+
 	title = self.title_name
 	details_edit.text = self.details
-	
+
 	popup_centered()
 
 func __on_category_selected(index):
