@@ -29,24 +29,34 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cg6m3"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jxrur"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.225, 0.225, 0.225, 0.6)
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r26ta"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lckrt"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -250,8 +260,6 @@ text = "[u]How to use[/u]
 [u]Where is the data stored?[/u]
 
 The data is stored inside of the addon folder (res://addons/kanban_tasks/data.json).
-Currently some features require editing the file to use. Do this before adding tasks to prevent save file corruption. You can have a look at the examples folder on github for some example data configurations.
-
 
 [center]Leave a star on [url=https://github.com/HolonProduction/godot_kanban_tasks]Github[/url][/center]
 "
@@ -432,10 +440,10 @@ size_flags_vertical = 3
 
 [node name="ColumnHolder" type="HBoxContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer"]
 layout_mode = 2
-offset_left = 318.0
-offset_top = 224.0
-offset_right = 632.0
-offset_bottom = 318.0
+offset_left = 305.0
+offset_top = 196.0
+offset_right = 645.0
+offset_bottom = 346.0
 theme_override_constants/separation = 5
 
 [node name="AddColumn" type="VBoxContainer" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder"]
@@ -452,9 +460,9 @@ offset_right = 18.0
 offset_bottom = 50.0
 size_flags_vertical = 3
 focus_mode = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_cg6m3")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r26ta")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_r26ta")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jxrur")
+theme_override_styles/hover = SubResource("StyleBoxFlat_lckrt")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_lckrt")
 
 [node name="Empty" type="Button" parent="Dialogs/Settings/TabContainer/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn"]
 self_modulate = Color(1, 1, 1, 0)
