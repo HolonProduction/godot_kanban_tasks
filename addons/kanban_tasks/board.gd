@@ -233,16 +233,15 @@ func clear_board():
 	emit_signal("tasks_changed")
 
 func load_data()->Dictionary:
-	var file := File.new()
 	var json := JSON.new()
-	var res = file.open(save_path, File.READ)
-	if res != OK:
+	var file := FileAccess.open(save_path, FileAccess.READ)
+
+	if file == null:
 		return default_data()
 
-	res = json.parse(file.get_as_text())
+	var res = json.parse(file.get_as_text())
 	if res != OK:
 		return default_data()
-	file.close()
 
 	res = json.get_data()
 
@@ -325,16 +324,14 @@ func serialze():
 func save_data():
 	var data = serialze()
 
-	var file := File.new()
-	var res = file.open(save_path, File.WRITE)
-	if res != OK:
+	var file := FileAccess.open(save_path, FileAccess.WRITE)
+	if file == null:
 		push_warning("Could not save board data.")
 
 	var json := JSON.new()
 	var string = json.stringify(data, "  ")
 
 	file.store_string(string)
-	file.close()
 
 func setup_board():
 	clear_board()
