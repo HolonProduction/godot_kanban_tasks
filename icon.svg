@@ -7,9 +7,11 @@
    xmlns="http://www.w3.org/2000/svg"
    id="svg4"
    version="1.1"
-   width="16"
-   viewBox="0 0 16 16"
-   height="16">
+   width="128"
+   viewBox="0 0 128 128"
+   height="128">
+  <style
+     id="style833"></style>
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -25,18 +27,18 @@
   <defs
      id="defs8" />
   <path
-     style="fill:#456ede;fill-opacity:1"
+     style="display:inline;fill:#456ede;fill-opacity:1;stroke-width:0.999999"
      id="path2"
      fill="#e0e0e0"
-     d="M 2,1 C 1.446,1 1,1.446 1,2 V 4 H 5 V 2 C 5,1.446 4.554,1 4,1 Z" />
+     d="M 16,8 C 11.568,8 8,11.568 8,16 V 32 H 40 V 16 C 40,11.568 36.432,8 32,8 Z" />
   <path
-     style="fill:#53d957;fill-opacity:1"
-     d="m 1,5 v 7 l 2,3 2,-3 V 5 Z m 1,1 h 1 v 5 H 2 Z"
+     style="display:inline;fill:#53d957;fill-opacity:1;stroke-width:0.999999"
+     d="M 8,40 V 96 L 24,120 40,96 V 40 Z m 8,8 h 8 v 40 h -8 z"
      fill="#e0e0e0"
      id="path844" />
   <path
-     style="fill:#d36136;fill-opacity:1"
+     style="display:inline;fill:#d36136;fill-opacity:1;stroke-width:0.999999"
      id="path846"
      fill="#e0e0e0"
-     d="m 10,7 v 3 H 7 v 2 h 3 v 3 h 2 v -3 h 3 V 10 H 12 V 7 Z" />
+     d="M 80,56 V 80 H 56 v 16 h 24 v 24 H 96 V 96 h 24 V 80 H 96 V 56 Z" />
 </svg>
