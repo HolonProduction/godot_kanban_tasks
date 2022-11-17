@@ -4,4 +4,7 @@
 export_presets.cfg
 
 # Project specific ignores
+export/
+generated/
 addons/kanban_tasks/data.json
+override.cfg

@@ -1,0 +1,362 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjnuysrucdvt2"]
+
+[ext_resource type="Script" path="res://ui/ui.gd" id="1_ugy0f"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fgojj"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_i2l0u"]
+size = Vector2(16, 16)
+
+[node name="ThemeBase" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ugy0f")
+
+[node name="Plugins" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="GuiBase" type="Panel" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_fgojj")
+
+[node name="BaseMargin" type="MarginContainer" parent="GuiBase"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="MainVBox" type="VBoxContainer" parent="GuiBase/BaseMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 1144.0
+offset_bottom = 640.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="TitleBar" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 1136.0
+
+[node name="MainMenu" type="MenuBar" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
+unique_name_in_owner = true
+layout_mode = 2
+flat = true
+
+[node name="LeftSpacer" type="Control" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
+layout_mode = 2
+anchors_preset = 0
+offset_left = 4.0
+offset_right = 564.0
+size_flags_horizontal = 3
+
+[node name="MainEditorButtonHB" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 568.0
+offset_right = 568.0
+
+[node name="RightSpacer" type="Control" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
+layout_mode = 2
+anchors_preset = 0
+offset_left = 572.0
+offset_right = 1132.0
+size_flags_horizontal = 3
+
+[node name="LaunchPad" type="PanelContainer" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+offset_left = 1132.0
+offset_right = 1132.0
+offset_bottom = 31.0
+
+[node name="LaunchPadHB" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/TitleBar/LaunchPad"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_bottom = 31.0
+
+[node name="Play" type="Button" parent="GuiBase/BaseMargin/MainVBox/TitleBar/LaunchPad/LaunchPadHB"]
+visible = false
+layout_mode = 2
+offset_right = 31.0
+offset_bottom = 28.0
+focus_mode = 0
+icon = SubResource("PlaceholderTexture2D_i2l0u")
+flat = true
+
+[node name="RightMenuHB" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 1136.0
+offset_right = 1136.0
+
+[node name="LeftLHSplit" type="HSplitContainer" parent="GuiBase/BaseMargin/MainVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_top = 8.0
+offset_right = 1136.0
+offset_bottom = 632.0
+size_flags_vertical = 3
+
+[node name="LeftLVSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 170.0
+offset_bottom = 624.0
+
+[node name="DockSlotLeftUL" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftLVSplit"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+offset_right = 170.0
+offset_bottom = 306.0
+size_flags_vertical = 3
+use_hidden_tabs_for_min_size = true
+
+[node name="DockSlotLeftBL" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftLVSplit"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+offset_top = 318.0
+offset_right = 170.0
+offset_bottom = 624.0
+size_flags_vertical = 3
+use_hidden_tabs_for_min_size = true
+
+[node name="LeftRHSplit" type="HSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 182.0
+offset_right = 1136.0
+offset_bottom = 624.0
+
+[node name="LeftRVSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 170.0
+offset_bottom = 624.0
+
+[node name="DockSlotLeftUR" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/LeftRVSplit"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+offset_right = 170.0
+offset_bottom = 306.0
+size_flags_vertical = 3
+use_hidden_tabs_for_min_size = true
+
+[node name="DockSlotLeftBR" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/LeftRVSplit"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+offset_top = 318.0
+offset_right = 170.0
+offset_bottom = 624.0
+size_flags_vertical = 3
+use_hidden_tabs_for_min_size = true
+
+[node name="CenterHSplit" type="HSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 182.0
+offset_right = 954.0
+offset_bottom = 624.0
+
+[node name="CenterVB" type="VBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit"]
+layout_mode = 2
+offset_right = 408.0
+offset_bottom = 624.0
+size_flags_horizontal = 3
+
+[node name="CenterSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 408.0
+offset_bottom = 624.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+dragger_visibility = 1
+
+[node name="TopSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 408.0
+offset_bottom = 588.0
+size_flags_vertical = 3
+collapsed = true
+
+[node name="SRT" type="VBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit"]
+layout_mode = 2
+offset_right = 408.0
+offset_bottom = 588.0
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="TabbarPanel" type="PanelContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 408.0
+offset_bottom = 31.0
+
+[node name="TabbarContainer" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT/TabbarPanel"]
+layout_mode = 2
+offset_right = 408.0
+offset_bottom = 31.0
+
+[node name="TabBar" type="TabBar" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT/TabbarPanel/TabbarContainer"]
+editor_description = "Modulated to not be visible. Is needed to keep the bar in the same height as the other tab bars."
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+offset_bottom = 31.0
+tab_count = 1
+tab_0/title = "Main"
+
+[node name="Control" type="Control" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT/TabbarPanel/TabbarContainer"]
+layout_mode = 2
+anchors_preset = 0
+offset_left = 4.0
+offset_right = 396.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+
+[node name="DistractionFreeButton" type="Button" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT/TabbarPanel/TabbarContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 400.0
+offset_right = 408.0
+offset_bottom = 31.0
+toggle_mode = true
+flat = true
+
+[node name="SceneRootParent" type="PanelContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+offset_top = 31.0
+offset_right = 408.0
+offset_bottom = 588.0
+size_flags_vertical = 3
+
+[node name="MainScreenVBox" type="VBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT/SceneRootParent"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 408.0
+offset_bottom = 557.0
+
+[node name="BottomPanel" type="PanelContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_top = 600.0
+offset_right = 408.0
+offset_bottom = 624.0
+
+[node name="BottomPanelVB" type="VBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/BottomPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 408.0
+offset_bottom = 24.0
+
+[node name="BottomPanelHB" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/BottomPanel/BottomPanelVB"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+offset_right = 408.0
+offset_bottom = 24.0
+
+[node name="BottomPanelHBEditors" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/BottomPanel/BottomPanelVB/BottomPanelHB"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 408.0
+offset_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="BottomPanelRaise" type="Button" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/BottomPanel/BottomPanelVB/BottomPanelHB"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+offset_left = 386.0
+offset_right = 401.0
+offset_bottom = 24.0
+toggle_mode = true
+flat = true
+
+[node name="RightHSplit" type="HSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 420.0
+offset_right = 772.0
+offset_bottom = 624.0
+
+[node name="RightLVSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 170.0
+offset_bottom = 624.0
+
+[node name="DockSlotRightUL" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit/RightLVSplit"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+offset_right = 170.0
+offset_bottom = 306.0
+size_flags_vertical = 3
+use_hidden_tabs_for_min_size = true
+
+[node name="DockSlotRightBL" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit/RightLVSplit"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+offset_top = 318.0
+offset_right = 170.0
+offset_bottom = 624.0
+size_flags_vertical = 3
+use_hidden_tabs_for_min_size = true
+
+[node name="RightRVSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 182.0
+offset_right = 352.0
+offset_bottom = 624.0
+
+[node name="DockSlotRightUR" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit/RightRVSplit"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+offset_right = 170.0
+offset_bottom = 306.0
+size_flags_vertical = 3
+use_hidden_tabs_for_min_size = true
+
+[node name="DockSlotRightBR" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit/RightRVSplit"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+offset_top = 318.0
+offset_right = 170.0
+offset_bottom = 624.0
+size_flags_vertical = 3
+use_hidden_tabs_for_min_size = true
+
+[node name="DockSelectPopup" type="PopupPanel" parent="."]
+unique_name_in_owner = true

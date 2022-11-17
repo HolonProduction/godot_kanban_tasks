@@ -10,10 +10,18 @@ config_version=5
 
 [application]
 
+run/main_scene="res://ui/ui.tscn"
+run/low_processor_mode=true
 config/name="Kanban Tasks - Todo Manager"
 config/description="Another kanban board plugin for the godot engine."
 config/features=PackedStringArray("4.0")
 config/icon="res://icon.svg"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="kanban_tasks_todo_manager"
+
+[display]
+
+window/subwindows/embed_subwindows=false
 
 [editor_plugins]
 
