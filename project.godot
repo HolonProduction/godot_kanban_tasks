@@ -8,16 +8,26 @@
 
 config_version=5
 
+_global_script_classes=[{
+"base": "RefCounted",
+"class": &"Env",
+"language": &"GDScript",
+"path": "res://env.gd"
+}]
+_global_script_class_icons={
+"Env": ""
+}
+
 [application]
 
-run/main_scene="res://ui/ui.tscn"
-run/low_processor_mode=true
 config/name="Kanban Tasks - Todo Manager"
 config/description="Another kanban board plugin for the godot engine."
-config/features=PackedStringArray("4.0")
-config/icon="res://icon.svg"
+run/main_scene="res://ui/ui.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="kanban_tasks_todo_manager"
+config/features=PackedStringArray("4.0")
+run/low_processor_mode=true
+config/icon="res://icon.svg"
 
 [display]
 
@@ -25,4 +35,6 @@ window/subwindows/embed_subwindows=false
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/kanban_tasks/plugin.cfg")
+enabled=PackedStringArray("res://addons/standalone_tools/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg")
+standalone/installed=PackedStringArray("res://addons/kanban_tasks/plugin.cfg")
+standalone/enabled=[]

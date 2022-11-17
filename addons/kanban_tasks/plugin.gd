@@ -1,5 +1,5 @@
 @tool
-extends EditorPlugin
+extends "res://addons/kanban_tasks/standalone_plugin.gd"
 
 const main_panel := preload("res://addons/kanban_tasks/board.tscn")
 var main_panel_instance
