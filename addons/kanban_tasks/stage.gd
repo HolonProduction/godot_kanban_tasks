@@ -175,7 +175,7 @@ func _drop_data(position, data):
 	if not data in tasks:
 		add_task(data)
 
-	move_task(tasks.find_last(data), index)
+	move_task(tasks.rfind(data), index)
 
 	data.grab_focus()
 
