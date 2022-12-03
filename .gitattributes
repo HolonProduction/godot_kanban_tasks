@@ -3,23 +3,9 @@
 
 *.res binary
 
-# Ignore some files when exporting to a ZIP.
-/.gitattributes     export-ignore
-/.gitignore         export-ignore
-/LICENSE            export-ignore
-/README.md          export-ignore
-/project.godot      export-ignore
-/icon.svg           export-ignore
-/icon.svg.import    export-ignore
-
-/examples           export-ignore
-/images             export-ignore
-/.github            export-ignore
-
-# Ignore standalone files when exporting.
-/env.gd                     export-ignore
-/standalone_plugin          export-ignore
-/themes                     export-ignore
-/ui                         export-ignore
-/addons/standalone_tools    export-ignore
+# Only export the plugin when packing as zip.
+/** export-ignore
+/addons !export-ignore
+/addons/kanban_tasks/ !export-ignore
+/addons/kanban_tasks/** !export-ignore
 
