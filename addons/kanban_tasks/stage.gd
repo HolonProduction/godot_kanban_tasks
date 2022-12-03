@@ -248,9 +248,7 @@ func __on_popup_about_to_show():
 	menu.clear()
 	menu.size = Vector2.ZERO
 	for c in len(board.categories):
-		var i = Image.new()
-		i.create(16, 16, false, Image.FORMAT_RGB8)
+		var i = Image.create(16, 16, false, Image.FORMAT_RGB8)
 		i.fill(board.categories[c].color)
-		var t = ImageTexture.new()
-		t.create_from_image(i)
+		var t = ImageTexture.create_from_image(i)
 		menu.add_icon_item(t, board.categories[c].title, c)

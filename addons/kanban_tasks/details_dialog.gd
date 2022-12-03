@@ -37,11 +37,9 @@ func show_popup(title, details, category):
 	category_option.clear()
 
 	for c in len(board.categories):
-		var i = Image.new()
-		i.create(16, 16, false, Image.FORMAT_RGB8)
+		var i = Image.create(16, 16, false, Image.FORMAT_RGB8)
 		i.fill(board.categories[c].color)
-		var t = ImageTexture.new()
-		t.create_from_image(i)
+		var t = ImageTexture.create_from_image(i)
 		category_option.add_icon_item(t, board.categories[c].title, c)
 
 	category_option.select(board.category_index(category))
