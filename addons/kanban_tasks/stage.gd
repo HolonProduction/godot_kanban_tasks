@@ -138,12 +138,12 @@ func _shortcut_input(event):
 		if board.shortcut_new.matches_event(event):
 			get_viewport().set_input_as_handled()
 
-			#if menu_button_new.visible:
 			__on_popup_about_to_show()
 			menu_button_new.get_popup().position = get_global_mouse_position()
+			if not get_viewport().gui_embed_subwindows and get_viewport() is Window:
+				menu_button_new.get_popup().position += get_viewport().position
+
 			menu_button_new.get_popup().popup()
-			#else:
-			#	new_task()
 
 		elif board.shortcut_rename.matches_event(event):
 			get_viewport().set_input_as_handled()
