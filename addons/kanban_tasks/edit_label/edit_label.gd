@@ -49,24 +49,6 @@ var __label: Label
 var __old_focus: Control = null
 
 
-## Returns the [LineEdit] used to edit the text.
-##
-## [b]Warning:[/b] This is a required internal node, romoving and freeing it
-## may cause a crash. Feel free to edit its parameters to change, how the
-## [member text] is displayed.
-func get_edit() -> LineEdit:
-	return __edit
-
-
-## Returns the [Label] used display the text.
-##
-## [b]Warning:[/b] This is a required internal node, romoving and freeing it
-## may cause a crash. Feel free to edit its parameters to change, how the
-## [member text] is displayed.
-func get_label() -> Label:
-	return __label
-
-
 func _ready() -> void:
 	alignment = BoxContainer.ALIGNMENT_CENTER
 	mouse_filter = Control.MOUSE_FILTER_PASS
@@ -100,7 +82,7 @@ func _ready() -> void:
 	custom_minimum_size.y = max(__label.size.y, __edit.size.y)
 
 
-func _input(event) -> void:
+func _input(event: InputEvent) -> void:
 	# End the editing when somewhere else was clicked.
 	if (event is InputEventMouseButton) and event.pressed and __edit.visible:
 		var local = __edit.make_input_local(event)
@@ -110,7 +92,7 @@ func _input(event) -> void:
 
 ## Start editing the text and pass an optional intention.
 ## This can be used to open the edit interface via code.
-func show_edit(intention := default_intention) -> void:
+func show_edit(intention: INTENTION = default_intention) -> void:
 	if __edit.visible:
 		return
 
@@ -151,6 +133,24 @@ func show_label(apply_changes: bool = true) -> void:
 
 	__edit.visible = false
 	__label.visible = true
+
+
+## Returns the [LineEdit] used to edit the text.
+##
+## [b]Warning:[/b] This is a required internal node, romoving and freeing it
+## may cause a crash. Feel free to edit its parameters to change, how the
+## [member text] is displayed.
+func get_edit() -> LineEdit:
+	return __edit
+
+
+## Returns the [Label] used display the text.
+##
+## [b]Warning:[/b] This is a required internal node, romoving and freeing it
+## may cause a crash. Feel free to edit its parameters to change, how the
+## [member text] is displayed.
+func get_label() -> Label:
+	return __label
 
 
 # Updates the diplayed text of [member __edit] and

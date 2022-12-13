@@ -1,0 +1,81 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckqrwj5kxr6vl"]
+
+[ext_resource type="Script" path="res://addons/kanban_tasks/view/task/task.gd" id="1_dslv8"]
+[ext_resource type="Script" path="res://addons/kanban_tasks/edit_label/edit_label.gd" id="2"]
+
+[node name="Task" type="MarginContainer"]
+editor_description = "This container is needed because the panel style cannot be updated from a script on the panel container."
+custom_minimum_size = Vector2(150, 0)
+offset_right = 150.0
+offset_bottom = 50.0
+size_flags_horizontal = 3
+focus_mode = 2
+script = ExtResource("1_dslv8")
+
+[node name="Panel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+custom_minimum_size = Vector2(0, 50)
+offset_right = 150.0
+offset_bottom = 56.0
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+offset_right = 150.0
+offset_bottom = 56.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/HBoxContainer"]
+offset_right = 142.0
+offset_bottom = 56.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer/MarginContainer"]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 142.0
+offset_bottom = 51.0
+theme_override_constants/separation = -8
+alignment = 1
+
+[node name="Title" type="VBoxContainer" parent="Panel/HBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 31)
+offset_right = 137.0
+offset_bottom = 31.0
+theme_override_constants/separation = 0
+alignment = 1
+script = ExtResource("2")
+
+[node name="Description" type="Label" parent="Panel/HBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.443137)
+offset_top = 23.0
+offset_right = 137.0
+offset_bottom = 46.0
+size_flags_horizontal = 3
+clip_text = true
+text_overrun_behavior = 3
+max_lines_visible = 1
+
+[node name="Edit" type="Button" parent="Panel/HBoxContainer"]
+unique_name_in_owner = true
+offset_left = 142.0
+offset_right = 150.0
+offset_bottom = 56.0
+focus_mode = 0
+flat = true
+
+[node name="ContextMenu" type="PopupMenu" parent="."]
+unique_name_in_owner = true
+allow_search = false

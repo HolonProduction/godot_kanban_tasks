@@ -84,6 +84,14 @@ func get_category(uuid: String) -> __Category:
 		push_warning('There is no category with the uuid "' + uuid + '".')
 	return __categories.get(uuid, null)
 
+## Returns the count of categories.
+func get_category_count() -> int:
+	return len(__categories)
+
+## Returns the uuid's of all categories.
+func get_categories() -> Array[String]:
+	return __categories.keys()
+
 ## Removes a category by uuid.
 func remove_category(uuid: String) -> void:
 	if __categories.has(uuid):
@@ -102,6 +110,14 @@ func get_stage(uuid: String) -> __Stage:
 		push_warning('There is no stage with the uuid "' + uuid + '".')
 	return __stages.get(uuid, null)
 
+## Returns the count of stages.
+func get_stage_count() -> int:
+	return len(__stages)
+
+## Returns the uuid's of all stages.
+func get_stages() -> Array[String]:
+	return __stages.keys()
+
 ## Removes a stage by uuid.
 func remove_stage(uuid: String) -> void:
 	if __stages.has(uuid):
@@ -119,6 +135,14 @@ func get_task(uuid: String) -> __Task:
 	if not __tasks.has(uuid) and uuid != "":
 		push_warning('There is no task with the uuid "' + uuid + '".')
 	return __tasks.get(uuid, null)
+
+## Returns the count of tasks.
+func get_task_count() -> int:
+	return len(__tasks)
+
+## Returns the uuid's of all tasks.
+func get_tasks() -> Array[String]:
+	return __tasks.keys()
 
 ## Removes a task by uuid.
 func remove_task(uuid: String) -> void:

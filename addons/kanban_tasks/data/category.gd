@@ -28,8 +28,8 @@ func to_json() -> Dictionary:
 
 
 func from_json(json: Dictionary) -> void:
-	var title := "Missing data."
-	var color := Color.CORNFLOWER_BLUE
+	title = "Missing data."
+	color = Color.CORNFLOWER_BLUE
 
 	if json.has("title"):
 		title = json["title"]
