@@ -21,7 +21,6 @@ unique_name_in_owner = true
 
 [node name="GuiBase" type="Panel" parent="."]
 unique_name_in_owner = true
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -30,7 +29,6 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_fgojj")
 
 [node name="BaseMargin" type="MarginContainer" parent="GuiBase"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -43,217 +41,181 @@ theme_override_constants/margin_bottom = 8
 
 [node name="MainVBox" type="VBoxContainer" parent="GuiBase/BaseMargin"]
 unique_name_in_owner = true
-layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="TitleBar" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="MainMenu" type="MenuBar" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
 unique_name_in_owner = true
-layout_mode = 2
 flat = true
 
 [node name="LeftSpacer" type="Control" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 size_flags_horizontal = 3
 
 [node name="MainEditorButtonHB" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="RightSpacer" type="Control" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 size_flags_horizontal = 3
 
 [node name="LaunchPad" type="PanelContainer" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
 unique_name_in_owner = true
 visible = false
-layout_mode = 2
 
 [node name="LaunchPadHB" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/TitleBar/LaunchPad"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="Play" type="Button" parent="GuiBase/BaseMargin/MainVBox/TitleBar/LaunchPad/LaunchPadHB"]
 visible = false
-layout_mode = 2
 focus_mode = 0
 icon = SubResource("PlaceholderTexture2D_i2l0u")
 flat = true
 
 [node name="RightMenuHB" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/TitleBar"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="LeftLHSplit" type="HSplitContainer" parent="GuiBase/BaseMargin/MainVBox"]
 unique_name_in_owner = true
-layout_mode = 2
 size_flags_vertical = 3
 
 [node name="LeftLVSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="DockSlotLeftUL" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftLVSplit"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
 size_flags_vertical = 3
 use_hidden_tabs_for_min_size = true
 
 [node name="DockSlotLeftBL" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftLVSplit"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
 size_flags_vertical = 3
 use_hidden_tabs_for_min_size = true
 
 [node name="LeftRHSplit" type="HSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="LeftRVSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="DockSlotLeftUR" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/LeftRVSplit"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
 size_flags_vertical = 3
 use_hidden_tabs_for_min_size = true
 
 [node name="DockSlotLeftBR" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/LeftRVSplit"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
 size_flags_vertical = 3
 use_hidden_tabs_for_min_size = true
 
 [node name="CenterHSplit" type="HSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="CenterVB" type="VBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit"]
-layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="CenterSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB"]
 unique_name_in_owner = true
-layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 dragger_visibility = 1
 
 [node name="TopSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit"]
 unique_name_in_owner = true
-layout_mode = 2
 size_flags_vertical = 3
 collapsed = true
 
 [node name="SRT" type="VBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit"]
-layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
 [node name="TabbarPanel" type="PanelContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="TabbarContainer" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT/TabbarPanel"]
-layout_mode = 2
 
 [node name="TabBar" type="TabBar" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT/TabbarPanel/TabbarContainer"]
 editor_description = "Modulated to not be visible. Is needed to keep the bar in the same height as the other tab bars."
 modulate = Color(1, 1, 1, 0)
-layout_mode = 2
 tab_count = 1
 tab_0/title = "Main"
 
 [node name="Control" type="Control" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT/TabbarPanel/TabbarContainer"]
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 size_flags_horizontal = 3
 
 [node name="DistractionFreeButton" type="Button" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT/TabbarPanel/TabbarContainer"]
 unique_name_in_owner = true
-layout_mode = 2
 toggle_mode = true
 flat = true
 
 [node name="SceneRootParent" type="PanelContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 80)
-layout_mode = 2
 size_flags_vertical = 3
 
 [node name="MainScreenVBox" type="VBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/TopSplit/SRT/SceneRootParent"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="BottomPanel" type="PanelContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="BottomPanelVB" type="VBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/BottomPanel"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="BottomPanelHB" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/BottomPanel/BottomPanelVB"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 24)
-layout_mode = 2
 
 [node name="BottomPanelHBEditors" type="HBoxContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/BottomPanel/BottomPanelVB/BottomPanelHB"]
 unique_name_in_owner = true
-layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="BottomPanelRaise" type="Button" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/CenterVB/CenterSplit/BottomPanel/BottomPanelVB/BottomPanelHB"]
 unique_name_in_owner = true
 visible = false
-layout_mode = 2
 toggle_mode = true
 flat = true
 
 [node name="RightHSplit" type="HSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="RightLVSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="DockSlotRightUL" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit/RightLVSplit"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
 size_flags_vertical = 3
 use_hidden_tabs_for_min_size = true
 
 [node name="DockSlotRightBL" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit/RightLVSplit"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
 size_flags_vertical = 3
 use_hidden_tabs_for_min_size = true
 
 [node name="RightRVSplit" type="VSplitContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit"]
 unique_name_in_owner = true
-layout_mode = 2
 
 [node name="DockSlotRightUR" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit/RightRVSplit"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
 size_flags_vertical = 3
 use_hidden_tabs_for_min_size = true
 
 [node name="DockSlotRightBR" type="TabContainer" parent="GuiBase/BaseMargin/MainVBox/LeftLHSplit/LeftRHSplit/CenterHSplit/RightHSplit/RightRVSplit"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
 size_flags_vertical = 3
 use_hidden_tabs_for_min_size = true
 
