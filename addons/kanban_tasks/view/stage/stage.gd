@@ -79,6 +79,14 @@ func _can_drop_data_fw(at_position: Vector2, data: Variant, from: Control) -> bo
 
 func _get_drag_data_fw(at_position: Vector2, from: Control) -> Variant:
 	if from is __TaskScript:
+		var control := Control.new()
+		var rect := ColorRect.new()
+		control.add_child(rect)
+		rect.size = from.get_rect().size
+		rect.position = -at_position
+		rect.color = board_data.get_category(board_data.get_task(from.data_uuid).category).color
+		from.set_drag_preview(control)
+
 		return {
 			"task": from.data_uuid,
 			"stage": data_uuid,

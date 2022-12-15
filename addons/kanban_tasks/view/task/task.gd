@@ -9,6 +9,7 @@ const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
 const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
+const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
 
 enum ACTIONS {
 	DETAILS,
@@ -22,14 +23,14 @@ const COLOR_WIDTH: int = 8
 var board_data: __BoardData
 var data_uuid: String
 
+var __style_focus: StyleBoxFlat
+var __style_panel: StyleBoxFlat
+
 @onready var panel_container: PanelContainer = %Panel
 @onready var title_label: __EditLabel = %Title
 @onready var description_label: Label = %Description
 @onready var edit_button: Button = %Edit
 @onready var context_menu: PopupMenu = %ContextMenu
-
-var __style_focus: StyleBoxFlat
-var __style_panel: StyleBoxFlat
 
 
 func _ready() -> void:
@@ -56,6 +57,8 @@ func _gui_input(event: InputEvent) -> void:
 		accept_event()
 		__update_context_menu()
 		context_menu.position = get_global_mouse_position()
+		if not get_viewport().gui_embed_subwindows and get_viewport() is Window:
+			context_menu.position += get_viewport().position
 		context_menu.popup()
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and event.is_double_click():
@@ -142,52 +145,53 @@ func apply_filter(filter: __Filter) -> void:
 		hide()
 
 
-func get_drag_data(position: Vector2) -> void:
-	var control = Control.new()
-	var rect = ColorRect.new()
-	control.add_child(rect)
-	rect.size = get_rect().size
-	rect.position = -position
-	#rect.color = category.color
-	set_drag_preview(control)
-	return self
-
-
 func __simplify_string(string: String) -> String:
 	return string.replace(" ", "").replace("\t", "")
 
 
 func __update_context_menu():
+	var shortcuts: __Shortcuts = __Singletons.instance_of(__Shortcuts, self)
+
 	context_menu.clear()
 	context_menu.add_item("Details", ACTIONS.DETAILS)
 
 	context_menu.add_separator()
 
-	context_menu.add_icon_item(get_theme_icon("Rename", "EditorIcons"), "Rename", ACTIONS.RENAME)
-	#context_menu.set_item_shortcut(context_menu.get_item_index(ACTIONS.RENAME), board.shortcut_rename)
+	context_menu.add_icon_item(get_theme_icon(&"Rename", &"EditorIcons"), "Rename", ACTIONS.RENAME)
+	context_menu.set_item_shortcut(context_menu.get_item_index(ACTIONS.RENAME), shortcuts.rename)
 
-	context_menu.add_icon_item(get_theme_icon("Duplicate", "EditorIcons"), "Duplicate", ACTIONS.DUPLICATE)
-	#context_menu.set_item_shortcut(context_menu.get_item_index(ACTIONS.DUPLICATE), board.shortcut_duplicate)
+	context_menu.add_icon_item(get_theme_icon(&"Duplicate", &"EditorIcons"), "Duplicate", ACTIONS.DUPLICATE)
+	context_menu.set_item_shortcut(context_menu.get_item_index(ACTIONS.DUPLICATE), shortcuts.duplicate)
 
-	context_menu.add_icon_item(get_theme_icon("Remove", "EditorIcons"), "Delete", ACTIONS.DELETE)
-	#context_menu.set_item_shortcut(context_menu.get_item_index(ACTIONS.DELETE), board.shortcut_delete)
+	context_menu.add_icon_item(get_theme_icon(&"Remove", &"EditorIcons"), "Delete", ACTIONS.DELETE)
+	context_menu.set_item_shortcut(context_menu.get_item_index(ACTIONS.DELETE), shortcuts.delete)
 
 
 func __action(action):
 	match(action):
 		ACTIONS.DELETE:
-			#board.delete_task(self)
-			emit_signal("change")
+			for uuid in board_data.get_stages():
+				var tasks := board_data.get_stage(uuid).tasks
+				if data_uuid in tasks:
+					tasks.erase(data_uuid)
+					board_data.get_stage(uuid).tasks = tasks
+					break
+			board_data.remove_task(data_uuid)
+
 		ACTIONS.DETAILS:
-			#show_details()
 			pass
+
 		ACTIONS.DUPLICATE:
-			#var n = copy()
-			#get_owner().add_task(n)
-			#get_owner().move_task(len(get_owner().tasks)-1, get_owner().tasks.find(self)+1)
-			#await get_tree().create_timer(0.0).timeout
-			#n.grab_focus()
-			pass
+			var copy := __TaskData.new()
+			copy.from_json(board_data.get_task(data_uuid).to_json())
+			var copy_uuid := board_data.add_task(copy)
+			for uuid in board_data.get_stages():
+				var tasks := board_data.get_stage(uuid).tasks
+				if data_uuid in tasks:
+					tasks.insert(tasks.find(data_uuid), copy_uuid)
+					board_data.get_stage(uuid).tasks = tasks
+					break
+
 		ACTIONS.RENAME:
 			if context_menu.visible:
 				await context_menu.popup_hide

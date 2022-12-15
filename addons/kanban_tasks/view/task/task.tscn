@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://ckqrwj5kxr6vl"]
+[gd_scene load_steps=4 format=3 uid="uid://ckqrwj5kxr6vl"]
 
 [ext_resource type="Script" path="res://addons/kanban_tasks/view/task/task.gd" id="1_dslv8"]
 [ext_resource type="Script" path="res://addons/kanban_tasks/edit_label/edit_label.gd" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_no7kv"]
+draw_center = false
+border_width_left = 8
 
 [node name="Task" type="MarginContainer"]
 editor_description = "This container is needed because the panel style cannot be updated from a script on the panel container."
@@ -20,6 +24,7 @@ offset_right = 150.0
 offset_bottom = 56.0
 size_flags_horizontal = 3
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_no7kv")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
 offset_right = 150.0
