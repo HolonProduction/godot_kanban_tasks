@@ -72,12 +72,13 @@ func _ready() -> void:
 	__edit.size_flags_vertical = SIZE_FILL
 	__edit.text_submitted.connect(__on_edit_text_submitted)
 	__edit.gui_input.connect(__on_edit_gui_input)
+	__edit.focus_exited.connect(__on_edit_focus_exited, CONNECT_DEFERRED)
 	add_child(__edit)
 
 	__update_content()
 
 	# Wait for the label to get its true size.
-	await get_tree().process_frame
+	await get_tree().create_timer(0.0).timeout
 	# Keep the same size when changing the edit mode.
 	custom_minimum_size.y = max(__label.size.y, __edit.size.y)
 
@@ -183,3 +184,9 @@ func __on_edit_text_submitted(_new_text: String) -> void:
 	# For some reason line edit does not accept the event on its own in GD4.
 	__edit.accept_event()
 	show_label()
+
+
+func __on_edit_focus_exited() -> void:
+	if __edit.visible:
+		__old_focus = null
+		show_label()
