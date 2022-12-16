@@ -6,6 +6,7 @@ extends MarginContainer
 
 const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
 const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
+const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
 const __TaskScene := preload("res://addons/kanban_tasks/view/task/task.tscn")
 const __TaskScript := preload("res://addons/kanban_tasks/view/task/task.gd")
 const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
@@ -17,10 +18,11 @@ var data_uuid: String
 # The uuid of the task that should get focus.
 var __old_focus: String
 
+var __category_menu := PopupMenu.new()
+
 @onready var panel_container: PanelContainer = %Panel
 @onready var title_label: __EditLabel = %Title
 @onready var create_button: Button = %Create
-@onready var create_menu_button: MenuButton = %CreateMenu
 @onready var task_holder: VBoxContainer = %TaskHolder
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 @onready var preview: Control = %Preview
@@ -33,11 +35,11 @@ func _ready() -> void:
 
 	scroll_container.set_drag_forwarding(self)
 
-	create_button.pressed.connect(__on_add_button_pressed)
-	create_menu_button.about_to_popup.connect(__on_popup_about_to_show)
-	create_menu_button.get_popup().id_pressed.connect(__on_category_popup_selected)
-
-	__update_add_buttons()
+	create_button.pressed.connect(__on_create_button_pressed)
+	add_child(__category_menu)
+	__category_menu.about_to_popup.connect(__on_category_popup_about_to_show)
+	__category_menu.id_pressed.connect(__on_category_popup_selected)
+	__category_menu.popup_hide.connect(create_button.set_pressed_no_signal.bind(false))
 
 	notification(NOTIFICATION_THEME_CHANGED)
 
@@ -56,12 +58,11 @@ func _shortcut_input(event: InputEvent) -> void:
 		if __shortcuts.create.matches_event(event):
 			get_viewport().set_input_as_handled()
 
-			__on_popup_about_to_show()
-			create_menu_button.get_popup().position = get_global_mouse_position()
+			__category_menu.position = get_global_mouse_position()
 			if not get_viewport().gui_embed_subwindows and get_viewport() is Window:
-				create_menu_button.get_popup().position += get_viewport().position
+				__category_menu.position += get_viewport().position
 
-			create_menu_button.get_popup().popup()
+			__category_menu.popup()
 
 		elif __shortcuts.rename.matches_event(event):
 			get_viewport().set_input_as_handled()
@@ -135,13 +136,6 @@ func _notification(what: int) -> void:
 				create_button.icon = get_theme_icon(&"Add", &"EditorIcons")
 			if is_instance_valid(preview_color):
 				preview_color.color = get_theme_color(&"font_selected_color", &"TabBar")
-			if is_instance_valid(create_menu_button):
-				create_menu_button.icon = get_theme_icon(&"Add", &"EditorIcons")
-				create_menu_button.add_theme_stylebox_override(&"normal", get_theme_stylebox(&"normal", &"Button"))
-				create_menu_button.add_theme_stylebox_override(&"disabled", get_theme_stylebox(&"disabled", &"Button"))
-				create_menu_button.add_theme_stylebox_override(&"focus", get_theme_stylebox(&"focus", &"Button"))
-				create_menu_button.add_theme_stylebox_override(&"pressed", get_theme_stylebox(&"pressed", &"Button"))
-				create_menu_button.add_theme_stylebox_override(&"hover", get_theme_stylebox(&"hover", &"Button"))
 
 
 func update() -> void:
@@ -199,32 +193,27 @@ func __set_title(value: String) -> void:
 	board_data.get_stage(data_uuid).title = value
 
 
-func __update_add_buttons() -> void:
-	if board_data.get_category_count() <= 1:
-		create_button.show()
-		create_menu_button.hide()
+func __on_create_button_pressed() -> void:
+	if board_data.get_category_count() > 1:
+		__category_menu.position = create_button.global_position
+		__category_menu.position.y += create_button.get_global_rect().size.y
+		if not get_viewport().gui_embed_subwindows and get_viewport() is Window:
+			__category_menu.position += get_viewport().position
+		__category_menu.popup()
 	else:
-		create_menu_button.show()
-		create_button.hide()
+		__create_task(board_data.get_categories()[0])
+		create_button.set_pressed_no_signal(false)
 
 
-func __on_add_button_pressed() -> void:
-	__create_task()
-
-
-func __create_task() -> void:
-	pass
-
-#func new_task(category_index=0):
-#	var task = board.construct_task()
-#	task.category = board.categories[category_index]
-#	add_task(task)
-
-#	board.reset_filter()
-
-#	await get_tree().create_timer(0.0).timeout
-#	task.grab_focus()
-#	task.show_edit(edit_label_script.INTENTION.REPLACE)
+func __create_task(category: String) -> void:
+	var uuid = board_data.add_task(__TaskData.new("New task", "", category))
+	var tasks = board_data.get_stage(data_uuid).tasks
+	tasks.append(uuid)
+	board_data.get_stage(data_uuid).tasks = tasks
+	for task in task_holder.get_children():
+		if task.data_uuid == uuid:
+			task.grab_focus()
+			task.show_edit(__EditLabel.INTENTION.REPLACE)
 
 
 func __target_height_from_position(pos: Vector2) -> float:
@@ -245,17 +234,15 @@ func __target_height_from_position(pos: Vector2) -> float:
 
 
 func __on_category_popup_selected(id):
-	#new_task(id)
-	pass
+	__create_task(__category_menu.get_item_metadata(id))
 
 
-func __on_popup_about_to_show():
-	var menu: PopupMenu = create_menu_button.get_popup()
-	menu.clear()
-	#menu.size = Vector2.ZERO
+func __on_category_popup_about_to_show():
+	__category_menu.clear()
+	__category_menu.size = Vector2i.ZERO
 	for uuid in board_data.get_categories():
 		var i = Image.create(16, 16, false, Image.FORMAT_RGB8)
 		i.fill(board_data.get_category(uuid).color)
 		var t = ImageTexture.create_from_image(i)
-		menu.add_icon_item(t, board_data.get_category(uuid).title)
-		menu.set_item_metadata(-1, uuid)
+		__category_menu.add_icon_item(t, board_data.get_category(uuid).title)
+		__category_menu.set_item_metadata(-1, uuid)
