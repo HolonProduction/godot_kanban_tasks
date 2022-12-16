@@ -176,7 +176,7 @@ func __on_label_gui_input(event: InputEvent) -> void:
 func __on_edit_gui_input(event: InputEvent) -> void:
 	# Discard changes if ui_cancel action is pressed.
 	if event is InputEventKey and event.is_pressed():
-		if event.is_action("ui_cancel"):
+		if event.is_action(&"ui_cancel"):
 			show_label(false)
 
 

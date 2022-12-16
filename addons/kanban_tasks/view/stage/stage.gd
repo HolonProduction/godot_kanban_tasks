@@ -14,6 +14,9 @@ const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 var board_data: __BoardData
 var data_uuid: String
 
+# The uuid of the task that should get focus.
+var __old_focus: String
+
 @onready var panel_container: PanelContainer = %Panel
 @onready var title_label: __EditLabel = %Title
 @onready var create_button: Button = %Create
@@ -98,8 +101,9 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var index := __target_index_from_position(at_position)
 	preview.hide()
 
+	var tasks := board_data.get_stage(data["stage"]).tasks
+
 	if data["stage"] == data_uuid:
-		var tasks := board_data.get_stage(data["stage"]).tasks
 		var old_index := tasks.find(data["task"])
 		if index < old_index:
 			tasks.erase(data["task"])
@@ -107,15 +111,14 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		elif index > old_index + 1:
 			tasks.erase(data["task"])
 			tasks.insert(index - 1, data["task"])
-		board_data.get_stage(data["stage"]).tasks = tasks
 	else:
-		var tasks := board_data.get_stage(data["stage"]).tasks
 		tasks.erase(data["task"])
 		board_data.get_stage(data["stage"]).tasks = tasks
-
 		tasks = board_data.get_stage(data_uuid).tasks
 		tasks.insert(index, data["task"])
-		board_data.get_stage(data_uuid).tasks = tasks
+
+	__old_focus = data["task"]
+	board_data.get_stage(data_uuid).tasks = tasks
 
 
 func _drop_data_fw(at_position: Vector2, data: Variant, from: Control) -> void:
@@ -147,6 +150,13 @@ func update() -> void:
 	title_label.text = board_data.get_stage(data_uuid).title
 	title_label.text_changed.connect(__set_title)
 
+	var old_scroll := scroll_container.scroll_vertical
+
+	var focus_owner := get_viewport().gui_get_focus_owner()
+	if is_instance_valid(focus_owner) and is_ancestor_of(focus_owner):
+		if focus_owner is __TaskScript:
+			__old_focus = focus_owner.data_uuid
+
 	for task in task_holder.get_children():
 		task.queue_free()
 
@@ -156,6 +166,16 @@ func update() -> void:
 		task.data_uuid = uuid
 		task.set_drag_forwarding(self)
 		task_holder.add_child(task)
+		if uuid == __old_focus:
+			__old_focus = ""
+
+			# Use a lambda to not stop further processing while awaiting.
+			var lambda = func():
+				await get_tree().create_timer(0.0).timeout
+				task.grab_focus()
+			lambda.call()
+
+	scroll_container.scroll_vertical = old_scroll
 
 
 func __target_index_from_position(pos: Vector2) -> int:
@@ -211,15 +231,15 @@ func __target_height_from_position(pos: Vector2) -> float:
 	var global_pos = pos + get_global_position()
 
 	if not scroll_container.get_global_rect().has_point(global_pos):
-		return - float(task_holder.get_theme_constant('separation')) / 2.0
+		return - float(task_holder.get_theme_constant(&"separation")) / 2.0
 
 	var scroll_pos := global_pos - task_holder.get_global_position()
 	var c := 0.0
 	for task in task_holder.get_children():
 		var y = task.position.y + task.size.y/2.0
 		if scroll_pos.y < y:
-			return c - float(task_holder.get_theme_constant('separation')) / 2.0
-		c += task.size.y + task_holder.get_theme_constant('separation')
+			return c - float(task_holder.get_theme_constant(&"separation")) / 2.0
+		c += task.size.y + task_holder.get_theme_constant(&"separation")
 
 	return c
 
