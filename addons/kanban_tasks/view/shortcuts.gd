@@ -7,6 +7,8 @@ var create := Shortcut.new()
 var rename := Shortcut.new()
 var search := Shortcut.new()
 var confirm := Shortcut.new()
+var undo := Shortcut.new()
+var redo := Shortcut.new()
 
 
 ## Returns whether a specific node should handle the shortcut.
@@ -21,50 +23,72 @@ func _ready() -> void:
 
 func __setup_shortcuts() -> void:
 	# delete
-	var ev_delete = InputEventKey.new()
-	if OS.get_name() == "OSX":
+	var ev_delete := InputEventKey.new()
+	if OS.get_name() == "macOS":
 		ev_delete.keycode = KEY_BACKSPACE
-		ev_delete.command = true
+		ev_delete.meta_pressed = true
 	else:
 		ev_delete.keycode = KEY_DELETE
 	delete.events.append(ev_delete)
 
 	# duplicate
-	var ev_dupe = InputEventKey.new()
-	if OS.get_name() == "OSX":
+	var ev_dupe := InputEventKey.new()
+	if OS.get_name() == "macOS":
 		ev_dupe.keycode = KEY_D
-		ev_dupe.command = true
+		ev_dupe.meta_pressed = true
 	else:
 		ev_dupe.keycode = KEY_D
 		ev_dupe.ctrl_pressed = true
 	duplicate.events.append(ev_dupe)
 
 	# create
-	var ev_create = InputEventKey.new()
-	if OS.get_name() == "OSX":
+	var ev_create := InputEventKey.new()
+	if OS.get_name() == "macOS":
 		ev_create.keycode = KEY_A
-		ev_create.command = true
+		ev_create.meta_pressed = true
 	else:
 		ev_create.keycode = KEY_A
 		ev_create.ctrl_pressed = true
 	create.events.append(ev_create)
 
 	# rename
-	var ev_rename = InputEventKey.new()
+	var ev_rename := InputEventKey.new()
 	ev_rename.keycode = KEY_F2
 	rename.events.append(ev_rename)
 
 	# search
-	var ev_search = InputEventKey.new()
-	if OS.get_name() == "OSX":
+	var ev_search := InputEventKey.new()
+	if OS.get_name() == "macOS":
 		ev_search.keycode = KEY_F
-		ev_search.command = true
+		ev_search.meta_pressed = true
 	else:
 		ev_search.keycode = KEY_F
 		ev_search.ctrl_pressed = true
 	search.events.append(ev_search)
 
 	# confirm
-	var ev_confirm = InputEventKey.new()
+	var ev_confirm := InputEventKey.new()
 	ev_confirm.keycode = KEY_ENTER
 	confirm.events.append(ev_confirm)
+
+	# undo
+	var ev_undo := InputEventKey.new()
+	if OS.get_name() == "macOS":
+		ev_undo.keycode = KEY_Z
+		ev_undo.meta_pressed = true
+	else:
+		ev_undo.keycode = KEY_Z
+		ev_undo.ctrl_pressed = true
+	undo.events.append(ev_undo)
+
+	# redo
+	var ev_redo := InputEventKey.new()
+	if OS.get_name() == "macOS":
+		ev_redo.keycode = KEY_Z
+		ev_redo.meta_pressed = true
+		ev_redo.shift_pressed = true
+	else:
+		ev_redo.keycode = KEY_Z
+		ev_redo.ctrl_pressed = true
+		ev_redo.shift_pressed = true
+	redo.events.append(ev_redo)
