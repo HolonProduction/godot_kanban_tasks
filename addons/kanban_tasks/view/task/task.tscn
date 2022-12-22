@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/kanban_tasks/view/task/task.gd" id="1_dslv8"]
 [ext_resource type="Script" path="res://addons/kanban_tasks/edit_label/edit_label.gd" id="2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_no7kv"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a4v70"]
 draw_center = false
 border_width_left = 8
 
@@ -24,7 +24,7 @@ offset_right = 150.0
 offset_bottom = 56.0
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_no7kv")
+theme_override_styles/panel = SubResource("StyleBoxFlat_a4v70")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
 offset_right = 150.0

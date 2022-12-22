@@ -6,6 +6,7 @@ extends MarginContainer
 
 const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
 const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
+const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
 const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
 const __TaskScene := preload("res://addons/kanban_tasks/view/task/task.tscn")
 const __TaskScript := preload("res://addons/kanban_tasks/view/task/task.gd")
@@ -14,9 +15,6 @@ const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 
 var board_data: __BoardData
 var data_uuid: String
-
-# The uuid of the task that should get focus.
-var __old_focus: String
 
 var __category_menu := PopupMenu.new()
 
@@ -31,7 +29,7 @@ var __category_menu := PopupMenu.new()
 
 func _ready() -> void:
 	update()
-	board_data.get_stage(data_uuid).changed.connect(update)
+	board_data.get_stage(data_uuid).changed.connect(update.bind(true))
 
 	scroll_container.set_drag_forwarding(self)
 
@@ -43,6 +41,11 @@ func _ready() -> void:
 
 	notification(NOTIFICATION_THEME_CHANGED)
 
+	await get_tree().create_timer(0.0).timeout
+	if __Singletons.instance_of(__EditContext, self).focus == data_uuid:
+		__Singletons.instance_of(__EditContext, self).focus = ""
+		grab_focus()
+
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -53,9 +56,9 @@ func _input(event: InputEvent) -> void:
 func _shortcut_input(event: InputEvent) -> void:
 	if not __Shortcuts.should_handle_shortcut(self):
 		return
-	var __shortcuts: __Shortcuts = __Singletons.instance_of(__Shortcuts, self)
+	var shortcuts: __Shortcuts = __Singletons.instance_of(__Shortcuts, self)
 	if not event.is_echo() and event.is_pressed():
-		if __shortcuts.create.matches_event(event):
+		if shortcuts.create.matches_event(event):
 			get_viewport().set_input_as_handled()
 
 			__category_menu.position = get_global_mouse_position()
@@ -64,7 +67,7 @@ func _shortcut_input(event: InputEvent) -> void:
 
 			__category_menu.popup()
 
-		elif __shortcuts.rename.matches_event(event):
+		elif shortcuts.rename.matches_event(event):
 			get_viewport().set_input_as_handled()
 			title_label.show_edit()
 
@@ -102,6 +105,9 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var index := __target_index_from_position(at_position)
 	preview.hide()
 
+	var undo_redo: UndoRedo = __Singletons.instance_of(__EditContext, self).undo_redo
+	undo_redo.create_action("Move task")
+
 	var tasks := board_data.get_stage(data["stage"]).tasks
 
 	if data["stage"] == data_uuid:
@@ -114,12 +120,18 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 			tasks.insert(index - 1, data["task"])
 	else:
 		tasks.erase(data["task"])
-		board_data.get_stage(data["stage"]).tasks = tasks
+
+		undo_redo.add_do_property(board_data.get_stage(data["stage"]), &"tasks", tasks.duplicate())
+		undo_redo.add_undo_property(board_data.get_stage(data["stage"]), &"tasks", board_data.get_stage(data["stage"]).tasks)
+
 		tasks = board_data.get_stage(data_uuid).tasks
 		tasks.insert(index, data["task"])
 
-	__old_focus = data["task"]
-	board_data.get_stage(data_uuid).tasks = tasks
+	__Singletons.instance_of(__EditContext, self).focus = data["task"]
+
+	undo_redo.add_do_property(board_data.get_stage(data_uuid), &"tasks", tasks)
+	undo_redo.add_undo_property(board_data.get_stage(data_uuid), &"tasks", board_data.get_stage(data_uuid).tasks)
+	undo_redo.commit_action()
 
 
 func _drop_data_fw(at_position: Vector2, data: Variant, from: Control) -> void:
@@ -138,7 +150,11 @@ func _notification(what: int) -> void:
 				preview_color.color = get_theme_color(&"font_selected_color", &"TabBar")
 
 
-func update() -> void:
+func update(single: bool = false) -> void:
+	var focus_owner := get_viewport().gui_get_focus_owner()
+	if single:
+		grab_focus()
+
 	if title_label.text_changed.is_connected(__set_title):
 		title_label.text_changed.disconnect(__set_title)
 	title_label.text = board_data.get_stage(data_uuid).title
@@ -146,10 +162,9 @@ func update() -> void:
 
 	var old_scroll := scroll_container.scroll_vertical
 
-	var focus_owner := get_viewport().gui_get_focus_owner()
-	if is_instance_valid(focus_owner) and is_ancestor_of(focus_owner):
+	if is_instance_valid(focus_owner) and (is_ancestor_of(focus_owner) or focus_owner == self):
 		if focus_owner is __TaskScript:
-			__old_focus = focus_owner.data_uuid
+			__Singletons.instance_of(__EditContext, self).focus = focus_owner.data_uuid
 
 	for task in task_holder.get_children():
 		task.queue_free()
@@ -160,14 +175,6 @@ func update() -> void:
 		task.data_uuid = uuid
 		task.set_drag_forwarding(self)
 		task_holder.add_child(task)
-		if uuid == __old_focus:
-			__old_focus = ""
-
-			# Use a lambda to not stop further processing while awaiting.
-			var lambda = func():
-				await get_tree().create_timer(0.0).timeout
-				task.grab_focus()
-			lambda.call()
 
 	scroll_container.scroll_vertical = old_scroll
 
@@ -206,12 +213,26 @@ func __on_create_button_pressed() -> void:
 
 
 func __create_task(category: String) -> void:
-	var uuid = board_data.add_task(__TaskData.new("New task", "", category))
-	var tasks = board_data.get_stage(data_uuid).tasks
+	var undo_redo: UndoRedo = __Singletons.instance_of(__EditContext, self).undo_redo
+	var stage_data := board_data.get_stage(data_uuid)
+
+	var task_data := __TaskData.new("New task", "", category)
+	var uuid = board_data.add_task(task_data)
+	var tasks = stage_data.tasks
 	tasks.append(uuid)
-	board_data.get_stage(data_uuid).tasks = tasks
+
+	undo_redo.create_action("Add task")
+	undo_redo.add_do_method(board_data.__add_task.bind(task_data, uuid))
+	undo_redo.add_do_property(stage_data, &"tasks", tasks)
+	undo_redo.add_undo_property(stage_data, &"tasks", stage_data.tasks)
+	undo_redo.add_undo_method(board_data.remove_task.bind(uuid))
+	undo_redo.commit_action(false)
+
+	stage_data.tasks = tasks
+
 	for task in task_holder.get_children():
 		if task.data_uuid == uuid:
+			await get_tree().create_timer(0.0).timeout
 			task.grab_focus()
 			task.show_edit(__EditLabel.INTENTION.REPLACE)
 

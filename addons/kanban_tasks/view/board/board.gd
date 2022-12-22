@@ -6,6 +6,7 @@ extends VBoxContainer
 
 const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
 const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
+const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 const __StageScript := preload("res://addons/kanban_tasks/view/stage/stage.gd")
 const __StageScene := preload("res://addons/kanban_tasks/view/stage/stage.tscn")
@@ -33,10 +34,17 @@ func _ready():
 func _shortcut_input(event: InputEvent) -> void:
 	if not __Shortcuts.should_handle_shortcut(self):
 		return
-	var __shortcuts: __Shortcuts = __Singletons.instance_of(__Shortcuts, self)
-	if not event.is_echo() and event.is_pressed() and __shortcuts.search.matches_event(event):
-		search_bar.grab_focus()
-		get_viewport().set_input_as_handled()
+	var shortcuts: __Shortcuts = __Singletons.instance_of(__Shortcuts, self)
+	if not event.is_echo() and event.is_pressed():
+		if shortcuts.search.matches_event(event):
+			search_bar.grab_focus()
+			get_viewport().set_input_as_handled()
+		elif shortcuts.undo.matches_event(event):
+			__Singletons.instance_of(__EditContext, self).undo_redo.undo()
+			get_viewport().set_input_as_handled()
+		elif shortcuts.redo.matches_event(event):
+			__Singletons.instance_of(__EditContext, self).undo_redo.redo()
+			get_viewport().set_input_as_handled()
 
 
 func _notification(what):

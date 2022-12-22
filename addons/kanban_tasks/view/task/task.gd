@@ -6,6 +6,7 @@ extends MarginContainer
 
 const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
 const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
+const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
 const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
@@ -51,6 +52,11 @@ func _ready() -> void:
 
 	notification(NOTIFICATION_THEME_CHANGED)
 
+	await get_tree().create_timer(0.0).timeout
+	if data_uuid == __Singletons.instance_of(__EditContext, self).focus:
+		__Singletons.instance_of(__EditContext, self).focus = ""
+		grab_focus()
+
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
@@ -68,18 +74,18 @@ func _gui_input(event: InputEvent) -> void:
 func _shortcut_input(event: InputEvent) -> void:
 	if not __Shortcuts.should_handle_shortcut(self):
 		return
-	var __shortcuts: __Shortcuts = __Singletons.instance_of(__Shortcuts, self)
+	var shortcuts: __Shortcuts = __Singletons.instance_of(__Shortcuts, self)
 	if not event.is_echo() and event.is_pressed():
-		if __shortcuts.delete.matches_event(event):
+		if shortcuts.delete.matches_event(event):
 			get_viewport().set_input_as_handled()
 			__action(ACTIONS.DELETE)
-		elif __shortcuts.confirm.matches_event(event):
+		elif shortcuts.confirm.matches_event(event):
 			get_viewport().set_input_as_handled()
 			__action(ACTIONS.DETAILS)
-		elif __shortcuts.rename.matches_event(event):
+		elif shortcuts.rename.matches_event(event):
 			get_viewport().set_input_as_handled()
 			__action(ACTIONS.RENAME)
-		elif __shortcuts.duplicate.matches_event(event):
+		elif shortcuts.duplicate.matches_event(event):
 			get_viewport().set_input_as_handled()
 			__action(ACTIONS.DUPLICATE)
 
@@ -168,15 +174,20 @@ func __update_context_menu():
 
 
 func __action(action):
+	var undo_redo: UndoRedo = __Singletons.instance_of(__EditContext, self).undo_redo
+
 	match(action):
 		ACTIONS.DELETE:
 			for uuid in board_data.get_stages():
 				var tasks := board_data.get_stage(uuid).tasks
 				if data_uuid in tasks:
 					tasks.erase(data_uuid)
-					board_data.get_stage(uuid).tasks = tasks
+
+					undo_redo.create_action("Delete task")
+					undo_redo.add_do_property(board_data.get_stage(uuid), &"tasks", tasks)
+					undo_redo.add_undo_property(board_data.get_stage(uuid), &"tasks", board_data.get_stage(uuid).tasks)
+					undo_redo.commit_action()
 					break
-			board_data.remove_task(data_uuid)
 
 		ACTIONS.DETAILS:
 			pass
@@ -189,6 +200,13 @@ func __action(action):
 				var tasks := board_data.get_stage(uuid).tasks
 				if data_uuid in tasks:
 					tasks.insert(tasks.find(data_uuid), copy_uuid)
+					undo_redo.create_action("Duplicate task")
+					undo_redo.add_do_method(board_data.__add_task.bind(copy, copy_uuid))
+					undo_redo.add_do_property(board_data.get_stage(uuid), &"tasks", tasks)
+					undo_redo.add_undo_property(board_data.get_stage(uuid), &"tasks", board_data.get_stage(uuid).tasks)
+					undo_redo.add_undo_method(board_data.remove_task.bind(copy_uuid))
+					undo_redo.commit_action(false)
+
 					board_data.get_stage(uuid).tasks = tasks
 					break
 
