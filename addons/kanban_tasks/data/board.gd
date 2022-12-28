@@ -1,3 +1,4 @@
+@tool
 extends RefCounted
 
 ## Manages the loading and saving of other data.

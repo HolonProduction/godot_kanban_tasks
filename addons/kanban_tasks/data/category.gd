@@ -1,3 +1,4 @@
+@tool
 extends "kanban_resource.gd"
 
 ## Data of a category.

@@ -1,3 +1,4 @@
+@tool
 extends RefCounted
 
 ## A filter configuration for searching tasks.

@@ -11,6 +11,7 @@ const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
 const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
+const __DetailsScript := preload("res://addons/kanban_tasks/view/details/details.gd")
 
 enum ACTIONS {
 	DETAILS,
@@ -32,6 +33,7 @@ var __style_panel: StyleBoxFlat
 @onready var description_label: Label = %Description
 @onready var edit_button: Button = %Edit
 @onready var context_menu: PopupMenu = %ContextMenu
+@onready var details: __DetailsScript = %Details
 
 
 func _ready() -> void:
@@ -49,6 +51,7 @@ func _ready() -> void:
 	board_data.get_task(data_uuid).changed.connect(update)
 
 	context_menu.id_pressed.connect(__action)
+	edit_button.pressed.connect(__action.bind(ACTIONS.DETAILS))
 
 	notification(NOTIFICATION_THEME_CHANGED)
 
@@ -131,6 +134,8 @@ func update() -> void:
 	tooltip_text = board_data.get_category(board_data.get_task(data_uuid).category).title \
 			+ ": " + board_data.get_task(data_uuid).title
 
+	queue_redraw()
+
 
 func show_edit(intention: __EditLabel.INTENTION) -> void:
 	title_label.show_edit(intention)
@@ -190,7 +195,9 @@ func __action(action):
 					break
 
 		ACTIONS.DETAILS:
-			pass
+			details.board_data = board_data
+			details.data_uuid = data_uuid
+			details.popup_centered_ratio(0.5)
 
 		ACTIONS.DUPLICATE:
 			var copy := __TaskData.new()

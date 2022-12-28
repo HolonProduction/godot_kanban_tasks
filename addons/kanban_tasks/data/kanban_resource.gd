@@ -1,3 +1,4 @@
+@tool
 extends RefCounted
 
 ## Base class for kanban tasks data structures.
