@@ -213,7 +213,7 @@ func __on_create_button_pressed() -> void:
 
 
 func __create_task(category: String) -> void:
-	var undo_redo: UndoRedo = __Singletons.instance_of(__EditContext, self).undo_redo
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	var stage_data := board_data.get_stage(data_uuid)
 
 	var task_data := __TaskData.new("New task", "", category)
@@ -221,12 +221,12 @@ func __create_task(category: String) -> void:
 	var tasks = stage_data.tasks
 	tasks.append(uuid)
 
-	undo_redo.create_action("Add task")
-	undo_redo.add_do_method(board_data.__add_task.bind(task_data, uuid))
-	undo_redo.add_do_property(stage_data, &"tasks", tasks)
-	undo_redo.add_undo_property(stage_data, &"tasks", stage_data.tasks)
-	undo_redo.add_undo_method(board_data.remove_task.bind(uuid))
-	undo_redo.commit_action(false)
+	ctx.undo_redo.create_action("Add task")
+	ctx.undo_redo.add_do_method(board_data.__add_task.bind(task_data, uuid))
+	ctx.undo_redo.add_do_property(stage_data, &"tasks", tasks)
+	ctx.undo_redo.add_undo_property(stage_data, &"tasks", stage_data.tasks)
+	ctx.undo_redo.add_undo_method(board_data.remove_task.bind(uuid))
+	ctx.undo_redo.commit_action(false)
 
 	stage_data.tasks = tasks
 
@@ -235,6 +235,8 @@ func __create_task(category: String) -> void:
 			await get_tree().create_timer(0.0).timeout
 			task.grab_focus()
 			task.show_edit(__EditLabel.INTENTION.REPLACE)
+
+	ctx.filter = null
 
 
 func __target_height_from_position(pos: Vector2) -> float:

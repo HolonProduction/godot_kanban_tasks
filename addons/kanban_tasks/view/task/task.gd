@@ -56,9 +56,14 @@ func _ready() -> void:
 	notification(NOTIFICATION_THEME_CHANGED)
 
 	await get_tree().create_timer(0.0).timeout
-	if data_uuid == __Singletons.instance_of(__EditContext, self).focus:
-		__Singletons.instance_of(__EditContext, self).focus = ""
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+
+	if data_uuid == ctx.focus:
+		ctx.focus = ""
 		grab_focus()
+
+	ctx.filter_changed.connect(__apply_filter)
+	__apply_filter()
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -141,16 +146,18 @@ func show_edit(intention: __EditLabel.INTENTION) -> void:
 	title_label.show_edit(intention)
 
 
-func apply_filter(filter: __Filter) -> void:
-	if filter.text.length() == 0:
+func __apply_filter() -> void:
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+
+	if not ctx.filter or ctx.filter.text.length() == 0:
 		show()
 		return
 
-	var filter_simple := __simplify_string(filter.text)
+	var filter_simple := __simplify_string(ctx.filter.text)
 	var title := __simplify_string(board_data.get_task(data_uuid).title)
 	var description := __simplify_string(board_data.get_task(data_uuid).description)
 
-	if (title.matchn("*"+filter_simple+"*") or description.matchn("*"+filter_simple+"*")):
+	if (title.matchn("*" + filter_simple + "*") or (ctx.filter.advanced and description.matchn("*" + filter_simple + "*"))):
 		show()
 	else:
 		hide()

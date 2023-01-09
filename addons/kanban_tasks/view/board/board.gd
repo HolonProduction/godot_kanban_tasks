@@ -10,14 +10,15 @@ const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 const __StageScript := preload("res://addons/kanban_tasks/view/stage/stage.gd")
 const __StageScene := preload("res://addons/kanban_tasks/view/stage/stage.tscn")
+const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
 
 var board_data: __BoardData
 
-@onready var search_bar: LineEdit = $%SearchBar
-@onready var button_advanced_search: Button = $%AdvancedSearch
-@onready var button_settings: Button = $%Help
-@onready var button_help: Button = $%Settings
-@onready var column_holder: HBoxContainer = $%ColumnHolder
+@onready var search_bar: LineEdit = %SearchBar
+@onready var button_advanced_search: Button = %AdvancedSearch
+@onready var button_settings: Button = %Help
+@onready var button_help: Button = %Settings
+@onready var column_holder: HBoxContainer = %ColumnHolder
 
 
 func _ready():
@@ -25,10 +26,15 @@ func _ready():
 	board_data.layout.changed.connect(update)
 
 	search_bar.text_changed.connect(__on_filter_changed)
-	search_bar.text_submitted.connect(__on_filter_entered)
+	search_bar.text_submitted.connect(__on_search_bar_entered)
 	button_advanced_search.toggled.connect(__on_filter_changed)
 
 	notification(NOTIFICATION_THEME_CHANGED)
+
+	await get_tree().create_timer(0.0).timeout
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+
+	ctx.filter_changed.connect(__on_filter_changed_external)
 
 
 func _shortcut_input(event: InputEvent) -> void:
@@ -82,26 +88,21 @@ func update() -> void:
 			column.add_child(stage)
 
 
-func reset_filter():
-	search_bar.text = ""
-	__update_filter()
+# Do not use parameters the method is bound to diffrent signals.
+func __on_filter_changed(param1: Variant = null):
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+
+	if ctx.filter_changed.is_connected(__on_filter_changed_external):
+		ctx.filter_changed.disconnect(__on_filter_changed_external)
+
+	ctx.filter = __Filter.new(search_bar.text, button_advanced_search.button_pressed)
+
+	ctx.filter_changed.connect(__on_filter_changed_external)
 
 
-func __update_filter():
-	#for t in tasks:
-	#	t.apply_filter(search_bar.text, button_search_details.button_pressed)
-	pass
-
-# do not use parameters
-# method is bound to diffrent signals
-func __on_filter_changed(param1=null):
-	__update_filter()
-
-func __on_filter_entered(filter):
+func __on_search_bar_entered(filter: String):
 	button_advanced_search.grab_focus()
 
-#func __on_documentation_button_clicked():
-#	show_documentation()
 
-#func __on_settings_button_clicked():
-#	show_settings()
+func __on_filter_changed_external():
+	search_bar.text = ""
