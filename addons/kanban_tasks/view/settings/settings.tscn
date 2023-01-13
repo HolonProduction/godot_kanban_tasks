@@ -1,0 +1,633 @@
+[gd_scene load_steps=21 format=3 uid="uid://dh1yunmhipirg"]
+
+[ext_resource type="Script" path="res://addons/kanban_tasks/view/settings/settings.gd" id="1_4eaw3"]
+[ext_resource type="PackedScene" uid="uid://due07vdflx4o" path="res://addons/kanban_tasks/view/settings/general/general.tscn" id="1_dk7pg"]
+[ext_resource type="Script" path="res://addons/kanban_tasks/edit_label/edit_label.gd" id="2_vkqjm"]
+
+[sub_resource type="Image" id="Image_7ia2s"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_gnxru"]
+image = SubResource("Image_7ia2s")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7cqkc"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 5.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3355u"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c202c"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nsrx8"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vr0dr"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iwj3q"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_as43b"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0rqp"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7o60j"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqalu"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vf0nr"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_istos"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wfnj6"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mtgqe"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ytfvu"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="Settings" type="AcceptDialog"]
+size = Vector2i(100, 105)
+visible = true
+theme_type_variation = &"EditorSettingsDialog"
+script = ExtResource("1_4eaw3")
+
+[node name="Settings" type="TabContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 92.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="General" parent="Settings" instance=ExtResource("1_dk7pg")]
+layout_mode = 2
+
+[node name="Categories" type="VBoxContainer" parent="Settings"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Header" type="HBoxContainer" parent="Settings/Categories"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Categories/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Available Categories:"
+
+[node name="Add" type="Button" parent="Settings/Categories/Header"]
+layout_mode = 2
+icon = SubResource("ImageTexture_gnxru")
+
+[node name="Categories" type="PanelContainer" parent="Settings/Categories"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7cqkc")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Settings/Categories/Categories"]
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Settings/Categories/Categories/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="26571" type="HBoxContainer" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 2
+
+[node name="26572" type="VBoxContainer" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer/26571"]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+script = ExtResource("2_vkqjm")
+text = "Task"
+
+[node name="26573" type="Label" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer/26571/26572"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+text = "Task"
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="26574" type="LineEdit" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer/26571/26572"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Task"
+
+[node name="26575" type="ColorPickerButton" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer/26571"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+focus_mode = 0
+flat = true
+color = Color(0.392157, 0.584314, 0.929412, 1)
+edit_alpha = false
+
+[node name="26576" type="Button" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer/26571"]
+layout_mode = 2
+focus_mode = 0
+disabled = true
+icon = SubResource("ImageTexture_gnxru")
+flat = true
+
+[node name="26577" type="HBoxContainer" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 2
+
+[node name="26578" type="VBoxContainer" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer/26577"]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+script = ExtResource("2_vkqjm")
+text = "Bug"
+
+[node name="26579" type="Label" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer/26577/26578"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+text = "Bug"
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="26580" type="LineEdit" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer/26577/26578"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Bug"
+
+[node name="26581" type="ColorPickerButton" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer/26577"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+focus_mode = 0
+flat = true
+color = Color(0.882353, 0.380392, 0.12549, 1)
+edit_alpha = false
+
+[node name="26582" type="Button" parent="Settings/Categories/Categories/ScrollContainer/VBoxContainer/26577"]
+layout_mode = 2
+focus_mode = 0
+icon = SubResource("ImageTexture_gnxru")
+flat = true
+
+[node name="Stages" type="VBoxContainer" parent="Settings"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Header" type="HBoxContainer" parent="Settings/Stages"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/Stages/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Edit Stage Layout:"
+
+[node name="CheckBox" type="CheckBox" parent="Settings/Stages/Header"]
+layout_mode = 2
+focus_mode = 0
+text = "Warn about empty deletion."
+
+[node name="PanelContainer" type="PanelContainer" parent="Settings/Stages"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7cqkc")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Settings/Stages/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="Settings/Stages/PanelContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ColumnHolder" type="HBoxContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="26583" type="VBoxContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="26587" type="Control" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26583"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="26588" type="Button" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26583/26587"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+tooltip_text = "Todo"
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_3355u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_c202c")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_c202c")
+
+[node name="26589" type="CenterContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26583/26587/26588"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="26590" type="TextureRect" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26583/26587/26588/26589"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("ImageTexture_gnxru")
+
+[node name="26584" type="Button" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26583"]
+custom_minimum_size = Vector2(70, 40)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_nsrx8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vr0dr")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vr0dr")
+
+[node name="26585" type="CenterContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26583/26584"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="26586" type="TextureRect" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26583/26584/26585"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("ImageTexture_gnxru")
+
+[node name="26591" type="VBoxContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="26595" type="Control" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26591"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="26596" type="Button" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26591/26595"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+tooltip_text = "Doing"
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_iwj3q")
+theme_override_styles/hover = SubResource("StyleBoxFlat_as43b")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_as43b")
+
+[node name="26597" type="CenterContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26591/26595/26596"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="26598" type="TextureRect" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26591/26595/26596/26597"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("ImageTexture_gnxru")
+
+[node name="26592" type="Button" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26591"]
+custom_minimum_size = Vector2(70, 40)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_k0rqp")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7o60j")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7o60j")
+
+[node name="26593" type="CenterContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26591/26592"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="26594" type="TextureRect" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26591/26592/26593"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("ImageTexture_gnxru")
+
+[node name="26599" type="VBoxContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="26603" type="Control" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26599"]
+custom_minimum_size = Vector2(70, 50)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="26604" type="Button" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26599/26603"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+tooltip_text = "Done"
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_jqalu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vf0nr")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vf0nr")
+
+[node name="26605" type="CenterContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26599/26603/26604"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="26606" type="TextureRect" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26599/26603/26604/26605"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("ImageTexture_gnxru")
+
+[node name="26600" type="Button" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26599"]
+custom_minimum_size = Vector2(70, 40)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_istos")
+theme_override_styles/hover = SubResource("StyleBoxFlat_wfnj6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wfnj6")
+
+[node name="26601" type="CenterContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26599/26600"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="26602" type="TextureRect" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/26599/26600/26601"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("ImageTexture_gnxru")
+
+[node name="AddColumn" type="VBoxContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Add" type="Button" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn"]
+custom_minimum_size = Vector2(40, 105)
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_mtgqe")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ytfvu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ytfvu")
+
+[node name="26520" type="CenterContainer" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn/Add"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="26521" type="TextureRect" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn/Add/26520"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("ImageTexture_gnxru")
+
+[node name="Empty" type="Button" parent="Settings/Stages/PanelContainer/ScrollContainer/CenterContainer/ColumnHolder/AddColumn"]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+text = "+"
+
+[node name="Warning" type="Control" parent="Settings/Stages/PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="WarningSign" type="Button" parent="Settings/Stages/PanelContainer/Warning"]
+visible = false
+layout_mode = 0
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+tooltip_text = "Adding to much stages can overflow the editor.
+
+Recommended maximum: 4*3"
+focus_mode = 0
+icon = SubResource("ImageTexture_gnxru")
+flat = true

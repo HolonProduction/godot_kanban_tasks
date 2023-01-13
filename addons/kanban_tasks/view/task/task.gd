@@ -47,9 +47,6 @@ func _ready() -> void:
 	__style_panel.draw_center = false
 	panel_container.add_theme_stylebox_override(&"panel", __style_panel)
 
-	update()
-	board_data.get_task(data_uuid).changed.connect(update)
-
 	context_menu.id_pressed.connect(__action)
 	edit_button.pressed.connect(__action.bind(ACTIONS.DETAILS))
 
@@ -57,6 +54,9 @@ func _ready() -> void:
 
 	await get_tree().create_timer(0.0).timeout
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+
+	update()
+	board_data.get_task(data_uuid).changed.connect(update)
 
 	if data_uuid == ctx.focus:
 		ctx.focus = ""
@@ -122,6 +122,8 @@ func _notification(what: int) -> void:
 
 
 func update() -> void:
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+
 	__style_focus.border_color = \
 		board_data.get_category(board_data.get_task(data_uuid).category).color
 
@@ -129,7 +131,7 @@ func update() -> void:
 		board_data.get_category(board_data.get_task(data_uuid).category).color
 
 	description_label.text = board_data.get_task(data_uuid).description
-	description_label.visible = description_label.text.strip_edges().length() != 0
+	description_label.visible = ctx.settings.show_description_preview and description_label.text.strip_edges().length() != 0
 
 	if title_label.text_changed.is_connected(__set_title):
 		title_label.text_changed.disconnect(__set_title)

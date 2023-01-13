@@ -6,6 +6,7 @@ extends Node
 
 
 const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
+const __SettingData := preload("res://addons/kanban_tasks/data/settings.gd")
 
 signal filter_changed()
 
@@ -21,3 +22,6 @@ var undo_redo := UndoRedo.new()
 ## uuid of the object that should have focus. This is used to persist focus
 ## when updating some views.
 var focus: String = ""
+
+## Settings that are not tied to the board.
+var settings := __SettingData.new()

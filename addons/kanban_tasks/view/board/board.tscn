@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5dk4lnyiag3w"]
+[gd_scene load_steps=5 format=3 uid="uid://c5dk4lnyiag3w"]
 
 [ext_resource type="Script" path="res://addons/kanban_tasks/view/board/board.gd" id="1_p7lf4"]
+[ext_resource type="PackedScene" uid="uid://dh1yunmhipirg" path="res://addons/kanban_tasks/view/settings/settings.tscn" id="2_by8mq"]
 
-[sub_resource type="Image" id="Image_4waqd"]
+[sub_resource type="Image" id="Image_2fc6u"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -11,8 +12,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_y2p2f"]
-image = SubResource("Image_4waqd")
+[sub_resource type="ImageTexture" id="ImageTexture_iw3j2"]
+image = SubResource("Image_2fc6u")
 
 [node name="BoardView" type="VBoxContainer"]
 anchors_preset = 15
@@ -27,64 +28,55 @@ theme_override_constants/separation = 5
 script = ExtResource("1_p7lf4")
 
 [node name="Header" type="HBoxContainer" parent="."]
-offset_right = 1152.0
-offset_bottom = 31.0
+layout_mode = 2
 theme_override_constants/separation = 5
 
 [node name="SearchBar" type="LineEdit" parent="Header"]
 unique_name_in_owner = true
-offset_right = 1060.0
-offset_bottom = 31.0
+layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Search"
 clear_button_enabled = true
-right_icon = SubResource("ImageTexture_y2p2f")
+right_icon = SubResource("ImageTexture_iw3j2")
 
 [node name="AdvancedSearch" type="Button" parent="Header"]
 unique_name_in_owner = true
-offset_left = 1065.0
-offset_right = 1089.0
-offset_bottom = 31.0
+layout_mode = 2
 tooltip_text = "Search in details."
 toggle_mode = true
-icon = SubResource("ImageTexture_y2p2f")
+icon = SubResource("ImageTexture_iw3j2")
 
 [node name="VSeparator" type="VSeparator" parent="Header"]
-offset_left = 1094.0
-offset_right = 1094.0
-offset_bottom = 31.0
+layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="Help" type="Button" parent="Header"]
 unique_name_in_owner = true
-offset_left = 1099.0
-offset_right = 1123.0
-offset_bottom = 31.0
+layout_mode = 2
 tooltip_text = "Open documentation."
-icon = SubResource("ImageTexture_y2p2f")
+icon = SubResource("ImageTexture_iw3j2")
 flat = true
 
 [node name="Settings" type="Button" parent="Header"]
 unique_name_in_owner = true
-offset_left = 1128.0
-offset_right = 1152.0
-offset_bottom = 31.0
+layout_mode = 2
 tooltip_text = "Manage board settings."
-icon = SubResource("ImageTexture_y2p2f")
+icon = SubResource("ImageTexture_iw3j2")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-offset_top = 36.0
-offset_right = 1152.0
-offset_bottom = 648.0
+layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 0
 vertical_scroll_mode = 0
 
 [node name="ColumnHolder" type="HBoxContainer" parent="ScrollContainer"]
 unique_name_in_owner = true
-offset_right = 1152.0
-offset_bottom = 612.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 alignment = 1
+
+[node name="SettingsView" parent="." instance=ExtResource("2_by8mq")]
+unique_name_in_owner = true
+visible = false

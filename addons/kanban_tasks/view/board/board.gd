@@ -11,6 +11,7 @@ const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 const __StageScript := preload("res://addons/kanban_tasks/view/stage/stage.gd")
 const __StageScene := preload("res://addons/kanban_tasks/view/stage/stage.tscn")
 const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
+const __SettingsScript := preload("res://addons/kanban_tasks/view/settings/settings.gd")
 
 var board_data: __BoardData
 
@@ -19,6 +20,7 @@ var board_data: __BoardData
 @onready var button_settings: Button = %Help
 @onready var button_help: Button = %Settings
 @onready var column_holder: HBoxContainer = %ColumnHolder
+@onready var settings: __SettingsScript = %SettingsView
 
 
 func _ready():
@@ -34,7 +36,11 @@ func _ready():
 	await get_tree().create_timer(0.0).timeout
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 
+	ctx.settings.changed.connect(update)
+
 	ctx.filter_changed.connect(__on_filter_changed_external)
+
+	button_settings.pressed.connect(settings.popup_centered_ratio_no_fullscreen)
 
 
 func _shortcut_input(event: InputEvent) -> void:
