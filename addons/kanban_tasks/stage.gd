@@ -140,8 +140,8 @@ func _shortcut_input(event):
 
 			__on_popup_about_to_show()
 			menu_button_new.get_popup().position = get_global_mouse_position()
-			if not get_viewport().gui_embed_subwindows and get_viewport() is Window:
-				menu_button_new.get_popup().position += get_viewport().position
+			if not get_window().gui_embed_subwindows:
+				menu_button_new.get_popup().position += get_window().position
 
 			menu_button_new.get_popup().popup()
 

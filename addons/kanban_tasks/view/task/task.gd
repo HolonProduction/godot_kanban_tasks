@@ -71,8 +71,8 @@ func _gui_input(event: InputEvent) -> void:
 		accept_event()
 		__update_context_menu()
 		context_menu.position = get_global_mouse_position()
-		if not get_viewport().gui_embed_subwindows and get_viewport() is Window:
-			context_menu.position += get_viewport().position
+		if not get_window().gui_embed_subwindows:
+			context_menu.position += get_window().position
 		context_menu.popup()
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and event.is_double_click():
@@ -204,7 +204,7 @@ func __action(action):
 		ACTIONS.DETAILS:
 			details.board_data = board_data
 			details.data_uuid = data_uuid
-			details.popup_centered_ratio(0.5)
+			details.popup_centered_ratio_no_fullscreen(0.5)
 
 		ACTIONS.DUPLICATE:
 			var copy := __TaskData.new()

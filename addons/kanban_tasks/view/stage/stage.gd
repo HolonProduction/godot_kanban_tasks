@@ -31,7 +31,11 @@ func _ready() -> void:
 	update()
 	board_data.get_stage(data_uuid).changed.connect(update.bind(true))
 
-	scroll_container.set_drag_forwarding(self)
+	scroll_container.set_drag_forwarding(
+		_get_drag_data_fw.bind(scroll_container),
+		_can_drop_data_fw.bind(scroll_container),
+		_drop_data_fw.bind(scroll_container),
+	)
 
 	create_button.pressed.connect(__on_create_button_pressed)
 	add_child(__category_menu)
@@ -62,8 +66,8 @@ func _shortcut_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 			__category_menu.position = get_global_mouse_position()
-			if not get_viewport().gui_embed_subwindows and get_viewport() is Window:
-				__category_menu.position += get_viewport().position
+			if not get_window().gui_embed_subwindows:
+				__category_menu.position += get_window().position
 
 			__category_menu.popup()
 
@@ -136,7 +140,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 
 func _drop_data_fw(at_position: Vector2, data: Variant, from: Control) -> void:
 	var local_pos = (at_position + from.get_global_rect().position) - get_global_rect().position
-	return _drop_data(local_pos, data)
+	_drop_data(local_pos, data)
 
 
 func _notification(what: int) -> void:
@@ -173,7 +177,11 @@ func update(single: bool = false) -> void:
 		var task = __TaskScene.instantiate()
 		task.board_data = board_data
 		task.data_uuid = uuid
-		task.set_drag_forwarding(self)
+		task.set_drag_forwarding(
+			_get_drag_data_fw.bind(task),
+			_can_drop_data_fw.bind(task),
+			_drop_data_fw.bind(task),
+		)
 		task_holder.add_child(task)
 
 	scroll_container.scroll_vertical = old_scroll
@@ -204,8 +212,8 @@ func __on_create_button_pressed() -> void:
 	if board_data.get_category_count() > 1:
 		__category_menu.position = create_button.global_position
 		__category_menu.position.y += create_button.get_global_rect().size.y
-		if not get_viewport().gui_embed_subwindows and get_viewport() is Window:
-			__category_menu.position += get_viewport().position
+		if not get_window().gui_embed_subwindows:
+			__category_menu.position += get_window().position
 		__category_menu.popup()
 	else:
 		__create_task(board_data.get_categories()[0])
