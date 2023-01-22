@@ -8,16 +8,6 @@
 
 config_version=5
 
-_global_script_classes=[{
-"base": "RefCounted",
-"class": &"Env",
-"language": &"GDScript",
-"path": "res://env.gd"
-}]
-_global_script_class_icons={
-"Env": ""
-}
-
 [application]
 
 config/name="Kanban Tasks - Todo Manager"

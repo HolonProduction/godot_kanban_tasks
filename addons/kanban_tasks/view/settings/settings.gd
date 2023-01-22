@@ -1,4 +1,23 @@
+@tool
 extends AcceptDialog
+
+
+const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
+const __CategoriesScene := preload("res://addons/kanban_tasks/view/settings/categories/categories.tscn")
+const __CategoriesScript := preload("res://addons/kanban_tasks/view/settings/categories/categories.gd")
+
+@onready var category_settings: __CategoriesScript = %Categories
+
+
+var board_data: __BoardData
+
+
+func _ready() -> void:
+	# Wait for board to set board_data.
+	await get_tree().create_timer(0.0).timeout
+
+	category_settings.board_data = board_data
+	about_to_popup.connect(category_settings.update)
 
 
 # Workaround for godotengine/godot#70451

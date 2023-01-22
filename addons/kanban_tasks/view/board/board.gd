@@ -27,6 +27,8 @@ func _ready():
 	update()
 	board_data.layout.changed.connect(update)
 
+	settings.board_data = board_data
+
 	search_bar.text_changed.connect(__on_filter_changed)
 	search_bar.text_submitted.connect(__on_search_bar_entered)
 	button_advanced_search.toggled.connect(__on_filter_changed)
