@@ -164,7 +164,7 @@ func _notification(what: int) -> void:
 				&"PanelForeground",
 				&"EditorStyles",
 			).duplicate()
-			stylebox_content_no_tabbar.set_default_margin_all(0)
+			stylebox_content_no_tabbar.set_border_width_all(0)
 
 			if is_instance_valid(gui_base):
 				gui_base.add_theme_stylebox_override(

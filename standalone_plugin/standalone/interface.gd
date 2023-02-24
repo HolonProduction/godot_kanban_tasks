@@ -140,7 +140,7 @@ func is_plugin_enabled(plugin: String) -> bool:
 
 
 func make_mesh_previews(meshes: Array[Mesh], preview_size: int) -> Array[Texture2D]:
-	var res: Array[PlaceholderTexture2D] = []
+	var res: Array[Texture2D] = []
 	for mesh in meshes:
 		res.append(PlaceholderTexture2D.new())
 		res[len(res) - 1].set_size(Vector2(preview_size, preview_size))

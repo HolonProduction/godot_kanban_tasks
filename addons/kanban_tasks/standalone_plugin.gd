@@ -32,30 +32,12 @@ func save_project_settings() -> int:
 	return ProjectSettings.save()
 
 
-func add_control_to_container(container: int, control: Control) -> void:
-	# Filter for valid editor containers
-	if (container in [
-		CONTAINER_TOOLBAR, CONTAINER_SPATIAL_EDITOR_MENU,
-		CONTAINER_SPATIAL_EDITOR_SIDE_LEFT, CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT,
-		CONTAINER_CANVAS_EDITOR_BOTTOM, CONTAINER_CANVAS_EDITOR_MENU,
-		CONTAINER_CANVAS_EDITOR_SIDE_LEFT, CONTAINER_CANVAS_EDITOR_SIDE_RIGHT,
-		CONTAINER_CANVAS_EDITOR_BOTTOM, CONTAINER_INSPECTOR_BOTTOM,
-		CONTAINER_PROJECT_SETTING_TAB_LEFT, CONTAINER_PROJECT_SETTING_TAB_RIGHT,
-	]):
-		super.add_control_to_container(container, control)
+# Overriding behaviour is not possible but you can remove the type restirction.
+func add_control_to_container(container, control: Control) -> void:
+	pass
 
-
-func remove_control_from_container(container: int, control: Control) -> void:
-	# Filter for valid editor containers
-	if (container in [
-		CONTAINER_TOOLBAR, CONTAINER_SPATIAL_EDITOR_MENU,
-		CONTAINER_SPATIAL_EDITOR_SIDE_LEFT, CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT,
-		CONTAINER_CANVAS_EDITOR_BOTTOM, CONTAINER_CANVAS_EDITOR_MENU,
-		CONTAINER_CANVAS_EDITOR_SIDE_LEFT, CONTAINER_CANVAS_EDITOR_SIDE_RIGHT,
-		CONTAINER_CANVAS_EDITOR_BOTTOM, CONTAINER_INSPECTOR_BOTTOM,
-		CONTAINER_PROJECT_SETTING_TAB_LEFT, CONTAINER_PROJECT_SETTING_TAB_RIGHT,
-	]):
-		super.remove_control_from_container(container, control)
+func remove_control_from_container(container, control: Control) -> void:
+	pass
 
 
 func add_menu(menu: PopupMenu) -> void:

@@ -91,7 +91,9 @@ func get_category_count() -> int:
 
 ## Returns the uuid's of all categories.
 func get_categories() -> Array[String]:
-	return __categories.keys()
+	var temp: Array[String] = []
+	temp.assign(__categories.keys())
+	return temp
 
 ## Removes a category by uuid.
 func remove_category(uuid: String) -> void:
@@ -143,7 +145,9 @@ func get_task_count() -> int:
 
 ## Returns the uuid's of all tasks.
 func get_tasks() -> Array[String]:
-	return __tasks.keys()
+	var temp: Array[String] = []
+	temp.assign(__tasks.keys())
+	return temp
 
 ## Removes a task by uuid.
 func remove_task(uuid: String) -> void:

@@ -253,7 +253,7 @@ func __target_height_from_position(pos: Vector2) -> float:
 	if not scroll_container.get_global_rect().has_point(global_pos):
 		return - float(task_holder.get_theme_constant(&"separation")) / 2.0
 
-	var scroll_pos := global_pos - task_holder.get_global_position()
+	var scroll_pos: Vector2 = global_pos - task_holder.get_global_position()
 	var c := 0.0
 	for task in task_holder.get_children():
 		var y = task.position.y + task.size.y/2.0
