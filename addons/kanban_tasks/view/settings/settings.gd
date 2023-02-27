@@ -7,6 +7,7 @@ const __CategoriesScene := preload("res://addons/kanban_tasks/view/settings/cate
 const __CategoriesScript := preload("res://addons/kanban_tasks/view/settings/categories/categories.gd")
 
 @onready var category_settings: __CategoriesScript = %Categories
+@onready var stage_settings = %Stages
 
 
 var board_data: __BoardData
@@ -17,6 +18,8 @@ func _ready() -> void:
 	await get_tree().create_timer(0.0).timeout
 
 	category_settings.board_data = board_data
+	stage_settings.board_data = board_data
+	about_to_popup.connect(stage_settings.update)
 	about_to_popup.connect(category_settings.update)
 
 

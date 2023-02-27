@@ -13,15 +13,8 @@ var columns: Array[PackedStringArray] = []:
 		changed.emit()
 
 
-# FIXME: `p_columns` should be Array[PackedStringArray] once godot#63502 is fixed.
-func _init(p_columns: Array = []) -> void:
-	# Workaround for casting to typed array.
-	var s: Array[PackedStringArray]
-	for i in p_columns:
-		s.append(i as PackedStringArray)
-
-	columns = s
-
+func _init(p_columns: Array[PackedStringArray] = []) -> void:
+	columns = p_columns
 	super._init()
 
 

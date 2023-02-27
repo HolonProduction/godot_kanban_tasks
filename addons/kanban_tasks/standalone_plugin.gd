@@ -32,7 +32,8 @@ func save_project_settings() -> int:
 	return ProjectSettings.save()
 
 
-# Overriding behaviour is not possible but you can remove the type restirction.
+# HACK: Overriding builtin behaviour is not possible anymore but you can remove
+# the type restiriction (seems like a bug).
 func add_control_to_container(container, control: Control) -> void:
 	pass
 

@@ -19,16 +19,9 @@ var tasks: Array[String] = []:
 		changed.emit()
 
 
-# FIXME: `p_tasks` should be Array[String] once godot#63502 is fixed.
-func _init(p_title: String = "", p_tasks: Array = []) -> void:
+func _init(p_title: String = "", p_tasks: Array[String] = []) -> void:
 	title = p_title
-
-	# Workaround for casting to typed array.
-	var s: Array[String]
-	for i in p_tasks:
-		s.append(i as String)
-
-	tasks = s
+	tasks = p_tasks
 	super._init()
 
 

@@ -119,7 +119,9 @@ func get_stage_count() -> int:
 
 ## Returns the uuid's of all stages.
 func get_stages() -> Array[String]:
-	return __stages.keys()
+	var temp: Array[String] = []
+	temp.assign(__stages.keys())
+	return temp
 
 ## Removes a stage by uuid.
 func remove_stage(uuid: String) -> void:

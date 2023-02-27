@@ -80,6 +80,7 @@ func update() -> void:
 
 	for column_data in board_data.layout.columns:
 		var column_scroll = ScrollContainer.new()
+		column_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		column_scroll.set_v_size_flags(Control.SIZE_EXPAND_FILL)
 		column_scroll.set_h_size_flags(Control.SIZE_EXPAND_FILL)
 		var column = VBoxContainer.new()
