@@ -13,7 +13,10 @@ var stylebox_hp: StyleBoxFlat
 @onready var column_holder: HBoxContainer = %ColumnHolder
 @onready var column_add: Button = %AddColumn
 @onready var warning_sign: Button = %WarningSign
-@onready var warn_about_empty_deletion = %WarnAboutEmptyDeletion
+@onready var warn_about_empty_deletion: CheckBox = %WarnAboutEmptyDeletion
+@onready var confirm_not_empty: ConfirmationDialog = %ConfirmNotEmpty
+@onready var confirm_empty: ConfirmationDialog = %ConfirmEmpty
+@onready var task_destination: OptionButton = %TaskDestination
 
 
 func _ready():
@@ -131,9 +134,37 @@ func __on_add_stage(column: int) -> void:
 
 func __on_remove_stage(uuid: String) -> void:
 	if len(board_data.get_stage(uuid).tasks) == 0:
-		pass
+		if warn_about_empty_deletion.button_pressed:
+			if confirm_empty.confirmed.is_connected(__remove_stage):
+				confirm_empty.confirmed.disconnect(__remove_stage)
+			confirm_empty.confirmed.connect(__remove_stage.bind(uuid))
+			confirm_empty.popup_centered()
+		else:
+			__remove_stage(uuid)
 	else:
-		pass
+		__update_task_destination(uuid)
+		if confirm_not_empty.confirmed.is_connected(__remove_stage):
+			confirm_not_empty.confirmed.disconnect(__remove_stage)
+		confirm_not_empty.confirmed.connect(__remove_stage.bind(uuid))
+		confirm_not_empty.popup_centered()
+
+
+func __update_task_destination(uuid: String) -> void:
+	task_destination.clear()
+	for stage in board_data.get_stages():
+		if stage != uuid:
+			task_destination.add_item(board_data.get_stage(stage).title)
+			task_destination.set_item_metadata(-1, stage)
+
+
+func __remove_stage(uuid: String) -> void:
+	var old_tasks = board_data.get_stage(uuid).tasks
+	var new_tasks = board_data.get_stage(task_destination.get_selected_metadata()).tasks
+	for task in old_tasks.duplicate():
+		old_tasks.erase(task)
+		new_tasks.append(task)
+	board_data.get_stage(uuid).tasks = old_tasks
+	board_data.get_stage(task_destination.get_selected_metadata()).tasks = new_tasks
 
 	board_data.remove_stage(uuid)
 
