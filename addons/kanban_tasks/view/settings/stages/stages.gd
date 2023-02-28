@@ -158,13 +158,14 @@ func __update_task_destination(uuid: String) -> void:
 
 
 func __remove_stage(uuid: String) -> void:
-	var old_tasks = board_data.get_stage(uuid).tasks
-	var new_tasks = board_data.get_stage(task_destination.get_selected_metadata()).tasks
-	for task in old_tasks.duplicate():
-		old_tasks.erase(task)
-		new_tasks.append(task)
-	board_data.get_stage(uuid).tasks = old_tasks
-	board_data.get_stage(task_destination.get_selected_metadata()).tasks = new_tasks
+	if len(board_data.get_stage(uuid).tasks) > 0:
+		var old_tasks = board_data.get_stage(uuid).tasks
+		var new_tasks = board_data.get_stage(task_destination.get_selected_metadata()).tasks
+		for task in old_tasks.duplicate():
+			old_tasks.erase(task)
+			new_tasks.append(task)
+		board_data.get_stage(uuid).tasks = old_tasks
+		board_data.get_stage(task_destination.get_selected_metadata()).tasks = new_tasks
 
 	board_data.remove_stage(uuid)
 
