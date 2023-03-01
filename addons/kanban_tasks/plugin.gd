@@ -37,6 +37,6 @@ func _make_visible(visible):
 func _get_plugin_name():
 	return "Tasks"
 
-func _get_plugin_icon():
-	# Must return some kind of Texture for the icon.
-	return get_editor_interface().get_base_control().get_theme_icon("EditAddRemove", "EditorIcons")
+
+func _get_plugin_icon() -> Texture2D:
+	return preload("res://addons/kanban_tasks/icon.svg")
