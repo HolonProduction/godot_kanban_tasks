@@ -80,7 +80,7 @@ func _ready() -> void:
 	# Wait for the label to get its true size.
 	await get_tree().create_timer(0.0).timeout
 	# Keep the same size when changing the edit mode.
-	custom_minimum_size.y = max(__label.size.y, __edit.size.y)
+	custom_minimum_size.y = max(__label.size.y, __edit.size.y) * 1.1
 
 
 func _input(event: InputEvent) -> void:

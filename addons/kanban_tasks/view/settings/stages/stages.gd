@@ -122,7 +122,7 @@ func update():
 
 func __on_add_stage(column: int) -> void:
 	var data = __StageData.new("New Stage")
-	var uuid = board_data.add_stage(data)
+	var uuid = board_data.add_stage(data, true)
 
 	var columns = board_data.layout.columns
 	if column < len(board_data.layout.columns) and column >= 0:
@@ -167,7 +167,7 @@ func __remove_stage(uuid: String) -> void:
 		board_data.get_stage(uuid).tasks = old_tasks
 		board_data.get_stage(task_destination.get_selected_metadata()).tasks = new_tasks
 
-	board_data.remove_stage(uuid)
+	board_data.remove_stage(uuid, true)
 
 	var columns = board_data.layout.columns
 	for column in columns.duplicate():

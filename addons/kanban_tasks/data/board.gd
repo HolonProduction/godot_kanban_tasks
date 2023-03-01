@@ -11,7 +11,15 @@ const __Stage := preload("stage.gd")
 const __Task := preload("task.gd")
 const __KanbanResource := preload("kanban_resource.gd")
 
-var layout: __Layout
+signal changed()
+
+var layout: __Layout:
+	set(value):
+		if layout:
+			layout.changed.disconnect(__emit_changed)
+		layout = value
+		layout.changed.connect(__emit_changed)
+
 var __categories: Dictionary
 var __stages: Dictionary
 var __tasks: Dictionary
@@ -76,8 +84,11 @@ func load(path: String) -> void:
 
 
 ## Adds a category and returns the uuid which is associated with it.
-func add_category(category: __Category) -> String:
-	return __add_category(category)
+func add_category(category: __Category, silent: bool = false) -> String:
+	var res := __add_category(category)
+	if not silent:
+		changed.emit()
+	return res
 
 ## Returns the category associated with the given uuid or `null` if there is none.
 func get_category(uuid: String) -> __Category:
@@ -96,16 +107,22 @@ func get_categories() -> Array[String]:
 	return temp
 
 ## Removes a category by uuid.
-func remove_category(uuid: String) -> void:
+func remove_category(uuid: String, silent: bool = false) -> void:
 	if __categories.has(uuid):
+		__categories[uuid].changed.disconnect(__emit_changed)
 		__categories.erase(uuid)
+		if not silent:
+			changed.emit()
 	else:
 		push_warning("Trying to remove uuid wich is not associated with a category.")
 
 
 ## Adds a stage and returns the uuid which is associated with it.
-func add_stage(stage: __Stage) -> String:
-	return __add_stage(stage)
+func add_stage(stage: __Stage, silent: bool = false) -> String:
+	var res := __add_stage(stage)
+	if not silent:
+		changed.emit()
+	return res
 
 ## Returns the stage associated with the given uuid or `null` if there is none.
 func get_stage(uuid: String) -> __Stage:
@@ -124,16 +141,22 @@ func get_stages() -> Array[String]:
 	return temp
 
 ## Removes a stage by uuid.
-func remove_stage(uuid: String) -> void:
+func remove_stage(uuid: String, silent: bool = false) -> void:
 	if __stages.has(uuid):
+		__stages[uuid].changed.disconnect(__emit_changed)
 		__stages.erase(uuid)
+		if not silent:
+			changed.emit()
 	else:
 		push_warning("Trying to remove uuid wich is not associated with a stage.")
 
 
 ## Adds a task and returns the uuid which is associated with it.
-func add_task(task: __Task) -> String:
-	return __add_task(task)
+func add_task(task: __Task, silent: bool = false) -> String:
+	var res := __add_task(task)
+	if not silent:
+		changed.emit()
+	return res
 
 ## Returns the task associated with the given uuid or `null` if there is none.
 func get_task(uuid: String) -> __Task:
@@ -152,9 +175,12 @@ func get_tasks() -> Array[String]:
 	return temp
 
 ## Removes a task by uuid.
-func remove_task(uuid: String) -> void:
+func remove_task(uuid: String, silent: bool = false) -> void:
 	if __tasks.has(uuid):
+		__tasks[uuid].changed.disconnect(__emit_changed)
 		__tasks.erase(uuid)
+		if not silent:
+			changed.emit()
 	else:
 		push_warning("Trying to remove uuid wich is not associated with a task.")
 
@@ -163,6 +189,8 @@ func remove_task(uuid: String) -> void:
 # The uuid that is passed can be altered by the board if it is already used by
 # an other category. Therefore always use the returned uuid.
 func __add_category(category: __Category, uuid: String = "") -> String:
+	category.changed.connect(__emit_changed)
+
 	if __categories.has(uuid):
 		push_warning("The uuid " + uuid + ' is already used. A new one will be generated for the category "' + category.title + '".')
 
@@ -178,6 +206,8 @@ func __add_category(category: __Category, uuid: String = "") -> String:
 
 # Internal version of `add_stage` which can be provided with an uuid suggestion.
 func __add_stage(stage: __Stage, uuid: String = "") -> String:
+	stage.changed.connect(__emit_changed)
+
 	if __stages.has(uuid):
 		push_warning("The uuid " + uuid + ' is already used. A new one will be generated for the stage "' + stage.title + '".')
 
@@ -193,6 +223,8 @@ func __add_stage(stage: __Stage, uuid: String = "") -> String:
 
 # Internal version of `add_task` which can be provided with an uuid suggestion.
 func __add_task(task: __Task, uuid: String = "") -> String:
+	task.changed.connect(__emit_changed)
+
 	if __tasks.has(uuid):
 		push_warning("The uuid " + uuid + ' is already used. A new one will be generated for the task "' + task.title + '".')
 
@@ -227,3 +259,7 @@ func __propagate_uuid_dict(dict: Dictionary) -> Array:
 		json.merge(dict[key].to_json())
 		res.append(json)
 	return res
+
+
+func __emit_changed():
+	changed.emit()

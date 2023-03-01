@@ -11,6 +11,9 @@ var confirm := Shortcut.new()
 var undo := Shortcut.new()
 var redo := Shortcut.new()
 
+var save := Shortcut.new()
+var save_as := Shortcut.new()
+
 
 ## Returns whether a specific node should handle the shortcut.
 static func should_handle_shortcut(node: Node) -> bool:
@@ -93,3 +96,25 @@ func __setup_shortcuts() -> void:
 		ev_redo.ctrl_pressed = true
 		ev_redo.shift_pressed = true
 	redo.events.append(ev_redo)
+
+	# save
+	var ev_save := InputEventKey.new()
+	if OS.get_name() == "macOS":
+		ev_save.keycode = KEY_S
+		ev_save.meta_pressed = true
+	else:
+		ev_save.keycode = KEY_S
+		ev_save.ctrl_pressed = true
+	save.events.append(ev_save)
+
+	# save as
+	var ev_save_as := InputEventKey.new()
+	if OS.get_name() == "macOS":
+		ev_save_as.keycode = KEY_S
+		ev_save_as.meta_pressed = true
+		ev_save_as.shift_pressed = true
+	else:
+		ev_save_as.keycode = KEY_S
+		ev_save_as.ctrl_pressed = true
+		ev_save_as.shift_pressed = true
+	save_as.events.append(ev_save_as)

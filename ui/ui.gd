@@ -164,6 +164,7 @@ func _notification(what: int) -> void:
 				&"PanelForeground",
 				&"EditorStyles",
 			).duplicate()
+			stylebox_content_no_tabbar.set_content_margin_all(0)
 			stylebox_content_no_tabbar.set_border_width_all(0)
 
 			if is_instance_valid(gui_base):
