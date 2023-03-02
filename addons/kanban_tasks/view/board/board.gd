@@ -13,12 +13,14 @@ const __StageScene := preload("res://addons/kanban_tasks/view/stage/stage.tscn")
 const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
 const __SettingsScript := preload("res://addons/kanban_tasks/view/settings/settings.gd")
 
+signal show_documentation()
+
 var board_data: __BoardData
 
 @onready var search_bar: LineEdit = %SearchBar
 @onready var button_advanced_search: Button = %AdvancedSearch
-@onready var button_settings: Button = %Help
-@onready var button_help: Button = %Settings
+@onready var button_documentation: Button = %Documentation
+@onready var button_settings: Button = %Settings
 @onready var column_holder: HBoxContainer = %ColumnHolder
 @onready var settings: __SettingsScript = %SettingsView
 
@@ -41,6 +43,9 @@ func _ready():
 	ctx.settings.changed.connect(update)
 
 	ctx.filter_changed.connect(__on_filter_changed_external)
+
+	button_documentation.pressed.connect(func(): show_documentation.emit())
+	button_documentation.visible = Engine.is_editor_hint()
 
 	button_settings.pressed.connect(settings.popup_centered_ratio_no_fullscreen)
 
@@ -68,8 +73,8 @@ func _notification(what):
 				search_bar.right_icon = get_theme_icon(&"Search", &"EditorIcons")
 			if is_instance_valid(button_settings):
 				button_settings.icon = get_theme_icon(&"Tools", &"EditorIcons")
-			if is_instance_valid(button_help):
-				button_help.icon = get_theme_icon(&"Help", &"EditorIcons")
+			if is_instance_valid(button_documentation):
+				button_documentation.icon = get_theme_icon(&"Help", &"EditorIcons")
 			if is_instance_valid(button_advanced_search):
 				button_advanced_search.icon = get_theme_icon(&"FileList", &"EditorIcons")
 

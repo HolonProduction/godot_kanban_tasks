@@ -13,6 +13,7 @@ const __BoardView := preload("res://addons/kanban_tasks/view/board/board.tscn")
 const __BoardViewType := preload("res://addons/kanban_tasks/view/board/board.gd")
 const __StartView := preload("res://addons/kanban_tasks/view/start/start.tscn")
 const __StartViewType := preload("res://addons/kanban_tasks/view/start/start.gd")
+const __DocumentationView := preload("res://addons/kanban_tasks/view/documentation/documentation.tscn")
 
 const EDITOR_DATA_PATH: String = "res://addons/kanban_tasks/data.json"
 
@@ -21,7 +22,8 @@ enum {
 	ACTION_SAVE_AS,
 	ACTION_OPEN,
 	ACTION_CREATE,
-	ACTION_CLOSE
+	ACTION_CLOSE,
+	ACTION_DOCUMENTATION,
 }
 
 var main_panel_frame: MarginContainer
@@ -29,8 +31,10 @@ var start_view: __StartViewType
 var file_dialog_save: FileDialog
 var file_dialog_open: FileDialog
 var discard_changes_dialog: ConfirmationDialog
+var documentation_dialog: AcceptDialog
 
 var file_menu: PopupMenu
+var help_menu: PopupMenu
 
 var board_view: __BoardViewType
 var board_label: Label
@@ -60,6 +64,12 @@ func _enter_tree() -> void:
 	file_menu.id_pressed.connect(__action)
 	add_menu(file_menu)
 
+	help_menu = PopupMenu.new()
+	help_menu.name = "Help"
+	help_menu.add_item("Documentation", ACTION_DOCUMENTATION)
+	help_menu.id_pressed.connect(__action)
+	add_menu(help_menu)
+
 	file_dialog_save = FileDialog.new()
 	file_dialog_save.access = FileDialog.ACCESS_FILESYSTEM
 	file_dialog_save.file_mode = FileDialog.FILE_MODE_SAVE_FILE
@@ -81,6 +91,9 @@ func _enter_tree() -> void:
 	discard_changes_dialog.confirmed.connect(__close_board)
 	discard_changes_dialog.unresizable = true
 	get_editor_interface().get_base_control().add_child(discard_changes_dialog)
+
+	documentation_dialog = __DocumentationView.instantiate()
+	get_editor_interface().get_base_control().add_child(documentation_dialog)
 
 	main_panel_frame = MarginContainer.new()
 	main_panel_frame.add_theme_constant_override(&"margin_top", 5)
@@ -209,6 +222,8 @@ func __action(id: int) -> void:
 			__request_open()
 		ACTION_CLOSE:
 			__request_close()
+		ACTION_DOCUMENTATION:
+			documentation_dialog.popup_centered()
 
 
 func __request_close() -> void:
@@ -249,11 +264,7 @@ func __create_board() -> void:
 
 	data.changed.connect(__on_board_changed)
 
-	board_view = __BoardView.instantiate()
-	board_view.board_data = data
-
-	main_panel_frame.add_child(board_view)
-	start_view.hide()
+	__make_board_view_visible(data)
 
 	board_path = ""
 	board_changed = false
@@ -271,11 +282,7 @@ func __open_board(path: String) -> void:
 	data.load(path)
 	data.changed.connect(__on_board_changed)
 
-	board_view = __BoardView.instantiate()
-	board_view.board_data = data
-
-	main_panel_frame.add_child(board_view)
-	start_view.hide()
+	__make_board_view_visible(data)
 
 	board_path = path
 	board_changed = false
@@ -293,3 +300,12 @@ func __on_board_changed() -> void:
 	board_changed = true
 	if Engine.is_editor_hint():
 		__request_save()
+
+
+func __make_board_view_visible(data: __BoardData) -> void:
+	board_view = __BoardView.instantiate()
+	board_view.show_documentation.connect(__action.bind(ACTION_DOCUMENTATION))
+	board_view.board_data = data
+
+	main_panel_frame.add_child(board_view)
+	start_view.hide()
