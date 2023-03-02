@@ -48,10 +48,12 @@ func save(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	if not file:
 		push_error("Error " + str(FileAccess.get_open_error()) + " while opening file for saving board data at " + path)
+		file.close()
 		return
 
 	var string := JSON.stringify(to_json(), "\t", false)
 	file.store_string(string)
+	file.close()
 
 
 ## Initializes the board state from json data.
@@ -72,10 +74,12 @@ func load(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	if not file:
 		push_error("Error " + str(FileAccess.get_open_error()) + " while opening file for loading board data at " + path)
+		file.close()
 		return
 
 	var json = JSON.new()
 	var err = json.parse(file.get_as_text())
+	file.close()
 	if err != OK:
 		push_error("Error " + str(err) + " while parsing board at " + path + " to json. At line " + str(json.get_error_line()) + " the following problem occured:\n" + json.get_error_message())
 		return

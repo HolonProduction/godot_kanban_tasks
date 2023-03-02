@@ -2,6 +2,8 @@
 extends VBoxContainer
 
 
+const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
+const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
 const __BoardData = preload("res://addons/kanban_tasks/data/board.gd")
 const __StageData = preload("res://addons/kanban_tasks/data/stage.gd")
 
@@ -33,6 +35,12 @@ func _ready():
 	center_container.add_child(plus)
 
 	notification(NOTIFICATION_THEME_CHANGED)
+
+	await get_tree().create_timer(0.0).timeout
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	ctx.settings.changed.connect(__settings_changed)
+
+	warn_about_empty_deletion.toggled.connect(__apply_settings_changes)
 
 
 func _notification(what) -> void:
@@ -178,3 +186,14 @@ func __remove_stage(uuid: String) -> void:
 
 	board_data.layout.columns = columns
 
+
+func __settings_changed():
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	warn_about_empty_deletion.button_pressed = ctx.settings.warn_about_empty_deletion
+
+
+func __apply_settings_changes(warn: bool):
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	ctx.settings.changed.disconnect(__settings_changed)
+	ctx.settings.warn_about_empty_deletion = warn
+	ctx.settings.changed.connect(__settings_changed)

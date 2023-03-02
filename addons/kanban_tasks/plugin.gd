@@ -4,6 +4,8 @@ extends "res://addons/kanban_tasks/standalone_plugin.gd"
 
 const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
 const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
+const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
+const __Settings := preload("res://addons/kanban_tasks/data/settings.gd")
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 const __LayoutData := preload("res://addons/kanban_tasks/data/layout.gd")
 const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
@@ -16,6 +18,7 @@ const __StartViewType := preload("res://addons/kanban_tasks/view/start/start.gd"
 const __DocumentationView := preload("res://addons/kanban_tasks/view/documentation/documentation.tscn")
 
 const EDITOR_DATA_PATH: String = "res://addons/kanban_tasks/data.json"
+const SETTINGS_KEY: String = "kanban_tasks/general/settings"
 
 enum {
 	ACTION_SAVE,
@@ -119,6 +122,7 @@ func _enter_tree() -> void:
 
 	await get_tree().create_timer(0.0).timeout
 	__update_menus()
+	__load_settings()
 
 
 func _exit_tree() -> void:
@@ -309,3 +313,47 @@ func __make_board_view_visible(data: __BoardData) -> void:
 
 	main_panel_frame.add_child(board_view)
 	start_view.hide()
+
+
+func __save_settings() -> void:
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	var data := JSON.stringify(ctx.settings.to_json())
+	if Engine.is_editor_hint():
+		get_editor_interface().get_editor_settings().set_setting(
+			SETTINGS_KEY,
+			data,
+		)
+	else:
+		ProjectSettings.set_setting(
+			SETTINGS_KEY,
+			data,
+		)
+		save_project_settings()
+
+
+func __load_settings() -> void:
+	var data: String = "{}"
+	if Engine.is_editor_hint():
+		var editor_settings = get_editor_interface().get_editor_settings()
+		if editor_settings.has_setting(SETTINGS_KEY):
+			data = editor_settings.get_setting(SETTINGS_KEY)
+	else:
+		if ProjectSettings.has_setting(SETTINGS_KEY):
+			data = ProjectSettings.get_setting(SETTINGS_KEY)
+
+	var json = JSON.new()
+	var err = json.parse(data)
+	if err != OK:
+		push_error(
+			"Error "
+			+ str(err)
+			+ " while parsing settings. At line "
+			+ str(json.get_error_line())
+			+ " the following problem occured:\n"
+			+ json.get_error_message()
+		)
+		return
+
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	ctx.settings.from_json(json.data)
+	ctx.settings.changed.connect(__save_settings)
