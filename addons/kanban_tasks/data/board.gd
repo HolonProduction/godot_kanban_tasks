@@ -80,7 +80,10 @@ func load(path: String) -> void:
 		push_error("Error " + str(err) + " while parsing board at " + path + " to json. At line " + str(json.get_error_line()) + " the following problem occured:\n" + json.get_error_message())
 		return
 
-	from_json(json.data)
+	if json.data.has("columns"):
+		__from_legacy_file(json.data)
+	else:
+		from_json(json.data)
 
 
 ## Adds a category and returns the uuid which is associated with it.
@@ -263,3 +266,41 @@ func __propagate_uuid_dict(dict: Dictionary) -> Array:
 
 func __emit_changed():
 	changed.emit()
+
+
+# TODO: Remove this sometime in the future.
+## Loads a board from the old file format.
+func __from_legacy_file(data: Dictionary) -> void:
+	var categories: Array[String] = []
+	var tasks: Array[String] = []
+	var stages: Array[String] = []
+
+	for c in data["categories"]:
+		categories.append(
+			__add_category(__Category.new(c["title"], c["color"])),
+		)
+
+	for t in data["tasks"]:
+		tasks.append(
+			__add_task(
+				__Task.new(t["title"], t["details"], categories[t["category"]]),
+			),
+		)
+
+	for s in data["stages"]:
+		var contained_tasks: Array[String] = []
+		for t in s["tasks"]:
+			contained_tasks.append(tasks[t])
+		stages.append(
+			__add_stage(
+				__Stage.new(s["title"], contained_tasks),
+			),
+		)
+
+	var columns: Array[PackedStringArray] = []
+	for c in data["columns"]:
+		var column = PackedStringArray([])
+		for s in c["stages"]:
+			column.append(stages[s])
+		columns.append(column)
+	layout = __Layout.new(columns)
