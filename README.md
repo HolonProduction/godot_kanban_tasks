@@ -1,42 +1,37 @@
-# Kanban Tasks - Todo Manager
-Kanban Tasks - Todo Manager is a kanban board addon for the [godot engine](https://godotengine.org).
+# :pencil2: Kanban Tasks - Todo Manager
+[![itch.io](https://img.shields.io/static/v1?label=Itch&message=standalone&color=grey&logo=itch.io&logoColor=white&labelColor=fa5c5c)](https://holonproduction.itch.io/kanban-tasks)
+[![Godot 4.x](https://img.shields.io/static/v1?label=Godot&message=4.x&color=grey&logo=godotengine&logoColor=white&labelColor=478cbf)](https://godotengine.org/asset-library/asset/1474)
+[![Godot 3.x](https://img.shields.io/static/v1?label=Godot&message=3.x&color=grey&logo=godotengine&logoColor=white&labelColor=478cbf)](https://godotengine.org/asset-library/asset/1245)
 
->The `master` branch is unstable. Use `3.x` for the current stable version.
-## Features
-- Renamable stages
-- Tasks with detailed description and titles
-- Search in tasks and task details
-- Intuitive drag and drop usage utilising the godot build in drag and drop
-- Support for shortcuts \*
-- Categories
-- Different stage layouts with multiple stages per column
-- Supports all editor themes including light ones
+Kanban Tasks - Todo Manager is a minimalistic kanban board application aimed at solo developers. It is available as addon for the [Godot Engine](https://godotengine.org) or as standalone application.
 
-\* uses godot defaults because the custom shortcuts cannot be accessed
+---
 
-## Where is the data stored?
-The data is stored inside of the addon folder (`res://addons/kanban_tasks/data.json`).
-You can have a look at the `examples` folder for some example data configurations.
+## :seedling: Setup
+The editor plugin can be installed from the godot asset lib. After doing so add the plugin folder `res://addons/kanban_tasks` to your build exceptions to prevent it from getting bundled with your game.
 
-## I found a bug. What should I do?
-Feel free to report bugs or feature requests on the [github](https://github.com/HolonProduction/godot_kanban_tasks) page.
+---
+## :rocket: Features
+- Tasks with detailed description and title
+- Intuitive drag and drop usage
+- Customizable stage layout
+- Shortcuts for common actions
+- Categories to organize your tasks
+- Integrates well with all Godot editor themes including light ones
 
-## Motivation
-When managing single projects using an external app like trello is to much. Also I like to keep the todos attached to the project.  
-I found other kanban addons to not integrate well into the default editor look and feel of godot. So it was my focus to adapt the look and feel of godot. (Or what I believe the look and feel to be.)
+---
+## :question: Q & A
 
-### Why this long name?
+### :anger: Now that there is a standalone version will the editor plugin be discontinued?
+No. Both versions are using the same codebase therefore new features and changes are only implemented once.
+### :floppy_disk: Were is the data stored?
+When using the editor plugin your board data can be found under `res://addons/kanban_tasks/data.json`. You may want to backup it from time to time. Settings that are not related to a specific board are stored in the editor settings.
+### :speech_balloon: Why this long name?
 I wanted the plugin to be findable with the keywords `kanban`, `todo` and `tasks`. So this is what I came up with.
-
-## Should I look at the code?
-No you should not! It does not correspond to the styling guides and is very chaotic. I postponed refactoring to Godot 4.0.
-
-## Under which license is this?
-The plugin is under the MIT license.  
-
-You should put the plugin in your build exceptions to prevent exporting it it. (Don't know if this is necessary).
-
-## Can I get some screenshots please?
-![screenshot](https://raw.githubusercontent.com/HolonProduction/godot_kanban_tasks/master/images/screenshot1.png)
-![screenshot](https://raw.githubusercontent.com/HolonProduction/godot_kanban_tasks/master/images/screenshot2.png)
-![screenshot](https://raw.githubusercontent.com/HolonProduction/godot_kanban_tasks/master/images/screenshot3.png)
+### :camera: Can I get some screenshots please?
+|     |     |
+|:---:|:---:|
+| ![screenshot](./images/editor1.png) | ![screenshot](./images/standalone1.png) |
+| ![screenshot](./images/standalone2.png) | ![screenshot](./images/editor2.png) |
+| ![screenshot](./images/editor3.png) | ![screenshot](./images/standalone3.png) |
+| ![screenshot](./images/standalone4.png) | ![screenshot](./images/editor4.png) |
