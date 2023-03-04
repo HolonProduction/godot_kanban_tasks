@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dapkpnkm8sow8" path="res://addons/kanban_tasks/view/settings/stages/stages.tscn" id="4_okolg"]
 
 [node name="Settings" type="AcceptDialog"]
+title = "Settings"
 size = Vector2i(616, 357)
 visible = true
 theme_type_variation = &"EditorSettingsDialog"
@@ -18,8 +19,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 608.0
-offset_bottom = 308.0
+offset_right = -8.0
+offset_bottom = -49.0
 grow_horizontal = 2
 grow_vertical = 2
 

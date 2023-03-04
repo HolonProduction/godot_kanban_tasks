@@ -128,14 +128,26 @@ func _enter_tree() -> void:
 
 
 func _exit_tree() -> void:
-	if is_instance_valid(file_dialog_save):
-		file_dialog_save.queue_free()
-	if is_instance_valid(file_dialog_open):
-		file_dialog_open.queue_free()
+	if not Engine.is_editor_hint():
+		remove_control_from_container(CONTAINER_TOOLBAR, board_label)
+	board_label.queue_free()
+
+	remove_menu(file_menu)
+	file_menu.queue_free()
+
+	remove_menu(help_menu)
+	file_menu.queue_free()
+
+	file_dialog_save.queue_free()
+	file_dialog_open.queue_free()
+	discard_changes_dialog.queue_free()
+	documentation_dialog.queue_free()
+
+	main_panel_frame.queue_free()
+	start_view.queue_free()
+
 	if is_instance_valid(board_view):
 		board_view.queue_free()
-	if is_instance_valid(main_panel_frame):
-		main_panel_frame.queue_free()
 
 
 func _shortcut_input(event: InputEvent) -> void:
