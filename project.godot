@@ -18,6 +18,7 @@ config/custom_user_dir_name="kanban_tasks_todo_manager"
 config/features=PackedStringArray("4.0")
 run/low_processor_mode=true
 config/icon="res://icon.svg"
+config/auto_accept_quit=false
 
 [display]
 

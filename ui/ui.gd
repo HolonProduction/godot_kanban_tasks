@@ -211,7 +211,6 @@ func _notification(what: int) -> void:
 			__save_docks()
 			for i in plugin_holder.get_child_count():
 				await plugin_holder.get_child(i)._save_external_data()
-			get_tree().quit()
 
 
 func add_bottom_panel_item(item: Control, text: String) -> Button:

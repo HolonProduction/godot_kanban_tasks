@@ -27,6 +27,7 @@ enum {
 	ACTION_CREATE,
 	ACTION_CLOSE,
 	ACTION_DOCUMENTATION,
+	ACTION_QUIT,
 }
 
 var main_panel_frame: MarginContainer
@@ -64,6 +65,8 @@ func _enter_tree() -> void:
 	file_menu.add_item("Close board", ACTION_CLOSE)
 	file_menu.add_item("Open board...", ACTION_OPEN)
 	file_menu.add_item("Create board", ACTION_CREATE)
+	file_menu.add_separator()
+	file_menu.add_item("Quit", ACTION_QUIT)
 	file_menu.id_pressed.connect(__action)
 	add_menu(file_menu)
 
@@ -91,7 +94,6 @@ func _enter_tree() -> void:
 
 	discard_changes_dialog = ConfirmationDialog.new()
 	discard_changes_dialog.dialog_text = "All unsaved changes will be discarded."
-	discard_changes_dialog.confirmed.connect(__close_board)
 	discard_changes_dialog.unresizable = true
 	get_editor_interface().get_base_control().add_child(discard_changes_dialog)
 
@@ -164,6 +166,16 @@ func _get_plugin_icon() -> Texture2D:
 	return preload("res://addons/kanban_tasks/icon.svg")
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_WM_CLOSE_REQUEST:
+			if not Engine.is_editor_hint():
+				if not board_changed:
+					get_tree().quit()
+				else:
+					__request_discard_changes(get_tree().quit)
+
+
 func __update_menus() -> void:
 	if not is_instance_valid(file_menu):
 		return
@@ -190,14 +202,6 @@ func __update_menus() -> void:
 		file_menu.get_item_index(ACTION_CLOSE),
 		not is_instance_valid(board_view),
 	)
-	file_menu.set_item_disabled(
-		file_menu.get_item_index(ACTION_OPEN),
-		is_instance_valid(board_view),
-	)
-	file_menu.set_item_disabled(
-		file_menu.get_item_index(ACTION_CREATE),
-		is_instance_valid(board_view),
-	)
 
 
 func __update_board_label() -> void:
@@ -221,24 +225,31 @@ func __action(id: int) -> void:
 		ACTION_SAVE_AS:
 			__request_save(true)
 		ACTION_CREATE:
-			__create_board()
+			if not board_changed:
+				__create_board()
+			else:
+				__request_discard_changes(__create_board)
 		ACTION_OPEN:
-			__request_open()
+			if not board_changed:
+				file_dialog_open.popup_centered()
+			else:
+				__request_discard_changes(file_dialog_open.popup_centered)
 		ACTION_CLOSE:
-			__request_close()
+			if not board_changed:
+				__close_board()
+			else:
+				__request_discard_changes(__close_board)
 		ACTION_DOCUMENTATION:
 			documentation_dialog.popup_centered()
+		ACTION_QUIT:
+			get_tree().get_root().propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 
 
-func __request_close() -> void:
-	if not board_changed:
-		__close_board()
-	else:
-		discard_changes_dialog.popup_centered()
-
-
-func __request_open() -> void:
-	file_dialog_open.popup_centered()
+func __request_discard_changes(callback: Callable) -> void:
+	for connection in discard_changes_dialog.confirmed.get_connections():
+		discard_changes_dialog.confirmed.disconnect(connection["callable"])
+	discard_changes_dialog.confirmed.connect(callback)
+	discard_changes_dialog.popup_centered()
 
 
 func __request_save(force_new_location: bool = false) -> void:
@@ -307,6 +318,8 @@ func __on_board_changed() -> void:
 
 
 func __make_board_view_visible(data: __BoardData) -> void:
+	if is_instance_valid(board_view):
+		board_view.queue_free()
 	board_view = __BoardView.instantiate()
 	board_view.show_documentation.connect(__action.bind(ACTION_DOCUMENTATION))
 	board_view.board_data = data
