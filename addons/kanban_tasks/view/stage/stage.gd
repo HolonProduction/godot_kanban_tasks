@@ -46,8 +46,9 @@ func _ready() -> void:
 	notification(NOTIFICATION_THEME_CHANGED)
 
 	await get_tree().create_timer(0.0).timeout
-	if __Singletons.instance_of(__EditContext, self).focus == data_uuid:
-		__Singletons.instance_of(__EditContext, self).focus = ""
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	if ctx.focus == data_uuid:
+		ctx.focus = ""
 		grab_focus()
 
 
@@ -109,8 +110,8 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var index := __target_index_from_position(at_position)
 	preview.hide()
 
-	var undo_redo: UndoRedo = __Singletons.instance_of(__EditContext, self).undo_redo
-	undo_redo.create_action("Move task")
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	ctx.undo_redo.create_action("Move task")
 
 	var tasks := board_data.get_stage(data["stage"]).tasks
 
@@ -125,17 +126,17 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	else:
 		tasks.erase(data["task"])
 
-		undo_redo.add_do_property(board_data.get_stage(data["stage"]), &"tasks", tasks.duplicate())
-		undo_redo.add_undo_property(board_data.get_stage(data["stage"]), &"tasks", board_data.get_stage(data["stage"]).tasks)
+		ctx.undo_redo.add_do_property(board_data.get_stage(data["stage"]), &"tasks", tasks.duplicate())
+		ctx.undo_redo.add_undo_property(board_data.get_stage(data["stage"]), &"tasks", board_data.get_stage(data["stage"]).tasks)
 
 		tasks = board_data.get_stage(data_uuid).tasks
 		tasks.insert(index, data["task"])
 
-	__Singletons.instance_of(__EditContext, self).focus = data["task"]
+	ctx.focus = data["task"]
 
-	undo_redo.add_do_property(board_data.get_stage(data_uuid), &"tasks", tasks)
-	undo_redo.add_undo_property(board_data.get_stage(data_uuid), &"tasks", board_data.get_stage(data_uuid).tasks)
-	undo_redo.commit_action()
+	ctx.undo_redo.add_do_property(board_data.get_stage(data_uuid), &"tasks", tasks)
+	ctx.undo_redo.add_undo_property(board_data.get_stage(data_uuid), &"tasks", board_data.get_stage(data_uuid).tasks)
+	ctx.undo_redo.commit_action()
 
 
 func _drop_data_fw(at_position: Vector2, data: Variant, from: Control) -> void:

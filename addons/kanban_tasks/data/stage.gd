@@ -9,7 +9,6 @@ var title: String:
 		title = value
 		changed.emit()
 
-
 var tasks: Array[String] = []:
 	get:
 		# Pass by value to avoid appending without emitting `changed`.

@@ -54,15 +54,16 @@ func _shortcut_input(event: InputEvent) -> void:
 	if not __Shortcuts.should_handle_shortcut(self):
 		return
 	var shortcuts: __Shortcuts = __Singletons.instance_of(__Shortcuts, self)
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	if not event.is_echo() and event.is_pressed():
 		if shortcuts.search.matches_event(event):
 			search_bar.grab_focus()
 			get_viewport().set_input_as_handled()
 		elif shortcuts.undo.matches_event(event):
-			__Singletons.instance_of(__EditContext, self).undo_redo.undo()
+			ctx.undo_redo.undo()
 			get_viewport().set_input_as_handled()
 		elif shortcuts.redo.matches_event(event):
-			__Singletons.instance_of(__EditContext, self).undo_redo.redo()
+			ctx.undo_redo.redo()
 			get_viewport().set_input_as_handled()
 
 
