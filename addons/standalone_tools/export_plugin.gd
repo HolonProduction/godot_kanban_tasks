@@ -31,7 +31,7 @@ func _export_file(path: String, type: String, features: PackedStringArray) -> vo
 
 ## Ensures, that this file is included in the export.
 ## This uses add_file internaly. Influence on size for files that would already
-## be exported is yet to test.
+## be exported is yet to be tested.
 func include_file(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	add_file(path, file.get_buffer(file.get_length()), false)

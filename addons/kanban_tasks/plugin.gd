@@ -110,7 +110,7 @@ func _enter_tree() -> void:
 
 	start_view = __StartView.instantiate()
 	start_view.create_board.connect(__action.bind(ACTION_CREATE))
-	start_view.open_board.connect(__action.bind(ACTION_OPEN))
+	start_view.open_board.connect(__on_start_view_open_board)
 	main_panel_frame.add_child(start_view)
 
 	_make_visible(false)
@@ -299,6 +299,7 @@ func __create_board() -> void:
 
 func __save_board(path: String) -> void:
 	if is_instance_valid(board_view):
+		__add_to_recent_files(path)
 		board_path = path
 		board_view.board_data.save(path)
 		board_changed = false
@@ -310,6 +311,7 @@ func __open_board(path: String) -> void:
 	data.changed.connect(__on_board_changed)
 
 	__make_board_view_visible(data)
+	__add_to_recent_files(path)
 
 	board_path = path
 	board_changed = false
@@ -323,10 +325,34 @@ func __close_board() -> void:
 	start_view.show()
 
 
+func __add_to_recent_files(path: String) -> void:
+	if Engine.is_editor_hint():
+		return
+
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	var files = ctx.settings.recent_files
+
+	if path in files:
+		files.remove_at(files.find(path))
+		files.insert(0, path)
+	else:
+		files.insert(0, path)
+		files.resize(ctx.settings.recent_file_count)
+
+	ctx.settings.recent_files = files
+
+
 func __on_board_changed() -> void:
 	board_changed = true
 	if Engine.is_editor_hint():
 		__request_save()
+
+
+func __on_start_view_open_board(path: String):
+	if path.is_empty():
+		__action(ACTION_OPEN)
+	else:
+		__open_board(path)
 
 
 func __make_board_view_visible(data: __BoardData) -> void:
