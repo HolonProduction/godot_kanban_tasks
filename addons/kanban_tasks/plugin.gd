@@ -115,6 +115,7 @@ func _enter_tree() -> void:
 
 	_make_visible(false)
 
+	await get_tree().create_timer(0.0).timeout
 	if Engine.is_editor_hint():
 		if FileAccess.file_exists(EDITOR_DATA_PATH):
 			__open_board(EDITOR_DATA_PATH)
@@ -122,7 +123,6 @@ func _enter_tree() -> void:
 			__create_board()
 			__save_board(EDITOR_DATA_PATH)
 
-	await get_tree().create_timer(0.0).timeout
 	__update_menus()
 	__load_settings()
 
