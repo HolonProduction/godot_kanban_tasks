@@ -41,3 +41,10 @@ layout_mode = 2
 focus_mode = 0
 button_pressed = true
 text = "Show description preview."
+
+[node name="EditStepDetailsExclusively" type="CheckBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+text = "Edit step details in fullscreen."

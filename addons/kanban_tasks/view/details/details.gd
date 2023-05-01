@@ -5,6 +5,8 @@ extends AcceptDialog
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 const __StepData := preload("res://addons/kanban_tasks/data/step.gd")
 const __StepEntry := preload("res://addons/kanban_tasks/view/details/step_entry.gd")
+const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
+const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
 
 var board_data: __BoardData
 var data_uuid: String
@@ -69,7 +71,10 @@ func update() -> void:
 		entry.step_data = step
 		step_holder.add_child(entry)
 
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+
 	step_details.visible  = is_instance_valid(__step_data)
+	description_edit.visible = not (ctx.settings.edit_step_details_exclusively and is_instance_valid(__step_data))
 	if is_instance_valid(__step_data):
 		if step_edit.text_changed.is_connected(__on_step_details_changed):
 			step_edit.text_changed.disconnect(__on_step_details_changed)
