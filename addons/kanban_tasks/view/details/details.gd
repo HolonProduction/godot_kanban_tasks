@@ -42,7 +42,8 @@ func _notification(what: int) -> void:
 func update() -> void:
 	if description_edit.text_changed.is_connected(__on_description_changed):
 		description_edit.text_changed.disconnect(__on_description_changed)
-	description_edit.text = board_data.get_task(data_uuid).description
+	if description_edit.text != board_data.get_task(data_uuid).description:
+		description_edit.text = board_data.get_task(data_uuid).description
 	description_edit.text_changed.connect(__on_description_changed)
 
 	title = "Task Details: " + board_data.get_task(data_uuid).title
@@ -91,6 +92,35 @@ func edit_step_details(step: __StepData) -> void:
 	step_edit.set_caret_line(step_edit.get_line_count())
 	step_edit.set_caret_column(len(step_edit.get_line(step_edit.get_line_count() - 1)))
 	step_edit.grab_focus.call_deferred()
+
+
+func move_step_up(step: __StepData) -> void:
+	var steps = board_data.get_task(data_uuid).steps
+	if step in steps and steps[0] != step:
+		var index = steps.find(step)
+		steps.erase(step)
+		steps.insert(index - 1, step)
+		board_data.get_task(data_uuid).steps = steps
+		update()
+
+
+func move_step_down(step: __StepData) -> void:
+	var steps = board_data.get_task(data_uuid).steps
+	if step in steps and steps[-1] != step:
+		var index = steps.find(step)
+		steps.erase(step)
+		steps.insert(index + 1, step)
+		board_data.get_task(data_uuid).steps = steps
+		update()
+
+
+func delete_step(step: __StepData) -> void:
+	close_step_details(step)
+	var steps = board_data.get_task(data_uuid).steps
+	if step in steps:
+		steps.erase(step)
+		board_data.get_task(data_uuid).steps = steps
+		update()
 
 
 func close_step_details(step: __StepData) -> void:
