@@ -4,9 +4,9 @@ extends "kanban_resource.gd"
 ## Data of a step.
 
 
-var title: String:
+var details: String:
 	set(value):
-		title = value
+		details = value
 		changed.emit()
 
 var done: bool:
@@ -15,24 +15,24 @@ var done: bool:
 		changed.emit()
 
 
-func _init(p_title: String = "", p_done: bool = true) -> void:
-	title = p_title
+func _init(p_details: String = "", p_done: bool = false) -> void:
+	details = p_details
 	done = p_done
 	super._init()
 
 
 func to_json() -> Dictionary:
 	return {
-		"title": title,
+		"details": details,
 		"done": done,
 	}
 
 
 func from_json(json: Dictionary) -> void:
-	if json.has("title"):
-		title = json["title"]
+	if json.has("details"):
+		details = json["details"]
 	else:
-		push_warning("Loading incomplete json data which is missing a title.")
+		push_warning("Loading incomplete json data which is missing details.")
 
 	if json.has("done"):
 		done = json["done"]

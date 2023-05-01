@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwi22eyrmeeet"]
+[gd_scene load_steps=3 format=3 uid="uid://bwi22eyrmeeet"]
 
 [ext_resource type="Script" path="res://addons/kanban_tasks/view/details/details.gd" id="1_gh7s6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whfpw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 5.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
 
 [node name="Details" type="AcceptDialog"]
 title = "Task Details"
@@ -24,18 +36,66 @@ grow_vertical = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Description" type="TextEdit" parent="VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
+[node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Description" type="TextEdit" parent="VBoxContainer/HSplitContainer/VSplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_vertical = 3
 wrap_mode = 1
 
-[node name="ItemList" type="ItemList" parent="VBoxContainer/HBoxContainer"]
+[node name="StepDetails" type="VBoxContainer" parent="VBoxContainer/HSplitContainer/VSplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HSplitContainer/VSplitContainer/StepDetails"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HSplitContainer/VSplitContainer/StepDetails/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Step Details:"
+
+[node name="CloseStepDetails" type="Button" parent="VBoxContainer/HSplitContainer/VSplitContainer/StepDetails/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Close"
+flat = true
+
+[node name="StepEdit" type="TextEdit" parent="VBoxContainer/HSplitContainer/VSplitContainer/StepDetails"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+wrap_mode = 1
+
+[node name="StepList" type="VBoxContainer" parent="VBoxContainer/HSplitContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+
+[node name="CreateStepEdit" type="LineEdit" parent="VBoxContainer/HSplitContainer/StepList"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Create Step"
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HSplitContainer/StepList"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_whfpw")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HSplitContainer/StepList/PanelContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="StepHolder" type="VBoxContainer" parent="VBoxContainer/HSplitContainer/StepList/PanelContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3

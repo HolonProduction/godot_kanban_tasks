@@ -4,6 +4,10 @@
 export_presets.cfg
 
 # Project specific ignores
+addons/
+!addons/kanban_tasks/
+!addons/standalone_plugin/
+
 export/
 generated/
 addons/kanban_tasks/data.json
