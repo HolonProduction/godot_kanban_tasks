@@ -192,14 +192,17 @@ func __action(action):
 
 	match(action):
 		ACTIONS.DELETE:
+			var task = board_data.get_task(data_uuid)
 			for uuid in board_data.get_stages():
 				var tasks := board_data.get_stage(uuid).tasks
 				if data_uuid in tasks:
 					tasks.erase(data_uuid)
-
 					undo_redo.create_action("Delete task")
 					undo_redo.add_do_property(board_data.get_stage(uuid), &"tasks", tasks)
+					undo_redo.add_do_method(board_data.remove_task.bind(data_uuid, true))
+					undo_redo.add_undo_method(board_data.__add_task.bind(task, data_uuid))
 					undo_redo.add_undo_property(board_data.get_stage(uuid), &"tasks", board_data.get_stage(uuid).tasks)
+					undo_redo.add_undo_reference(task)
 					undo_redo.commit_action()
 					break
 
