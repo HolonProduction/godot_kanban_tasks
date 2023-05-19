@@ -131,6 +131,7 @@ func update() -> void:
 		board_data.get_category(board_data.get_task(data_uuid).category).color
 
 	description_label.text = board_data.get_task(data_uuid).description
+	description_label.max_lines_visible = ctx.settings.max_displayed_lines_in_description
 	description_label.visible = ctx.settings.show_description_preview and description_label.text.strip_edges().length() != 0
 
 	if title_label.text_changed.is_connected(__set_title):
