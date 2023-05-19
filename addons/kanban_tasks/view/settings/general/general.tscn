@@ -30,21 +30,43 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7cqkc")
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/ScrollContainer"]
+[node name="VBoxContainer" type="GridContainer" parent="PanelContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+columns = 2
+
+[node name="ShowDescriptionPreviewLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Show description preview"
 
 [node name="ShowDescriptionPreview" type="CheckBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 0
-button_pressed = true
-text = "Show description preview."
+text = "On"
+
+[node name="EditStepDetailsExclusivelyLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Edit step details in fullscreen"
 
 [node name="EditStepDetailsExclusively" type="CheckBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 0
-button_pressed = true
-text = "Edit step details in fullscreen."
+text = "On"
+
+[node name="MaxDisplayedLinesInDescriptionLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Maximum displayed lines in description"
+
+[node name="MaxDisplayedLinesInDescription" type="SpinBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+allow_greater = true
