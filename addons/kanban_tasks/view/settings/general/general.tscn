@@ -71,4 +71,6 @@ text = "Maximum displayed lines in description"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-value = 4.0
+value = 6.0
+allow_greater = true
+update_on_text_changed = true
