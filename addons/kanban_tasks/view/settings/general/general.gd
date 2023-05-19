@@ -10,7 +10,6 @@ var data: __SettingData = null
 
 @onready var show_description_preview: CheckBox = %ShowDescriptionPreview
 @onready var edit_step_details_exclusively: CheckBox = %EditStepDetailsExclusively
-@onready var max_displayed_lines_in_description: SpinBox = %MaxDisplayedLinesInDescription
 
 
 func _ready() -> void:
