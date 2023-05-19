@@ -36,11 +36,12 @@ func _ready():
 
 	notification(NOTIFICATION_THEME_CHANGED)
 
-	await get_tree().create_timer(0.0).timeout
+	warn_about_empty_deletion.toggled.connect(__apply_settings_changes)
+
+
+func _enter_tree() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	ctx.settings.changed.connect(__settings_changed)
-
-	warn_about_empty_deletion.toggled.connect(__apply_settings_changes)
 
 
 func _notification(what) -> void:
@@ -188,8 +189,9 @@ func __remove_stage(uuid: String) -> void:
 
 
 func __settings_changed():
-	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
-	warn_about_empty_deletion.button_pressed = ctx.settings.warn_about_empty_deletion
+	if is_inside_tree():
+		var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+		warn_about_empty_deletion.button_pressed = ctx.settings.warn_about_empty_deletion
 
 
 func __apply_settings_changes(warn: bool):

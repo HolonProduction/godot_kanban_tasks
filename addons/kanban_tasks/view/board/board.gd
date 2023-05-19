@@ -15,7 +15,13 @@ const __SettingsScript := preload("res://addons/kanban_tasks/view/settings/setti
 
 signal show_documentation()
 
-var board_data: __BoardData
+var board_data: __BoardData:
+	set(value):
+		if board_data != null:
+			board_data.layout.changed.disconnect(update)
+		board_data = value
+		if board_data != null:
+			board_data.layout.changed.connect(update)
 
 @onready var search_bar: LineEdit = %SearchBar
 @onready var button_advanced_search: Button = %AdvancedSearch
@@ -27,7 +33,6 @@ var board_data: __BoardData
 
 func _ready():
 	update()
-	board_data.layout.changed.connect(update)
 
 	settings.board_data = board_data
 
@@ -37,17 +42,18 @@ func _ready():
 
 	notification(NOTIFICATION_THEME_CHANGED)
 
-	await get_tree().create_timer(0.0).timeout
+	button_documentation.pressed.connect(func(): show_documentation.emit())
+	button_documentation.visible = Engine.is_editor_hint()
+
+	button_settings.pressed.connect(settings.popup_centered_ratio_no_fullscreen)
+
+
+func _enter_tree():
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 
 	ctx.settings.changed.connect(update)
 
 	ctx.filter_changed.connect(__on_filter_changed_external)
-
-	button_documentation.pressed.connect(func(): show_documentation.emit())
-	button_documentation.visible = Engine.is_editor_hint()
-
-	button_settings.pressed.connect(settings.popup_centered_ratio_no_fullscreen)
 
 
 func _shortcut_input(event: InputEvent) -> void:
@@ -84,23 +90,24 @@ func update() -> void:
 	for column in column_holder.get_children():
 		column.queue_free()
 
-	for column_data in board_data.layout.columns:
-		var column_scroll = ScrollContainer.new()
-		column_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-		column_scroll.set_v_size_flags(Control.SIZE_EXPAND_FILL)
-		column_scroll.set_h_size_flags(Control.SIZE_EXPAND_FILL)
-		var column = VBoxContainer.new()
-		column.set_v_size_flags(Control.SIZE_EXPAND_FILL)
-		column.set_h_size_flags(Control.SIZE_EXPAND_FILL)
+	if board_data != null:
+		for column_data in board_data.layout.columns:
+			var column_scroll = ScrollContainer.new()
+			column_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+			column_scroll.set_v_size_flags(Control.SIZE_EXPAND_FILL)
+			column_scroll.set_h_size_flags(Control.SIZE_EXPAND_FILL)
+			var column = VBoxContainer.new()
+			column.set_v_size_flags(Control.SIZE_EXPAND_FILL)
+			column.set_h_size_flags(Control.SIZE_EXPAND_FILL)
 
-		column_scroll.add_child(column)
-		column_holder.add_child(column_scroll)
+			column_scroll.add_child(column)
+			column_holder.add_child(column_scroll)
 
-		for uuid in column_data:
-			var stage := __StageScene.instantiate()
-			stage.board_data = board_data
-			stage.data_uuid = uuid
-			column.add_child(stage)
+			for uuid in column_data:
+				var stage := __StageScene.instantiate()
+				stage.board_data = board_data
+				stage.data_uuid = uuid
+				column.add_child(stage)
 
 
 # Do not use parameters the method is bound to diffrent signals.

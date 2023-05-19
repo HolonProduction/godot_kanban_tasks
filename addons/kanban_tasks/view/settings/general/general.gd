@@ -10,17 +10,19 @@ var data: __SettingData = null
 
 @onready var show_description_preview: CheckBox = %ShowDescriptionPreview
 @onready var edit_step_details_exclusively: CheckBox = %EditStepDetailsExclusively
+@onready var max_displayed_lines_in_description: SpinBox = %MaxDisplayedLinesInDescription
 
 
 func _ready() -> void:
-	await get_tree().create_timer(0.0).timeout
+	update()
+	show_description_preview.toggled.connect(func(x): __apply_changes())
+	edit_step_details_exclusively.toggled.connect(func(x): __apply_changes())
+
+
+func _enter_tree():
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	data = ctx.settings
 	data.changed.connect(update)
-	update()
-
-	show_description_preview.toggled.connect(func(x): __apply_changes())
-	edit_step_details_exclusively.toggled.connect(func(x): __apply_changes())
 
 
 func update() -> void:
