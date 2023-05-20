@@ -11,4 +11,5 @@ addons/*
 export/
 generated/
 addons/kanban_tasks/data.json
+kanban_tasks_data.json
 override.cfg
