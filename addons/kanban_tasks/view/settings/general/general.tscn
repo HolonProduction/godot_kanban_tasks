@@ -88,3 +88,29 @@ popup/item_1/text = "First line of description"
 popup/item_1/id = 1
 popup/item_2/text = "Until first blank line of description"
 popup/item_2/id = 2
+
+[node name="DataFilePathLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Data file path"
+
+[node name="DataFilePathContainer" type="HBoxContainer" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DataFilePath" type="LineEdit" parent="PanelContainer/ScrollContainer/VBoxContainer/DataFilePathContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "res://osm_2.kanban"
+editable = false
+
+[node name="DataFilePathButton" type="Button" parent="PanelContainer/ScrollContainer/VBoxContainer/DataFilePathContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = " ... "
+
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+size = Vector2i(800, 600)
+ok_button_text = "Save"

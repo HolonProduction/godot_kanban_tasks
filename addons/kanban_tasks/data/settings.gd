@@ -19,7 +19,7 @@ var max_displayed_lines_in_description: int = 0:
 	set(value):
 		max_displayed_lines_in_description = value
 		changed.emit()
-
+		
 enum DescriptionOnBoard {
 	FULL,
 	FIRST_LINE,
@@ -29,6 +29,12 @@ enum DescriptionOnBoard {
 var description_on_board: DescriptionOnBoard = DescriptionOnBoard.FIRST_LINE:
 	set(value):
 		description_on_board = value
+		changed.emit()
+
+const DEFAULT_EDITOR_DATA_PATH: String = "res://kanban_tasks_data.json"
+var editor_data_file_path: String = DEFAULT_EDITOR_DATA_PATH:
+	set(value):
+		editor_data_file_path = value
 		changed.emit()
 
 var warn_about_empty_deletion: bool = false:
@@ -57,6 +63,7 @@ func to_json() -> Dictionary:
 		"edit_step_details_exclusively": edit_step_details_exclusively,
 		"max_displayed_lines_in_description": max_displayed_lines_in_description,
 		"description_on_board": description_on_board,
+		"editor_data_file_path": editor_data_file_path,
 	}
 
 	if not Engine.is_editor_hint():
@@ -77,6 +84,8 @@ func from_json(json: Dictionary) -> void:
 		max_displayed_lines_in_description = json["max_displayed_lines_in_description"]
 	if json.has("description_on_board"):
 		description_on_board = json["description_on_board"]
+	if json.has("editor_data_file_path"):
+		editor_data_file_path = json["editor_data_file_path"]
 	if json.has("recent_file_count"):
 		recent_file_count = json["recent_file_count"]
 	if json.has("recent_files"):

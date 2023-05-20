@@ -17,7 +17,6 @@ const __StartView := preload("res://addons/kanban_tasks/view/start/start.tscn")
 const __StartViewType := preload("res://addons/kanban_tasks/view/start/start.gd")
 const __DocumentationView := preload("res://addons/kanban_tasks/view/documentation/documentation.tscn")
 
-const EDITOR_DATA_PATH: String = "res://kanban_tasks_data.json"
 const SETTINGS_KEY: String = "kanban_tasks/general/settings"
 
 enum {
@@ -53,7 +52,13 @@ var board_changed: bool = false:
 		__update_board_label()
 
 
+func __set_self_to_singletons():
+	__Singletons.__set_plugin(self)
+	
+
 func _enter_tree() -> void:
+	__set_self_to_singletons.call_deferred() # made later as add_child to root fails during editor start-up (fails first in singletons.__get_singleton)
+	
 	board_label = Label.new()
 	if not Engine.is_editor_hint():
 		add_control_to_container(CONTAINER_TOOLBAR, board_label)
@@ -116,15 +121,19 @@ func _enter_tree() -> void:
 	_make_visible(false)
 
 	await get_tree().create_timer(0.0).timeout
+
+	__load_settings()
+
 	if Engine.is_editor_hint():
-		if FileAccess.file_exists(EDITOR_DATA_PATH):
-			__open_board(EDITOR_DATA_PATH)
+		var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+		var editor_data_file_path = ctx.settings.editor_data_file_path
+		if FileAccess.file_exists(editor_data_file_path):
+			__open_board(editor_data_file_path)
 		else:
 			__create_board()
-			__save_board(EDITOR_DATA_PATH)
+			__save_board(editor_data_file_path)
 
 	__update_menus()
-	__load_settings()
 
 
 func _exit_tree() -> void:
