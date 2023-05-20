@@ -28,6 +28,8 @@ func _ready() -> void:
 	create_step_edit.text_submitted.connect(__create_step)
 	close_step_details_button.pressed.connect(__close_step_details)
 	notification(NOTIFICATION_THEME_CHANGED)
+	step_holder.entry_action_triggered.connect(__on_step_action_triggered)
+	step_holder.entry_move_requesed.connect(__step_move_requesed)
 
 
 func _notification(what: int) -> void:
@@ -64,12 +66,12 @@ func update() -> void:
 
 	category_select.item_selected.connect(__on_category_selected)
 
-	for step in step_holder.get_children():
+	for step in step_holder.get_step_entries():
 		step.queue_free()
 	for step in board_data.get_task(data_uuid).steps:
-		var entry = __StepEntry.new()
-		entry.step_data = step
-		step_holder.add_child(entry)
+		step_holder.add_step(step)
+	for entry in step_holder.get_step_entries():
+		entry.being_edited = (entry.step_data == __step_data)
 
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 
@@ -86,6 +88,40 @@ func update() -> void:
 func popup_centered_ratio_no_fullscreen(ratio: float = 0.8) -> void:
 	var viewport: Viewport = get_parent().get_viewport()
 	popup(Rect2i(Vector2(viewport.position) + viewport.size / 2.0 - viewport.size * ratio / 2.0, viewport.size * ratio))
+
+
+func __on_step_action_triggered(entry: __StepEntry, action: __StepEntry.Actions, meta) -> void:
+	match action:
+		__StepEntry.Actions.EDIT_HARD:
+			edit_step_details(entry.step_data)
+		__StepEntry.Actions.EDIT_SOFT:
+			if is_instance_valid(__step_data):
+				edit_step_details(entry.step_data)
+		__StepEntry.Actions.CLOSE:
+			close_step_details(entry.step_data)
+		__StepEntry.Actions.DELETE:
+			delete_step(entry.step_data)
+		__StepEntry.Actions.MOVE_UP:
+			move_step_up(entry.step_data)
+		__StepEntry.Actions.MOVE_DOWN:
+			move_step_down(entry.step_data)
+
+
+func __step_move_requesed(moved_entry: __StepEntry, target_entry: __StepEntry, move_after_target: bool) -> void:
+	var steps = board_data.get_task(data_uuid).steps
+	var moved_idx = steps.find(moved_entry.step_data)
+	var target_idx = steps.find(target_entry.step_data)
+	if moved_idx < 0 or target_idx < 0 or moved_idx == target_idx:
+		return
+	steps.erase(moved_entry.step_data)
+	if moved_idx < target_idx:
+		target_idx -= 1
+	if move_after_target:
+		steps.insert(target_idx + 1, moved_entry.step_data)
+	else:
+		steps.insert(target_idx, moved_entry.step_data)
+	board_data.get_task(data_uuid).steps = steps
+	update()
 
 
 func edit_step_details(step: __StepData) -> void:
@@ -172,6 +208,6 @@ func __create_step(text: String) -> void:
 	create_step_edit.text = ""
 	update()
 	if is_instance_valid(__step_data):
-		for step in step_holder.get_children():
+		for step in step_holder.get_step_entries():
 			if step.step_data == data:
 				step.grab_focus.call_deferred()

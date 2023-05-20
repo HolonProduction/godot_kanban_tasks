@@ -1,8 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bwi22eyrmeeet"]
+[gd_scene load_steps=4 format=3 uid="uid://bwi22eyrmeeet"]
 
 [ext_resource type="Script" path="res://addons/kanban_tasks/view/details/details.gd" id="1_gh7s6"]
+[ext_resource type="PackedScene" uid="uid://dwjg5vyxx4g48" path="res://addons/kanban_tasks/view/details/step_holder.tscn" id="2_0ptaf"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whfpw"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wkyb1"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -56,7 +57,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HSplitContainer/VSplitContainer/StepDetails"]
-visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/HSplitContainer/VSplitContainer/StepDetails/HBoxContainer"]
@@ -89,13 +89,8 @@ placeholder_text = "Create Step"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_whfpw")
+theme_override_styles/panel = SubResource("StyleBoxFlat_wkyb1")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HSplitContainer/StepList/PanelContainer"]
-layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="StepHolder" type="VBoxContainer" parent="VBoxContainer/HSplitContainer/StepList/PanelContainer/ScrollContainer"]
+[node name="StepHolder" parent="VBoxContainer/HSplitContainer/StepList/PanelContainer" instance=ExtResource("2_0ptaf")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
