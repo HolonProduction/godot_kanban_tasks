@@ -4,6 +4,8 @@ extends "kanban_resource.gd"
 ## Contains settings that are not bound to a board.
 
 
+const DEFAULT_EDITOR_DATA_PATH: String = "res://kanban_tasks_data.kanban"
+
 enum DescriptionOnBoard {
 	FULL,
 	FIRST_LINE,
@@ -29,6 +31,11 @@ var max_displayed_lines_in_description: int = 0:
 var description_on_board := DescriptionOnBoard.FIRST_LINE:
 	set(value):
 		description_on_board = value
+		changed.emit()
+
+var editor_data_file_path: String = DEFAULT_EDITOR_DATA_PATH:
+	set(value):
+		editor_data_file_path = value
 		changed.emit()
 
 var warn_about_empty_deletion: bool = false:
@@ -62,6 +69,8 @@ func to_json() -> Dictionary:
 	if not Engine.is_editor_hint():
 		res["recent_file_count"] = recent_file_count
 		res["recent_files"] = recent_files
+	else:
+		res["editor_data_file_path"] = editor_data_file_path
 
 	return res
 
@@ -77,6 +86,8 @@ func from_json(json: Dictionary) -> void:
 		max_displayed_lines_in_description = json["max_displayed_lines_in_description"]
 	if json.has("description_on_board"):
 		description_on_board = json["description_on_board"]
+	if json.has("editor_data_file_path"):
+		editor_data_file_path = json["editor_data_file_path"]
 	if json.has("recent_file_count"):
 		recent_file_count = json["recent_file_count"]
 	if json.has("recent_files"):

@@ -46,6 +46,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
+button_pressed = true
 text = "On"
 
 [node name="EditStepDetailsExclusivelyLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
@@ -69,6 +70,7 @@ text = "Maximum displayed lines in description"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+value = 1.0
 allow_greater = true
 
 [node name="DescriptionOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
@@ -86,3 +88,30 @@ popup/item_1/text = "First line of description"
 popup/item_1/id = 1
 popup/item_2/text = "Until first blank line of description"
 popup/item_2/id = 2
+
+[node name="DataFilePathLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Data file path"
+
+[node name="DataFilePathContainer" type="HBoxContainer" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DataFilePath" type="LineEdit" parent="PanelContainer/ScrollContainer/VBoxContainer/DataFilePathContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "res://kanban_tasks_data.json"
+editable = false
+
+[node name="DataFilePathButton" type="Button" parent="PanelContainer/ScrollContainer/VBoxContainer/DataFilePathContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = " ... "
+
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+size = Vector2i(800, 600)
+ok_button_text = "Save"
+show_hidden_files = true

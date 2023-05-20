@@ -17,7 +17,6 @@ const __StartView := preload("res://addons/kanban_tasks/view/start/start.tscn")
 const __StartViewType := preload("res://addons/kanban_tasks/view/start/start.gd")
 const __DocumentationView := preload("res://addons/kanban_tasks/view/documentation/documentation.tscn")
 
-const EDITOR_DATA_PATH: String = "res://kanban_tasks_data.kanban"
 const SETTINGS_KEY: String = "kanban_tasks/general/settings"
 
 enum {
@@ -116,18 +115,23 @@ func _enter_tree() -> void:
 	_make_visible(false)
 
 	await get_tree().create_timer(0.0).timeout
+
+	__load_settings()
+
 	if Engine.is_editor_hint():
-		if FileAccess.file_exists(EDITOR_DATA_PATH):
-			__open_board(EDITOR_DATA_PATH)
+		var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+		var editor_data_file_path = ctx.settings.editor_data_file_path
+		if FileAccess.file_exists(editor_data_file_path):
+			__open_board(editor_data_file_path)
 		else:
 			__create_board()
-			__save_board(EDITOR_DATA_PATH)
+			__save_board(editor_data_file_path)
 
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	ctx.save_board.connect(__action.bind(ACTION_SAVE))
+	ctx.reload_board.connect(__editor_reload_board)
 
 	__update_menus()
-	__load_settings()
 
 
 func _exit_tree() -> void:
@@ -258,6 +262,12 @@ func __action(id: int) -> void:
 			documentation_dialog.popup_centered()
 		ACTION_QUIT:
 			get_tree().get_root().propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+
+
+func __editor_reload_board():
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	__action(ACTION_SAVE)
+	__open_board(ctx.settings.editor_data_file_path)
 
 
 func __request_discard_changes(callback: Callable) -> void:
