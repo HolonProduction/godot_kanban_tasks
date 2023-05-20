@@ -55,8 +55,9 @@ func _ready() -> void:
 	await get_tree().create_timer(0.0).timeout
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 
-	update()
-	board_data.get_task(data_uuid).changed.connect(update)
+	if board_data != null:
+		update()
+		board_data.get_task(data_uuid).changed.connect(update)
 
 	if data_uuid == ctx.focus:
 		ctx.focus = ""
