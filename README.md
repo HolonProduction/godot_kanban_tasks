@@ -25,7 +25,7 @@ The editor plugin can be installed from the godot asset lib. After doing so add 
 ### :anger: Now that there is a standalone version will the editor plugin be discontinued?
 No. Both versions are using the same codebase therefore new features and changes are only implemented once.
 ### :floppy_disk: Were is the data stored?
-When using the editor plugin your board data can be found under `res://addons/kanban_tasks/data.json`. You may want to backup it from time to time. Settings that are not related to a specific board are stored in the editor settings.
+When using the editor plugin your board data can be found under `res://kanban_tasks_data.kanban`. You may want to backup it from time to time. Settings that are not related to a specific board are stored in the editor settings.
 ### :speech_balloon: Why this long name?
 I wanted the plugin to be findable with the keywords `kanban`, `todo` and `tasks`. So this is what I came up with.
 ### :camera: Can I get some screenshots please?

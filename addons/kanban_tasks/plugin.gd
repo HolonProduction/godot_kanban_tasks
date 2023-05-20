@@ -17,7 +17,7 @@ const __StartView := preload("res://addons/kanban_tasks/view/start/start.tscn")
 const __StartViewType := preload("res://addons/kanban_tasks/view/start/start.gd")
 const __DocumentationView := preload("res://addons/kanban_tasks/view/documentation/documentation.tscn")
 
-const EDITOR_DATA_PATH: String = "res://addons/kanban_tasks/data.json"
+const EDITOR_DATA_PATH: String = "res://kanban_tasks_data.kanban"
 const SETTINGS_KEY: String = "kanban_tasks/general/settings"
 
 enum {
