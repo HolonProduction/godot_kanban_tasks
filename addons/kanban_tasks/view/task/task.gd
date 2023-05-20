@@ -130,7 +130,20 @@ func update() -> void:
 	__style_panel.border_color = \
 		board_data.get_category(board_data.get_task(data_uuid).category).color
 
-	description_label.text = board_data.get_task(data_uuid).description
+	var description: String
+	match ctx.settings.description_on_board:
+		ctx.settings.DescriptionOnBoard.FIRST_LINE:
+			description = board_data.get_task(data_uuid).description
+			var idx := description.find("\n")
+			description = description.substr(0, idx)
+		ctx.settings.DescriptionOnBoard.UNTIL_FIRST_BLANK_LINE:
+			description = board_data.get_task(data_uuid).description
+			var idx := description.find("\n\n")
+			description = description.substr(0, idx)
+		_:
+			description = board_data.get_task(data_uuid).description
+	description_label.text = description
+
 	if ctx.settings.max_displayed_lines_in_description > 0:
 		description_label.max_lines_visible = ctx.settings.max_displayed_lines_in_description
 	else:
