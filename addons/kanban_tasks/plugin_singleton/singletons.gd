@@ -9,12 +9,10 @@ const PLUGIN_SINGLETON_META_NAME: String = "plugin_singleton"
 
 static func __get_holder(requester: Node) -> Node:
 	var holder: Node = requester.get_tree().get_root().get_node_or_null(HOLDER_NAME)
-	#print("[__get_holder] holder = " + str(holder))
 	if not is_instance_valid(holder):
 		holder = Node.new()
 		holder.name = HOLDER_NAME
 		requester.get_tree().get_root().add_child(holder)
-		print("\t -> " + str(holder))
 
 	return holder
 
