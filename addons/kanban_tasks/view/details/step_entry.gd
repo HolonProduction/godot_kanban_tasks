@@ -10,6 +10,8 @@ const __StepData := preload("res://addons/kanban_tasks/data/step.gd")
 const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
 const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
 
+const __meta_name = "kanban_task_step_entry"
+
 enum Actions {
 	DELETE,
 	MOVE_UP,
@@ -26,6 +28,9 @@ var context_menu: PopupMenu
 
 var step_data: __StepData
 
+var being_edited := false
+
+signal action_triggered(entry, action, meta)
 
 func _ready():
 	set_h_size_flags(SIZE_EXPAND_FILL)
@@ -53,6 +58,7 @@ func _ready():
 	notification(NOTIFICATION_THEME_CHANGED)
 
 	step_data.changed.connect(update)
+	set_meta(__meta_name, true)
 	update()
 
 
@@ -63,7 +69,7 @@ func _shortcut_input(event: InputEvent) -> void:
 	if not event.is_echo() and event.is_pressed():
 		if shortcuts.rename.matches_event(event):
 			get_viewport().set_input_as_handled()
-			get_parent().get_owner().edit_step_details(step_data)
+			__action(Actions.EDIT_HARD)
 		elif shortcuts.confirm.matches_event(event):
 			get_viewport().set_input_as_handled()
 			done.button_pressed = not done.button_pressed
@@ -72,7 +78,7 @@ func _shortcut_input(event: InputEvent) -> void:
 func _notification(what):
 	match(what):
 		NOTIFICATION_DRAW:
-			if has_focus() or get_parent().get_owner().__step_data == step_data:
+			if has_focus() or being_edited:
 				focus_box.draw(get_canvas_item(), Rect2(Vector2.ZERO, get_rect().size))
 		NOTIFICATION_FOCUS_ENTER:
 			__action(Actions.EDIT_SOFT)
@@ -99,20 +105,7 @@ func update() -> void:
 
 
 func __action(what: Actions) -> void:
-	match what:
-		Actions.EDIT_HARD:
-			get_parent().get_owner().edit_step_details(step_data)
-		Actions.EDIT_SOFT:
-			if is_instance_valid(get_parent().get_owner().__step_data):
-				get_parent().get_owner().edit_step_details(step_data)
-		Actions.CLOSE:
-			get_parent().get_owner().close_step_details(step_data)
-		Actions.DELETE:
-			get_parent().get_owner().delete_step(step_data)
-		Actions.MOVE_UP:
-			get_parent().get_owner().move_step_up(step_data)
-		Actions.MOVE_DOWN:
-			get_parent().get_owner().move_step_down(step_data)
+	action_triggered.emit(self, what, null)
 
 
 func __update_context_menu() -> void:
@@ -121,7 +114,7 @@ func __update_context_menu() -> void:
 	context_menu.clear()
 	context_menu.size = Vector2.ZERO
 
-	if get_parent().get_owner().__step_data == step_data:
+	if being_edited:
 		context_menu.add_icon_item(get_theme_icon(&"Close", &"EditorIcons"), "Close", Actions.CLOSE)
 	else:
 		context_menu.add_icon_item(get_theme_icon(&"Rename", &"EditorIcons"), "Edit", Actions.EDIT_HARD)
