@@ -49,6 +49,19 @@ focus_mode = 0
 button_pressed = true
 text = "On"
 
+[node name="ShowStepsPreviewLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Show steps preview"
+
+[node name="ShowStepsPreview" type="CheckBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+button_pressed = true
+text = "On"
+
 [node name="EditStepDetailsExclusivelyLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -70,7 +83,6 @@ text = "Maximum displayed lines in description"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-value = 1.0
 allow_greater = true
 
 [node name="DescriptionOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
@@ -88,6 +100,34 @@ popup/item_1/text = "First line of description"
 popup/item_1/id = 1
 popup/item_2/text = "Until first blank line of description"
 popup/item_2/id = 2
+
+[node name="StepsOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Steps on board"
+
+[node name="StepsOnBoard" type="OptionButton" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 3
+selected = 2
+popup/item_0/text = "Only open steps"
+popup/item_0/id = 0
+popup/item_1/text = "All, but open first"
+popup/item_1/id = 1
+popup/item_2/text = "All in original order"
+popup/item_2/id = 2
+
+[node name="MaxStepsOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Maximum steps on board"
+
+[node name="MaxStepsOnBoard" type="SpinBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+allow_greater = true
+update_on_text_changed = true
 
 [node name="DataFilePathLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true

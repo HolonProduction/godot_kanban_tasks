@@ -22,6 +22,7 @@ func _init():
 	add_child(center)
 	center.add_child(__texture_rect)
 	pressed.connect(__on_pressed)
+	text = " "
 	__update_icon()
 
 

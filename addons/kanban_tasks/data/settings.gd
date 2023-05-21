@@ -12,10 +12,21 @@ enum DescriptionOnBoard {
 	UNTIL_FIRST_BLANK_LINE,
 }
 
+enum StepsOnBoard {
+	ONLY_OPEN,
+	ALL_OPEN_FIRST,
+	ALL_IN_ORDER
+}
+
 ## Whether the first line of the description is shown on the board.
 var show_description_preview: bool = true:
 	set(value):
 		show_description_preview = value
+		changed.emit()
+
+var show_steps_preview: bool = true:
+	set(value):
+		show_steps_preview = value
 		changed.emit()
 
 var edit_step_details_exclusively: bool = false:
@@ -31,6 +42,16 @@ var max_displayed_lines_in_description: int = 0:
 var description_on_board := DescriptionOnBoard.FIRST_LINE:
 	set(value):
 		description_on_board = value
+		changed.emit()
+
+var steps_on_board := StepsOnBoard.ONLY_OPEN:
+	set(value):
+		steps_on_board = value
+		changed.emit()
+
+var max_steps_on_board: int = 2:
+	set(value):
+		max_steps_on_board = value
 		changed.emit()
 
 var editor_data_file_path: String = DEFAULT_EDITOR_DATA_PATH:
@@ -64,6 +85,9 @@ func to_json() -> Dictionary:
 		"edit_step_details_exclusively": edit_step_details_exclusively,
 		"max_displayed_lines_in_description": max_displayed_lines_in_description,
 		"description_on_board": description_on_board,
+		"show_steps_preview": show_steps_preview,
+		"steps_on_board": steps_on_board,
+		"max_steps_on_board": max_steps_on_board,
 	}
 
 	if not Engine.is_editor_hint():
@@ -92,3 +116,9 @@ func from_json(json: Dictionary) -> void:
 		recent_file_count = json["recent_file_count"]
 	if json.has("recent_files"):
 		recent_files = PackedStringArray(json["recent_files"])
+	if json.has("show_steps_preview"):
+		show_steps_preview = json["show_steps_preview"]
+	if json.has("steps_on_board"):
+		steps_on_board = json["steps_on_board"]
+	if json.has("max_steps_on_board"):
+		max_steps_on_board = json["max_steps_on_board"]
