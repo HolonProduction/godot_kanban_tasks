@@ -57,13 +57,29 @@ func _ready() -> void:
 
 	notification(NOTIFICATION_THEME_CHANGED)
 
-	await get_tree().create_timer(0.0).timeout
-	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
-
+#	await get_tree().create_timer(0.0).timeout
+#	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+#
 	if board_data != null:
 		update()
 		board_data.get_task(data_uuid).changed.connect(update)
 
+#	if data_uuid == ctx.focus:
+#		ctx.focus = ""
+#		grab_focus()
+#
+#	ctx.filter_changed.connect(__apply_filter)
+#	__apply_filter()
+#	__connect.call_deferred()
+
+
+func _enter_tree():
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+
+#	if board_data != null:
+#		update()
+#		board_data.get_task(data_uuid).changed.connect(update)
+#
 	if data_uuid == ctx.focus:
 		ctx.focus = ""
 		grab_focus()
@@ -238,6 +254,8 @@ func show_edit(intention: __EditLabel.INTENTION) -> void:
 
 
 func __apply_filter() -> void:
+	if not is_inside_tree():
+		return
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 
 	if not ctx.filter or ctx.filter.text.length() == 0:
