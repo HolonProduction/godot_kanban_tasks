@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://uoldofll0ef8"]
+
+[ext_resource type="Script" path="res://addons/kanban_tasks/view/tooltip.gd" id="1_qob6j"]
+
+[node name="Tooltip" type="RichTextLabel"]
+custom_minimum_size = Vector2(500, 0)
+offset_right = 1.0
+bbcode_enabled = true
+fit_content = true
+script = ExtResource("1_qob6j")
