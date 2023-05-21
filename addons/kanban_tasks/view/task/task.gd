@@ -53,7 +53,7 @@ func _ready() -> void:
 
 	context_menu.id_pressed.connect(__action)
 	edit_button.pressed.connect(__action.bind(ACTIONS.DETAILS))
-	expand_button.state_changed.connect(__udpate_step_holder)
+	expand_button.state_changed.connect(func (expanded): __udpate_step_holder())
 
 	notification(NOTIFICATION_THEME_CHANGED)
 
@@ -126,19 +126,18 @@ func _notification(what: int) -> void:
 					),
 				)
 
-func __udpate_step_holder(expanded: bool):
+func __udpate_step_holder():
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	var task := board_data.get_task(data_uuid)
+	var expanded := expand_button.expanded
 	
 	step_holder.clear_steps()
 	var step_count := 0
 	var expandable := false
 
-	print("[__udpate_step_holder] show_steps_preview = %s" % [ctx.settings.show_steps_preview])
 	if ctx.settings.show_steps_preview: 
 		var steps := board_data.get_task(data_uuid).steps
 		var max_step_count := ctx.settings.max_steps_on_board
-		print("[__udpate_step_holder] steps_on_board = %s" % [ctx.settings.steps_on_board])
 		match ctx.settings.steps_on_board:
 			ctx.settings.StepsOnBoard.ONLY_OPEN:
 				for i in steps.size():
@@ -216,7 +215,12 @@ func update() -> void:
 		description_label.text = ""
 	description_label.visible = (description_label.text.length() > 0)
 
-	__udpate_step_holder(expand_button.expanded)
+	__udpate_step_holder()
+	
+	var steps := board_data.get_task(data_uuid).steps
+	for step in steps:
+		if not step.changed.is_connected(__udpate_step_holder):
+			step.changed.connect(__udpate_step_holder)
 
 	if title_label.text_changed.is_connected(__set_title):
 		title_label.text_changed.disconnect(__set_title)
