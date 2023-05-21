@@ -82,6 +82,7 @@ func update() -> void:
 	show_steps_preview.button_pressed = data.show_steps_preview
 	edit_step_details_exclusively.button_pressed = data.edit_step_details_exclusively
 	max_displayed_lines_in_description.value = data.max_displayed_lines_in_description
+	max_steps_on_board.value = data.max_steps_on_board
 
 	description_on_board.select(description_on_board.get_item_index(data.description_on_board))
 	steps_on_board.select(steps_on_board.get_item_index(data.steps_on_board))
