@@ -5,6 +5,14 @@ class_name Tooltip extends RichTextLabel
 
 func _init():
 	resized.connect(__on_resized)
+	
+func _notification(what):
+	match what:
+		NOTIFICATION_ENTER_TREE:
+			__take_over_label_style()
+	
+func __take_over_label_style():
+	add_theme_stylebox_override("normal", get_theme_stylebox("normal", "Label"))
 
 func mimic_paragraphs():
 	var what_in_order: PackedStringArray = [
