@@ -14,6 +14,7 @@ const __ExpandButton := preload("res://addons/kanban_tasks/expand_button/expand_
 const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
 const __DetailsScript := preload("res://addons/kanban_tasks/view/details/details.gd")
 const __StepHolder := preload("res://addons/kanban_tasks/view/details/step_holder.gd")
+const __TooltipScene := preload("res://addons/kanban_tasks/view/tooltip.tscn")
 
 enum ACTIONS {
 	DETAILS,
@@ -200,12 +201,10 @@ func __udpate_step_holder():
 func update() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	var task := board_data.get_task(data_uuid)
-
-	__style_focus.border_color = \
-		board_data.get_category(task.category).color
-
-	__style_panel.border_color = \
-		board_data.get_category(task.category).color
+	var task_category := board_data.get_category(task.category)
+	
+	__style_focus.border_color = task_category.color
+	__style_panel.border_color = task_category.color
 
 	if ctx.settings.show_description_preview:
 		var description: String
@@ -242,11 +241,59 @@ func update() -> void:
 		title_label.text_changed.disconnect(__set_title)
 	title_label.text = board_data.get_task(data_uuid).title
 	title_label.text_changed.connect(__set_title)
-
-	tooltip_text = board_data.get_category(board_data.get_task(data_uuid).category).title \
-			+ ": " + board_data.get_task(data_uuid).title
+	
+	__update_tooltip()
 
 	queue_redraw()
+
+
+func __update_tooltip():
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	var task := board_data.get_task(data_uuid)
+	var task_category := board_data.get_category(task.category)
+	var steps := board_data.get_task(data_uuid).steps
+
+	var category_bullet = "[bgcolor=#" + task_category.color.to_html(false) + "]     [/bgcolor]  "
+	#var category_bullet = "[color=#" + task_category.color.to_html(false) + "]\u2588\u2588[/color]"
+	#var category_bullet = "[color=#" + task_category.color.to_html(false) + "]\u220E[/color]"
+	#var category_bullet = "[color=#" + task_category.color.to_html(false) + "]\u25A0[/color]"
+	tooltip_text = category_bullet + " " + board_data.get_category(task.category).title + ": " + task.title
+	if task.description !=null and task.description.length() > 0:
+		tooltip_text += "[p]" + task.description + "[/p]"
+
+	var open_steps = []
+	var done_steps = []
+	for step in steps:
+		(done_steps if step.done else open_steps).append(step)
+	#var open_step_bullet = "\u25A1" # Unfilled square
+	#var open_step_bullet = "[color=#808080]\u25A0[/color]" # Filled gray square
+	#var done_step_bullet = "\u25A0" # Filled square
+	#var open_step_bullet = "\u2718" # Heavy ballot X
+	#var done_step_bullet = "\u2714" # Heavy check mark
+	#var open_step_bullet = "\u2717" # Ballot X
+	#var done_step_bullet = "\u2713" # Check mark
+	var open_step_bullet = "[color=#F08080]\u25A0[/color]" # Filled red square
+	var done_step_bullet = "[color=#98FB98]\u25A0[/color]" # Filled green square
+	if open_steps.size() > 0 or done_steps.size() > 0:
+		tooltip_text += "[p]"
+		if open_steps.size() > 0:
+			tooltip_text += "Open steps:\n[table=2]"
+			for step in open_steps:
+				tooltip_text += "[cell]" + open_step_bullet + "[/cell][cell]" + step.details + "[/cell]\n"
+			tooltip_text += "[/table]\n"
+		if done_steps.size() > 0:
+			tooltip_text += "Done steps:\n[table=2]"
+			for step in done_steps:
+				tooltip_text += "[cell]" + done_step_bullet + "[/cell][cell]" + step.details + "[/cell]\n"
+			tooltip_text += "[/table]\n"
+		tooltip_text += "[/p]"
+
+
+func _make_custom_tooltip(for_text) -> Object:
+	var tooltip := __TooltipScene.instantiate()
+	tooltip.text = for_text
+	tooltip.mimic_paragraphs()
+	return tooltip 
 
 
 func show_edit(intention: __EditLabel.INTENTION) -> void:
