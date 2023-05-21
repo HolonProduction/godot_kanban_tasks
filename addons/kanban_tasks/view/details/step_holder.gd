@@ -4,7 +4,28 @@ class_name StepHolder extends VBoxContainer
 const __StepData := preload("res://addons/kanban_tasks/data/step.gd")
 const __StepEntry := preload("res://addons/kanban_tasks/view/details/step_entry.gd")
 
+@export var scrollable: bool = true:
+	set(value):
+		if value != scrollable:
+			scrollable = value
+			__update_children_settings()
+	
+@export var tasks_can_be_removed: bool = true:
+	set(value):
+		if value != tasks_can_be_removed:
+			tasks_can_be_removed = value
+			__update_children_settings()
+			# code comes here to control step view menu also
+@export var tasks_can_be_reordered: bool = true:
+	set(value):
+		if value != tasks_can_be_reordered:
+			tasks_can_be_reordered = value
+			__update_children_settings
+			# code comes here to control step view menu also
+
+@onready var scroll_container: ScrollContainer = %ScrollContainer
 @onready var step_list: VBoxContainer = %StepList
+@onready var remove_separator: HSeparator = %RemoveSeparator
 @onready var remove_area: Button = %RemoveArea
 
 signal entry_action_triggered(entry, action, meta)
@@ -22,8 +43,19 @@ func _ready():
 	step_list.draw.connect(__on_step_list_draw)
 	step_list.mouse_exited.connect(__on_step_list_mouse_exited)
 	step_list.mouse_entered.connect(__on_step_list_mouse_entered)
+	__update_children_settings()
+	
+func __update_children_settings():
+	if scroll_container != null:
+		scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO if scrollable else ScrollContainer.SCROLL_MODE_DISABLED
+	if remove_separator != null:
+		remove_separator.visible = tasks_can_be_removed
+	if remove_area != null:
+		remove_area.visible = tasks_can_be_removed
 	
 func _get_drag_data(at_position: Vector2) -> Variant:
+	if not tasks_can_be_removed and not tasks_can_be_reordered:
+		return null
 	for entry in get_step_entries():
 		if entry.get_global_rect().has_point(get_global_transform() * at_position):
 			var preview := Label.new()
@@ -61,6 +93,8 @@ func __update_move_target(at_position: Vector2):
 	step_list.queue_redraw()
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	if not tasks_can_be_removed and not tasks_can_be_reordered:
+		return false
 	if data is Node and __is_step_entry(data):
 		if remove_area.get_global_rect().has_point(get_global_transform() * at_position):
 			return true
@@ -98,6 +132,11 @@ func __on_step_list_draw():
 func __is_step_entry(node: Node) -> bool:
 	return node.get_meta(__StepEntry.__meta_name, false) != false
 
+func clear_steps():
+	for step in get_step_entries():
+		step_list.remove_child(step)
+		step.queue_free()
+	
 func add_step(step: __StepData):
 	var entry = __StepEntry.new()
 	entry.step_data = step
