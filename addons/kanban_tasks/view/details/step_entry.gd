@@ -12,6 +12,8 @@ const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/single
 const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
 const __StepEntry := preload("step_entry.gd")
 
+@export var context_menu_enabled: bool = true
+
 enum Actions {
 	DELETE,
 	MOVE_UP,
@@ -85,11 +87,12 @@ func _notification(what):
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		accept_event()
-		__update_context_menu()
-		context_menu.position = get_global_mouse_position()
-		if not get_window().gui_embed_subwindows:
-			context_menu.position += get_window().position
-		context_menu.popup()
+		if context_menu_enabled:
+			__update_context_menu()
+			context_menu.position = get_global_mouse_position()
+			if not get_window().gui_embed_subwindows:
+				context_menu.position += get_window().position
+			context_menu.popup()
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and event.is_double_click():
 		__action(Actions.EDIT_HARD)

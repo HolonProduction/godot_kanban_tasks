@@ -14,16 +14,21 @@ const __StepEntry := preload("res://addons/kanban_tasks/view/details/step_entry.
 			scrollable = value
 			__update_children_settings()
 
-@export var tasks_can_be_removed: bool = true:
+@export var steps_can_be_removed: bool = true:
 	set(value):
-		if value != tasks_can_be_removed:
-			tasks_can_be_removed = value
+		if value != steps_can_be_removed:
+			steps_can_be_removed = value
 			__update_children_settings()
 
-@export var tasks_can_be_reordered: bool = true:
+@export var steps_can_be_reordered: bool = true:
 	set(value):
-		if value != tasks_can_be_reordered:
-			tasks_can_be_reordered = value
+		if value != steps_can_be_reordered:
+			steps_can_be_reordered = value
+			__update_children_settings
+@export var steps_have_context_menu: bool = true:
+	set(value):
+		if value != steps_have_context_menu:
+			steps_have_context_menu = value
 			__update_children_settings
 
 var __mouse_entered_step_list: bool = false
@@ -45,7 +50,7 @@ func _ready():
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	if not tasks_can_be_removed and not tasks_can_be_reordered:
+	if not steps_can_be_removed and not steps_can_be_reordered:
 		return false
 	if data is __StepEntry:
 		if __remove_area.get_global_rect().has_point(get_global_transform() * at_position):
@@ -56,7 +61,7 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 
 
 func _get_drag_data(at_position: Vector2) -> Variant:
-	if not tasks_can_be_removed and not tasks_can_be_reordered:
+	if not steps_can_be_removed and not steps_can_be_reordered:
 		return null
 	for entry in get_step_entries():
 		if entry.get_global_rect().has_point(get_global_transform() * at_position):
@@ -83,6 +88,7 @@ func add_step(step: __StepData) -> void:
 	__step_list.add_child(entry)
 	entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	entry.action_triggered.connect(__on_entry_action_triggered)
+	entry.context_menu_enabled = steps_have_context_menu
 
 
 func clear_steps():
@@ -93,9 +99,10 @@ func clear_steps():
 
 func get_step_entries() -> Array[__StepEntry]:
 	var step_entries: Array[__StepEntry] = []
-	for child in __step_list.get_children():
-		if child is __StepEntry:
-			step_entries.append(child)
+	if is_instance_valid(__step_list):
+		for child in __step_list.get_children():
+			if child is __StepEntry:
+				step_entries.append(child)
 	return step_entries
 
 
@@ -103,9 +110,11 @@ func __update_children_settings():
 	if is_instance_valid(__scroll_container):
 		__scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO if scrollable else ScrollContainer.SCROLL_MODE_DISABLED
 	if is_instance_valid(__remove_separator):
-		__remove_separator.visible = tasks_can_be_removed
+		__remove_separator.visible = steps_can_be_removed
 	if is_instance_valid(__remove_area):
-		__remove_area.visible = tasks_can_be_removed
+		__remove_area.visible = steps_can_be_removed
+	for entry in get_step_entries():
+		entry.context_menu_enabled = steps_have_context_menu
 
 
 func __update_move_target(at_position: Vector2) -> void:
@@ -161,5 +170,5 @@ func __on_step_list_draw() -> void:
 		__step_list.draw_rect(preview_rect, get_theme_color(&"step_move_review_color"))
 
 
-func __on_entry_action_triggered(entry: __StepEntry, action: __StepEntry.Actions, meta) -> void:
+func __on_entry_action_triggered(entry, action, meta):
 	entry_action_triggered.emit(entry, action, meta)
