@@ -12,11 +12,15 @@ const __TaskScene := preload("res://addons/kanban_tasks/view/task/task.tscn")
 const __TaskScript := preload("res://addons/kanban_tasks/view/task/task.gd")
 const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
+const __CategoryPopupMenu := preload("res://addons/kanban_tasks/view/category/category_popup_menu.gd")
 
-var board_data: __BoardData
+var board_data: __BoardData:
+	set(value):
+		board_data = value
+		__update_category_menus()
 var data_uuid: String
 
-var __category_menu := PopupMenu.new()
+var __category_menu := __CategoryPopupMenu.new()
 
 @onready var panel_container: PanelContainer = %Panel
 @onready var title_label: __EditLabel = %Title
@@ -39,8 +43,7 @@ func _ready() -> void:
 
 	create_button.pressed.connect(__on_create_button_pressed)
 	add_child(__category_menu)
-	__category_menu.about_to_popup.connect(__on_category_popup_about_to_show)
-	__category_menu.id_pressed.connect(__on_category_popup_selected)
+	__category_menu.uuid_selected.connect(__on_category_create_popup_uuid_selected)
 	__category_menu.popup_hide.connect(create_button.set_pressed_no_signal.bind(false))
 
 	notification(NOTIFICATION_THEME_CHANGED)
@@ -66,11 +69,7 @@ func _shortcut_input(event: InputEvent) -> void:
 		if shortcuts.create.matches_event(event):
 			get_viewport().set_input_as_handled()
 
-			__category_menu.position = get_global_mouse_position()
-			if not get_window().gui_embed_subwindows:
-				__category_menu.position += get_window().position
-
-			__category_menu.popup()
+			__category_menu.popup_at_mouse_position(self)
 
 		elif shortcuts.rename.matches_event(event):
 			get_viewport().set_input_as_handled()
@@ -186,6 +185,11 @@ func update(single: bool = false) -> void:
 		task_holder.add_child(task)
 
 	scroll_container.scroll_vertical = old_scroll
+	__update_category_menus()
+
+
+func __update_category_menus():
+	__category_menu.board_data = board_data
 
 
 func __target_index_from_position(pos: Vector2) -> int:
@@ -211,11 +215,7 @@ func __set_title(value: String) -> void:
 
 func __on_create_button_pressed() -> void:
 	if board_data.get_category_count() > 1:
-		__category_menu.position = create_button.global_position
-		__category_menu.position.y += create_button.get_global_rect().size.y
-		if not get_window().gui_embed_subwindows:
-			__category_menu.position += get_window().position
-		__category_menu.popup()
+		__category_menu.popup_at_local_position(create_button, Vector2(0, create_button.get_global_rect().size.y))
 	else:
 		__create_task(board_data.get_categories()[0])
 		create_button.set_pressed_no_signal(false)
@@ -265,16 +265,5 @@ func __target_height_from_position(pos: Vector2) -> float:
 	return c
 
 
-func __on_category_popup_selected(id):
-	__create_task(__category_menu.get_item_metadata(id))
-
-
-func __on_category_popup_about_to_show():
-	__category_menu.clear()
-	__category_menu.size = Vector2i.ZERO
-	for uuid in board_data.get_categories():
-		var i = Image.create(16, 16, false, Image.FORMAT_RGB8)
-		i.fill(board_data.get_category(uuid).color)
-		var t = ImageTexture.create_from_image(i)
-		__category_menu.add_icon_item(t, board_data.get_category(uuid).title)
-		__category_menu.set_item_metadata(-1, uuid)
+func __on_category_create_popup_uuid_selected(uuid):
+	__create_task(uuid)
