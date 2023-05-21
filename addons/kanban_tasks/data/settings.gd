@@ -10,6 +10,11 @@ var show_description_preview: bool = true:
 		show_description_preview = value
 		changed.emit()
 
+var show_steps_preview: bool = true:
+	set(value):
+		show_steps_preview = value
+		changed.emit()
+
 var edit_step_details_exclusively: bool = false:
 	set(value):
 		edit_step_details_exclusively = value
@@ -30,6 +35,23 @@ var description_on_board: DescriptionOnBoard = DescriptionOnBoard.FIRST_LINE:
 	set(value):
 		description_on_board = value
 		changed.emit()
+
+enum StepsOnBoard {
+	ONLY_OPEN,
+	ALL_OPEN_FIRST,
+	ALL_IN_ORDER
+}
+
+var steps_on_board: StepsOnBoard = StepsOnBoard.ONLY_OPEN:
+	set(value):
+		steps_on_board = value
+		changed.emit()
+
+var max_steps_on_board: int = 2:
+	set(value):
+		max_steps_on_board = value
+		changed.emit()
+		
 
 const DEFAULT_EDITOR_DATA_PATH: String = "res://kanban_tasks_data.json"
 var editor_data_file_path: String = DEFAULT_EDITOR_DATA_PATH:

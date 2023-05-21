@@ -10,8 +10,10 @@ const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
 const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
+const __ExpandButton := preload("res://addons/kanban_tasks/expand_button/expand_button.gd")
 const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
 const __DetailsScript := preload("res://addons/kanban_tasks/view/details/details.gd")
+const __StepHolder := preload("res://addons/kanban_tasks/view/details/step_holder.gd")
 
 enum ACTIONS {
 	DETAILS,
@@ -31,6 +33,8 @@ var __style_panel: StyleBoxFlat
 @onready var panel_container: PanelContainer = %Panel
 @onready var title_label: __EditLabel = %Title
 @onready var description_label: Label = %Description
+@onready var step_holder: __StepHolder = %StepHolder
+@onready var expand_button: __ExpandButton = %ExpandButton
 @onready var edit_button: Button = %Edit
 @onready var context_menu: PopupMenu = %ContextMenu
 @onready var details: __DetailsScript = %Details
@@ -49,6 +53,7 @@ func _ready() -> void:
 
 	context_menu.id_pressed.connect(__action)
 	edit_button.pressed.connect(__action.bind(ACTIONS.DETAILS))
+	expand_button.state_changed.connect(__udpate_step_holder)
 
 	notification(NOTIFICATION_THEME_CHANGED)
 
@@ -121,36 +126,97 @@ func _notification(what: int) -> void:
 					),
 				)
 
+func __udpate_step_holder(expanded: bool):
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	var task := board_data.get_task(data_uuid)
+	
+	step_holder.clear_steps()
+	var step_count := 0
+	var expandable := false
+
+	print("[__udpate_step_holder] show_steps_preview = %s" % [ctx.settings.show_steps_preview])
+	if ctx.settings.show_steps_preview: 
+		var steps := board_data.get_task(data_uuid).steps
+		var max_step_count := ctx.settings.max_steps_on_board
+		print("[__udpate_step_holder] steps_on_board = %s" % [ctx.settings.steps_on_board])
+		match ctx.settings.steps_on_board:
+			ctx.settings.StepsOnBoard.ONLY_OPEN:
+				for i in steps.size():
+					if steps[i].done:
+						continue
+					if max_step_count > 0 and step_count >= max_step_count:
+						expandable = true
+						if not expanded:
+							break
+					step_holder.add_step(steps[i])
+					step_count += 1
+			ctx.settings.StepsOnBoard.ALL_OPEN_FIRST:
+				for i in steps.size():
+					if steps[i].done:
+						continue
+					if max_step_count > 0 and step_count >= max_step_count:
+						expandable = true
+						if not expanded:
+							break
+					step_holder.add_step(steps[i])
+					step_count += 1
+				for i in steps.size():
+					if not steps[i].done:
+						continue
+					if max_step_count > 0 and step_count >= max_step_count:
+						expandable = true
+						if not expanded:
+							break
+					step_holder.add_step(steps[i])
+					step_count += 1
+			ctx.settings.StepsOnBoard.ALL_IN_ORDER:
+				for i in steps.size():
+					if max_step_count > 0 and step_count >= max_step_count:
+						expandable = true
+						if not expanded:
+							break
+					step_holder.add_step(steps[i])
+					step_count += 1
+			_:
+				pass
+	step_holder.visible = (step_count > 0)
+	expand_button.visible = expandable
 
 func update() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	var task := board_data.get_task(data_uuid)
 
 	__style_focus.border_color = \
-		board_data.get_category(board_data.get_task(data_uuid).category).color
+		board_data.get_category(task.category).color
 
 	__style_panel.border_color = \
-		board_data.get_category(board_data.get_task(data_uuid).category).color
+		board_data.get_category(task.category).color
 
-	var description: String
-	match ctx.settings.description_on_board:
-		ctx.settings.DescriptionOnBoard.FIRST_LINE:
-			description = board_data.get_task(data_uuid).description
-			var idx := description.find("\n")
-			description = description.substr(0, idx)
-		ctx.settings.DescriptionOnBoard.UNTIL_FIRST_BLANK_LINE:
-			description = board_data.get_task(data_uuid).description
-			var idx := description.find("\n\n")
-			description = description.substr(0, idx)
-		_:
-			description = board_data.get_task(data_uuid).description
-			pass
-	description_label.text = description
-	
-	if ctx.settings.max_displayed_lines_in_description > 0:
-		description_label.max_lines_visible = ctx.settings.max_displayed_lines_in_description
+	if ctx.settings.show_description_preview:
+		var description: String
+		match ctx.settings.description_on_board:
+			ctx.settings.DescriptionOnBoard.FIRST_LINE:
+				description = task.description
+				var idx := description.find("\n")
+				description = description.substr(0, idx)
+			ctx.settings.DescriptionOnBoard.UNTIL_FIRST_BLANK_LINE:
+				description = task.description
+				var idx := description.find("\n\n")
+				description = description.substr(0, idx)
+			_:
+				description = task.description
+				pass
+		description_label.text = description
+		if ctx.settings.max_displayed_lines_in_description > 0:
+			description_label.max_lines_visible = ctx.settings.max_displayed_lines_in_description
+		else:
+			description_label.max_lines_visible = -1
+		description_label.visible = ctx.settings.show_description_preview and description_label.text.strip_edges().length() != 0
 	else:
-		description_label.max_lines_visible = -1
-	description_label.visible = ctx.settings.show_description_preview and description_label.text.strip_edges().length() != 0
+		description_label.text = ""
+	description_label.visible = (description_label.text.length() > 0)
+
+	__udpate_step_holder(expand_button.expanded)
 
 	if title_label.text_changed.is_connected(__set_title):
 		title_label.text_changed.disconnect(__set_title)

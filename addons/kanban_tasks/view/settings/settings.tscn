@@ -7,7 +7,7 @@
 
 [node name="Settings" type="AcceptDialog"]
 title = "Settings"
-size = Vector2i(616, 357)
+size = Vector2i(800, 400)
 visible = true
 theme_type_variation = &"EditorSettingsDialog"
 script = ExtResource("1_4eaw3")
