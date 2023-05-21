@@ -9,14 +9,17 @@ func _init():
 func mimic_paragraphs():
 	var what_in_order: PackedStringArray = [
 		"[/p]\n[p]",
+		"[/p][p]",
 		"[p][/p]",
 		"[p]",
 		"[/p]",
 	]
 	var forwhat = "\n[font_size=%s]\n[/font_size]\n" % mimicked_paragraph_spacing_font_size
 	var text := self.text
+	text = text.trim_prefix("[p]").trim_suffix("[/p]")
 	for what in what_in_order:
 		text = text.replace(what, forwhat)
+	text = text.trim_prefix("\n").trim_suffix("\n")
 	self.text = text
 
 
