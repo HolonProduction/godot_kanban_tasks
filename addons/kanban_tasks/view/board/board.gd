@@ -25,6 +25,8 @@ var board_data: __BoardData:
 
 @onready var search_bar: LineEdit = %SearchBar
 @onready var button_advanced_search: Button = %AdvancedSearch
+@onready var button_show_descriptions: Button = %ShowDescriptions
+@onready var button_show_steps: Button = %ShowSteps
 @onready var button_documentation: Button = %Documentation
 @onready var button_settings: Button = %Settings
 @onready var column_holder: HBoxContainer = %ColumnHolder
@@ -39,6 +41,9 @@ func _ready():
 	search_bar.text_changed.connect(__on_filter_changed)
 	search_bar.text_submitted.connect(__on_search_bar_entered)
 	button_advanced_search.toggled.connect(__on_filter_changed)
+	
+	button_show_descriptions.toggled.connect(__on_show_descriptions_toggled)
+	button_show_steps.toggled.connect(__on_show_steps_toggled)
 
 	notification(NOTIFICATION_THEME_CHANGED)
 
@@ -84,6 +89,10 @@ func _notification(what):
 				button_documentation.icon = get_theme_icon(&"Help", &"EditorIcons")
 			if is_instance_valid(button_advanced_search):
 				button_advanced_search.icon = get_theme_icon(&"FileList", &"EditorIcons")
+			if is_instance_valid(button_show_descriptions):
+				button_show_descriptions.icon = get_theme_icon(&"Script", &"EditorIcons")
+			if is_instance_valid(button_show_steps):
+				button_show_steps.icon = get_theme_icon(&"ThemeSelectAll", &"EditorIcons")
 
 
 func update() -> void:
@@ -108,6 +117,10 @@ func update() -> void:
 				stage.board_data = board_data
 				stage.data_uuid = uuid
 				column.add_child(stage)
+				
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	button_show_descriptions.set_pressed_no_signal(ctx.settings.show_description_preview)
+	button_show_steps.set_pressed_no_signal(ctx.settings.show_steps_preview)
 
 
 # Do not use parameters the method is bound to diffrent signals.
@@ -128,3 +141,13 @@ func __on_search_bar_entered(filter: String):
 
 func __on_filter_changed_external():
 	search_bar.text = ""
+
+
+func __on_show_descriptions_toggled(button_pressed: bool):
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	ctx.settings.show_description_preview = button_pressed
+
+
+func __on_show_steps_toggled(button_pressed: bool):
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	ctx.settings.show_steps_preview = button_pressed
