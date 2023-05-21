@@ -8,22 +8,56 @@ signal entry_move_requesed(moved_entry: __StepEntry, target_entry: __StepEntry, 
 const __StepData := preload("res://addons/kanban_tasks/data/step.gd")
 const __StepEntry := preload("res://addons/kanban_tasks/view/details/step_entry.gd")
 
+@export var scrollable: bool = true:
+	set(value):
+		if value != scrollable:
+			scrollable = value
+			__update_children_settings()
+
+@export var tasks_can_be_removed: bool = true:
+	set(value):
+		if value != tasks_can_be_removed:
+			tasks_can_be_removed = value
+			__update_children_settings()
+
+@export var tasks_can_be_reordered: bool = true:
+	set(value):
+		if value != tasks_can_be_reordered:
+			tasks_can_be_reordered = value
+			__update_children_settings
+
 var __mouse_entered_step_list: bool = false
 var __move_target_entry: __StepEntry = null
 var __move_after_target: bool = false
 
+@onready var __scroll_container: ScrollContainer = %ScrollContainer
+@onready var __remove_separator: HSeparator = %RemoveSeparator
 @onready var __step_list: VBoxContainer = %StepList
 @onready var __remove_area: Button = %RemoveArea
 
 
-func _ready() -> void:
+func _ready():
 	__remove_area.icon = get_theme_icon(&"Remove", &"EditorIcons")
 	__step_list.draw.connect(__on_step_list_draw)
 	__step_list.mouse_exited.connect(__on_step_list_mouse_exited)
 	__step_list.mouse_entered.connect(__on_step_list_mouse_entered)
+	__update_children_settings()
+
+
+func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
+	if not tasks_can_be_removed and not tasks_can_be_reordered:
+		return false
+	if data is __StepEntry:
+		if __remove_area.get_global_rect().has_point(get_global_transform() * at_position):
+			return true
+		__update_move_target(at_position)
+		return (__move_target_entry != null)
+	return false
 
 
 func _get_drag_data(at_position: Vector2) -> Variant:
+	if not tasks_can_be_removed and not tasks_can_be_reordered:
+		return null
 	for entry in get_step_entries():
 		if entry.get_global_rect().has_point(get_global_transform() * at_position):
 			var preview := Label.new()
@@ -31,15 +65,6 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 			set_drag_preview(preview)
 			return entry
 	return null
-
-
-func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	if data is __StepEntry:
-		if __remove_area.get_global_rect().has_point(get_global_transform() * at_position):
-			return true
-		__update_move_target(at_position)
-		return (__move_target_entry != null)
-	return false
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
@@ -60,12 +85,27 @@ func add_step(step: __StepData) -> void:
 	entry.action_triggered.connect(__on_entry_action_triggered)
 
 
+func clear_steps():
+	for step in get_step_entries():
+		__step_list.remove_child(step)
+		step.queue_free()
+
+
 func get_step_entries() -> Array[__StepEntry]:
 	var step_entries: Array[__StepEntry] = []
 	for child in __step_list.get_children():
 		if child is __StepEntry:
 			step_entries.append(child)
 	return step_entries
+
+
+func __update_children_settings():
+	if is_instance_valid(__scroll_container):
+		__scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO if scrollable else ScrollContainer.SCROLL_MODE_DISABLED
+	if is_instance_valid(__remove_separator):
+		__remove_separator.visible = tasks_can_be_removed
+	if is_instance_valid(__remove_area):
+		__remove_area.visible = tasks_can_be_removed
 
 
 func __update_move_target(at_position: Vector2) -> void:

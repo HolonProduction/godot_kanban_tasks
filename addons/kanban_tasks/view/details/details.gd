@@ -66,8 +66,7 @@ func update() -> void:
 
 	category_select.item_selected.connect(__on_category_selected)
 
-	for step in step_holder.get_step_entries():
-		step.queue_free()
+	step_holder.clear_steps()
 	for step in board_data.get_task(data_uuid).steps:
 		step_holder.add_step(step)
 	for entry in step_holder.get_step_entries():

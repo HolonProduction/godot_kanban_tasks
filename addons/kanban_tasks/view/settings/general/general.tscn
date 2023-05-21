@@ -102,7 +102,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "res://kanban_tasks_data.json"
+text = "res://kanban_tasks_data.kanban"
 editable = false
 
 [node name="DataFilePathButton" type="Button" parent="PanelContainer/ScrollContainer/VBoxContainer/DataFilePathContainer"]
