@@ -89,6 +89,7 @@ func update() -> void:
 		if steps_on_board.get_item_id(i) == data.steps_on_board:
 			idx = i; break
 	steps_on_board.select(idx)
+	max_steps_on_board.value = data.max_steps_on_board
 	data_file_path.text = data.editor_data_file_path
 
 func __apply_changes() -> void:
