@@ -7,12 +7,12 @@ extends "kanban_resource.gd"
 var title: String:
 	set(value):
 		title = value
-		changed.emit()
+		__notify_changed()
 
 var color: Color:
 	set(value):
 		color = value
-		changed.emit()
+		__notify_changed()
 
 
 func _init(p_title: String = "", p_color: Color = Color()) -> void:

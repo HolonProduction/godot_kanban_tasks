@@ -1,5 +1,5 @@
 @tool
-extends RefCounted
+extends "kanban_resource.gd"
 
 ## Manages the loading and saving of other data.
 
@@ -11,14 +11,12 @@ const __Stage := preload("stage.gd")
 const __Task := preload("task.gd")
 const __KanbanResource := preload("kanban_resource.gd")
 
-signal changed()
-
 var layout: __Layout:
 	set(value):
 		if layout:
-			layout.changed.disconnect(__emit_changed)
+			layout.changed.disconnect(__notify_changed)
 		layout = value
-		layout.changed.connect(__emit_changed)
+		layout.changed.connect(__notify_changed)
 
 var __categories: Dictionary
 var __stages: Dictionary
@@ -94,7 +92,7 @@ func load(path: String) -> void:
 func add_category(category: __Category, silent: bool = false) -> String:
 	var res := __add_category(category)
 	if not silent:
-		changed.emit()
+		__notify_changed()
 	return res
 
 ## Returns the category associated with the given uuid or `null` if there is none.
@@ -119,7 +117,7 @@ func remove_category(uuid: String, silent: bool = false) -> void:
 		__categories[uuid].changed.disconnect(__emit_changed)
 		__categories.erase(uuid)
 		if not silent:
-			changed.emit()
+			__notify_changed()
 	else:
 		push_warning("Trying to remove uuid wich is not associated with a category.")
 
@@ -128,7 +126,7 @@ func remove_category(uuid: String, silent: bool = false) -> void:
 func add_stage(stage: __Stage, silent: bool = false) -> String:
 	var res := __add_stage(stage)
 	if not silent:
-		changed.emit()
+		__notify_changed()
 	return res
 
 ## Returns the stage associated with the given uuid or `null` if there is none.
@@ -153,7 +151,7 @@ func remove_stage(uuid: String, silent: bool = false) -> void:
 		__stages[uuid].changed.disconnect(__emit_changed)
 		__stages.erase(uuid)
 		if not silent:
-			changed.emit()
+			__notify_changed()
 	else:
 		push_warning("Trying to remove uuid wich is not associated with a stage.")
 
@@ -162,7 +160,7 @@ func remove_stage(uuid: String, silent: bool = false) -> void:
 func add_task(task: __Task, silent: bool = false) -> String:
 	var res := __add_task(task)
 	if not silent:
-		changed.emit()
+		__notify_changed()
 	return res
 
 ## Returns the task associated with the given uuid or `null` if there is none.
@@ -187,7 +185,7 @@ func remove_task(uuid: String, silent: bool = false) -> void:
 		__tasks[uuid].changed.disconnect(__emit_changed)
 		__tasks.erase(uuid)
 		if not silent:
-			changed.emit()
+			__notify_changed()
 	else:
 		push_warning("Trying to remove uuid wich is not associated with a task.")
 
@@ -196,7 +194,7 @@ func remove_task(uuid: String, silent: bool = false) -> void:
 # The uuid that is passed can be altered by the board if it is already used by
 # an other category. Therefore always use the returned uuid.
 func __add_category(category: __Category, uuid: String = "") -> String:
-	category.changed.connect(__emit_changed)
+	category.changed.connect(__notify_changed)
 
 	if __categories.has(uuid):
 		push_warning("The uuid " + uuid + ' is already used. A new one will be generated for the category "' + category.title + '".')
@@ -213,7 +211,7 @@ func __add_category(category: __Category, uuid: String = "") -> String:
 
 # Internal version of `add_stage` which can be provided with an uuid suggestion.
 func __add_stage(stage: __Stage, uuid: String = "") -> String:
-	stage.changed.connect(__emit_changed)
+	stage.changed.connect(__notify_changed)
 
 	if __stages.has(uuid):
 		push_warning("The uuid " + uuid + ' is already used. A new one will be generated for the stage "' + stage.title + '".')
@@ -230,7 +228,7 @@ func __add_stage(stage: __Stage, uuid: String = "") -> String:
 
 # Internal version of `add_task` which can be provided with an uuid suggestion.
 func __add_task(task: __Task, uuid: String = "") -> String:
-	task.changed.connect(__emit_changed)
+	task.changed.connect(__notify_changed)
 
 	if __tasks.has(uuid):
 		push_warning("The uuid " + uuid + ' is already used. A new one will be generated for the task "' + task.title + '".')
@@ -267,9 +265,6 @@ func __propagate_uuid_dict(dict: Dictionary) -> Array:
 		res.append(json)
 	return res
 
-
-func __emit_changed():
-	changed.emit()
 
 
 # TODO: Remove this sometime in the future.
