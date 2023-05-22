@@ -196,6 +196,9 @@ func __udpate_step_holder():
 	expand_button.visible = expandable
 
 func update() -> void:
+	if board_data == null or not is_inside_tree():
+		return
+	
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	var task := board_data.get_task(data_uuid)
 	var task_category := board_data.get_category(task.category)
