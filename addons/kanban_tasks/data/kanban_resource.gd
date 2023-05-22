@@ -7,6 +7,12 @@ extends RefCounted
 ## Emitted when the resource changed. The properties are updated before emitting.
 signal changed()
 
+var __emit_changed := true
+
+func __notify_changed():
+	if __emit_changed:
+		changed.emit()
+
 
 func _init() -> void:
 	pass

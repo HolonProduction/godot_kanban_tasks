@@ -9,24 +9,24 @@ const __Step := preload("step.gd")
 var title: String:
 	set(value):
 		title = value
-		changed.emit()
+		__notify_changed()
 
 var description: String:
 	set(value):
 		description = value
-		changed.emit()
+		__notify_changed()
 
 var category: String:
 	set(value):
 		category = value
-		changed.emit()
+		__notify_changed()
 
 var steps: Array[__Step]:
 	get:
 		return steps.duplicate()
 	set(value):
 		steps = value
-		changed.emit()
+		__notify_changed()
 
 
 func _init(p_title: String = "", p_description: String = "", p_category: String = "", p_steps: Array[__Step] = []) -> void:

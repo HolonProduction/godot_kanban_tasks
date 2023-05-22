@@ -10,7 +10,7 @@ var columns: Array[PackedStringArray] = []:
 		return columns.duplicate()
 	set(value):
 		columns = value
-		changed.emit()
+		__notify_changed()
 
 
 func _init(p_columns: Array[PackedStringArray] = []) -> void:

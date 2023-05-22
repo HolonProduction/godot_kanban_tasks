@@ -8,22 +8,22 @@ extends "kanban_resource.gd"
 var show_description_preview: bool = true:
 	set(value):
 		show_description_preview = value
-		changed.emit()
+		__notify_changed()
 
 var show_steps_preview: bool = true:
 	set(value):
 		show_steps_preview = value
-		changed.emit()
+		__notify_changed()
 
 var show_category_on_board: bool = true:
 	set(value):
 		show_category_on_board = value
-		changed.emit()
+		__notify_changed()
 
 var edit_step_details_exclusively: bool = false:
 	set(value):
 		edit_step_details_exclusively = value
-		changed.emit()
+		__notify_changed()
 
 enum DescriptionOnBoard {
 	FULL,
@@ -34,12 +34,12 @@ enum DescriptionOnBoard {
 var description_on_board: DescriptionOnBoard = DescriptionOnBoard.FIRST_LINE:
 	set(value):
 		description_on_board = value
-		changed.emit()
+		__notify_changed()
 
 var max_displayed_lines_in_description: int = 0:
 	set(value):
 		max_displayed_lines_in_description = value
-		changed.emit()
+		__notify_changed()
 		
 enum StepsOnBoard {
 	ONLY_OPEN,
@@ -50,37 +50,37 @@ enum StepsOnBoard {
 var steps_on_board: StepsOnBoard = StepsOnBoard.ONLY_OPEN:
 	set(value):
 		steps_on_board = value
-		changed.emit()
+		__notify_changed()
 
 var max_steps_on_board: int = 2:
 	set(value):
 		max_steps_on_board = value
-		changed.emit()
+		__notify_changed()
 		
 
 const DEFAULT_EDITOR_DATA_PATH: String = "res://kanban_tasks_data.json"
 var editor_data_file_path: String = DEFAULT_EDITOR_DATA_PATH:
 	set(value):
 		editor_data_file_path = value
-		changed.emit()
+		__notify_changed()
 
 var warn_about_empty_deletion: bool = false:
 	set(value):
 		warn_about_empty_deletion = value
-		changed.emit()
+		__notify_changed()
 
 var recent_file_count: int = 5:
 	set(value):
 		recent_file_count = value
 		recent_files.resize(value)
-		changed.emit()
+		__notify_changed()
 
 var recent_files: PackedStringArray = []:
 	get:
 		return recent_files.duplicate()
 	set(value):
 		recent_files = value
-		changed.emit()
+		__notify_changed()
 
 
 func to_json() -> Dictionary:

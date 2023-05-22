@@ -7,7 +7,7 @@ extends "kanban_resource.gd"
 var title: String:
 	set(value):
 		title = value
-		changed.emit()
+		__notify_changed()
 
 var tasks: Array[String] = []:
 	get:
@@ -15,7 +15,7 @@ var tasks: Array[String] = []:
 		return tasks.duplicate()
 	set(value):
 		tasks = value
-		changed.emit()
+		__notify_changed()
 
 
 func _init(p_title: String = "", p_tasks: Array[String] = []) -> void:
