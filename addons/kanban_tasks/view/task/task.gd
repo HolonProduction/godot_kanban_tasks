@@ -47,7 +47,6 @@ var __category_menu := __CategoryPopupMenu.new()
 @onready var context_menu: PopupMenu = %ContextMenu
 @onready var details: __DetailsScript = %Details
 
-
 func _ready() -> void:
 	__style_focus = StyleBoxFlat.new()
 	__style_focus.set_border_width_all(1)
@@ -81,7 +80,9 @@ func _enter_tree():
 		ctx.focus = ""
 		grab_focus()
 
-	ctx.filter_changed.connect(__apply_filter)
+	if not ctx.filter_changed.is_connected(__apply_filter):
+		ctx.filter_changed.connect(__apply_filter)
+		ctx.settings.changed.connect(update)
 	__apply_filter()
 
 

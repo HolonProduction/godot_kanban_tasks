@@ -17,11 +17,13 @@ signal show_documentation()
 
 var board_data: __BoardData:
 	set(value):
-		if board_data != null:
-			board_data.layout.changed.disconnect(update)
-		board_data = value
-		if board_data != null:
-			board_data.layout.changed.connect(update)
+		if value != board_data:
+			if board_data != null:
+				board_data.layout.changed.disconnect(update)
+			stages_per_uuid.clear()
+			board_data = value
+			if board_data != null:
+				board_data.layout.changed.connect(update)
 
 @onready var search_bar: LineEdit = %SearchBar
 @onready var button_advanced_search: Button = %AdvancedSearch
@@ -99,8 +101,11 @@ func _notification(what):
 			if is_instance_valid(button_show_steps):
 				button_show_steps.icon = get_theme_icon(&"ThemeSelectAll", &"EditorIcons")
 
+var stages_per_uuid = {}
 
 func update() -> void:
+	for stage in stages_per_uuid.values():
+		stage.get_parent().remove_child(stage)
 	for column in column_holder.get_children():
 		column.queue_free()
 
@@ -118,7 +123,12 @@ func update() -> void:
 			column_holder.add_child(column_scroll)
 
 			for uuid in column_data:
-				var stage := __StageScene.instantiate()
+				var stage: __StageScript
+				if stages_per_uuid.has(uuid):
+					stage = stages_per_uuid[uuid]
+				else:
+					stage = __StageScene.instantiate()
+					stages_per_uuid[uuid] = stage
 				stage.board_data = board_data
 				stage.data_uuid = uuid
 				column.add_child(stage)
