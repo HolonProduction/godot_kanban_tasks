@@ -82,7 +82,7 @@ func __update_file_dialog():
 		file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 		file_dialog.title = file_dialog_create_option.text
 		file_dialog.ok_button_text = "Save"
-		file_dialog.get_ok_button().disabled = true
+		file_dialog.get_ok_button().disabled = false
 	elif file_dialog_create_option.button_pressed:
 		file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 		file_dialog.title = file_dialog_create_option.text
