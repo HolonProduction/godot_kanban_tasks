@@ -24,7 +24,10 @@ var data: __SettingData = null
 @onready var data_file_path_button: Button = %DataFilePathButton
 @onready var file_dialog: FileDialog = %FileDialog
 
+var file_dialog_open_option: CheckBox
 var file_dialog_save_option: CheckBox
+var file_dialog_create_option: CheckBox
+var file_dialog_option_button_group: ButtonGroup
 
 func _ready() -> void:
 	update()
@@ -40,10 +43,23 @@ func _ready() -> void:
 		data_file_path_label.visible = false
 		data_file_path_container.visible = false
 	data_file_path_button.pressed.connect(__open_data_file_path_dialog)
+	
+	file_dialog_open_option = CheckBox.new()
+	file_dialog_open_option.text = "Open board from existing file"
+	file_dialog.get_vbox().add_child(file_dialog_open_option)
 	file_dialog_save_option = CheckBox.new()
-	file_dialog_save_option.text = "Save current data to the new file location"
-	file_dialog_save_option.toggled.connect(__file_dialog_save_option_toggled)
+	file_dialog_save_option.text = "Save current board to file"
 	file_dialog.get_vbox().add_child(file_dialog_save_option)
+	file_dialog_create_option = CheckBox.new()
+	file_dialog_create_option.text = "Create new board in file"
+	file_dialog.get_vbox().add_child(file_dialog_create_option)
+	file_dialog_option_button_group = ButtonGroup.new()
+	file_dialog_open_option.button_group = file_dialog_option_button_group
+	file_dialog_save_option.button_group = file_dialog_option_button_group
+	file_dialog_create_option.button_group = file_dialog_option_button_group
+	file_dialog_option_button_group.pressed.connect(func (button): __update_file_dialog())
+	file_dialog.get_line_edit().text_changed.connect(func (new_text): __update_file_dialog())
+	file_dialog_open_option.button_pressed = true
 
 func _enter_tree():
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
@@ -57,24 +73,40 @@ func __open_data_file_path_dialog():
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	file_dialog.clear_filters()
 	file_dialog.add_filter("*.kanban", "Kanban Board")
-	file_dialog.file_selected.connect(__update_editor_data_file, CONNECT_ONE_SHOT)
-	file_dialog.canceled.connect(func (): file_dialog.file_selected.disconnect(__update_editor_data_file))
+	file_dialog.file_selected.connect(__update_editor_data_file, CONNECT_ONE_SHOT) # Connected once for safety reason
+	file_dialog.canceled.connect(func (): file_dialog.file_selected.disconnect(__update_editor_data_file), CONNECT_ONE_SHOT)
 	file_dialog.popup_centered(file_dialog.size)
 
-func __file_dialog_save_option_toggled(button_pressed: bool):
-	if button_pressed:
+func __update_file_dialog():
+	if file_dialog_save_option.button_pressed:
 		file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+		file_dialog.title = file_dialog_create_option.text
+		file_dialog.ok_button_text = "Save"
+		file_dialog.get_ok_button().disabled = true
+	elif file_dialog_create_option.button_pressed:
+		file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+		file_dialog.title = file_dialog_create_option.text
+		file_dialog.ok_button_text = "Create"
+		file_dialog.get_ok_button().disabled = false
 	else:
 		file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+		file_dialog.title = file_dialog_open_option.text
+		file_dialog.ok_button_text = "Open"
+		file_dialog.get_ok_button().disabled = not FileAccess.file_exists(file_dialog.current_path)
+
 
 func __update_editor_data_file(path: String):
 	data_file_path.text = path
 	__apply_changes()
-	__Singletons.get_plugin(self).board_path = path
+	var plugin := __Singletons.get_plugin(self)
+	plugin.board_path = path
 	if file_dialog_save_option.button_pressed:
-		__Singletons.get_plugin(self).__save_board(path)
+		plugin.__save_board(path)
+	elif file_dialog_create_option.button_pressed:
+		plugin.__create_board()
+		plugin.__save_board(path)
 	else:
-		__Singletons.get_plugin(self).__open_board(path)
+		plugin.__open_board(path)
 
 func update() -> void:
 	show_description_preview.button_pressed = data.show_description_preview
