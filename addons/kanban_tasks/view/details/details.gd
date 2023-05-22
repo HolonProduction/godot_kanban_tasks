@@ -200,10 +200,9 @@ func __on_category_selected(index: int) -> void:
 func __create_step(text: String) -> void:
 	if text.is_empty():
 		return
-	var steps = board_data.get_task(data_uuid).steps
+	var task = board_data.get_task(data_uuid)
 	var data = __StepData.new(text)
-	steps.append(data)
-	board_data.get_task(data_uuid).steps = steps
+	task.add_step(data)
 	create_step_edit.text = ""
 	update()
 	if is_instance_valid(__step_data):
