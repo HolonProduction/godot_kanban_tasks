@@ -75,7 +75,7 @@ func update():
 	warning_sign.visible = too_high or len(board_data.layout.columns) > 4
 
 	for child in column_holder.get_children():
-		column_holder.queue_free(child)
+		child.queue_free()
 
 	var index = 0
 	for column in board_data.layout.columns:
