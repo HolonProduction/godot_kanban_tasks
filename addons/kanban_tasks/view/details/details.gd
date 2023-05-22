@@ -31,6 +31,22 @@ func _ready() -> void:
 	step_holder.entry_action_triggered.connect(__on_entry_action_triggered)
 	step_holder.entry_move_requesed.connect(__entry_move_requesed)
 
+	__load_internal_state()
+	about_to_popup.connect(__load_internal_state)
+	close_requested.connect(__save_internal_state)
+	confirmed.connect(__save_internal_state)
+	canceled.connect(__save_internal_state)
+
+func __load_internal_state():
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	print("[__load_internal_state] internal_states = %s" % ctx.settings.internal_states)
+	if ctx.settings.internal_states.has("details_editor_step_holder_width"):
+		step_holder.custom_minimum_size.x = ctx.settings.internal_states["details_editor_step_holder_width"]
+
+func __save_internal_state():	
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	ctx.settings.set_internal_state("details_editor_step_holder_width", step_holder.size.x)
+	print("[__save_internal_state] internal_states = %s" % ctx.settings.internal_states)
 
 func _notification(what: int) -> void:
 	match(what):
@@ -131,7 +147,7 @@ func edit_step_details(step: __StepData) -> void:
 	update()
 	step_edit.set_caret_line(step_edit.get_line_count())
 	step_edit.set_caret_column(len(step_edit.get_line(step_edit.get_line_count() - 1)))
-	step_edit.grab_focus.call_deferred()
+	#step_edit.grab_focus.call_deferred()
 
 
 func move_step_up(step: __StepData) -> void:
@@ -186,7 +202,8 @@ func __on_about_to_popup() -> void:
 		__close_step_details()
 	update()
 	if board_data.get_task(data_uuid).description.is_empty():
-		description_edit.grab_focus.call_deferred()
+		#description_edit.grab_focus.call_deferred()
+		pass
 
 
 func __on_description_changed() -> void:
@@ -208,4 +225,5 @@ func __create_step(text: String) -> void:
 	if is_instance_valid(__step_data):
 		for step in step_holder.get_step_entries():
 			if step.step_data == data:
-				step.grab_focus.call_deferred()
+				#step.grab_focus.call_deferred()
+				pass
