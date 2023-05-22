@@ -14,6 +14,7 @@ var data_uuid: String
 var __step_data: __StepData
 
 @onready var category_select: OptionButton = %Category
+@onready var h_split_container: HSplitContainer = %HSplitContainer
 @onready var description_edit: TextEdit = %Description
 @onready var step_holder: VBoxContainer = %StepHolder
 @onready var steps_panel_container: PanelContainer = %PanelContainer
@@ -30,6 +31,8 @@ func _ready() -> void:
 	notification(NOTIFICATION_THEME_CHANGED)
 	step_holder.entry_action_triggered.connect(__on_step_action_triggered)
 	step_holder.entry_move_requesed.connect(__step_move_requesed)
+
+	visibility_changed.connect(__save_internal_state)
 
 
 func _notification(what: int) -> void:
@@ -123,6 +126,17 @@ func __step_move_requesed(moved_entry: __StepEntry, target_entry: __StepEntry, m
 	update()
 
 
+func __load_internal_state():
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	if ctx.settings.internal_states.has("details_editor_step_holder_width"):
+		h_split_container.split_offset = ctx.settings.internal_states["details_editor_step_holder_width"]
+
+func __save_internal_state():
+	if not visible:
+		var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+		ctx.settings.set_internal_state("details_editor_step_holder_width", h_split_container.split_offset)
+
+
 func edit_step_details(step: __StepData) -> void:
 	if is_instance_valid(__step_data):
 		__step_data.changed.disconnect(update)
@@ -185,6 +199,7 @@ func __on_about_to_popup() -> void:
 	if is_instance_valid(__step_data):
 		__close_step_details()
 	update()
+	__load_internal_state()
 	if board_data.get_task(data_uuid).description.is_empty():
 		description_edit.grab_focus.call_deferred()
 

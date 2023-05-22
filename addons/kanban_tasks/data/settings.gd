@@ -29,7 +29,7 @@ var show_steps_preview: bool = true:
 		show_steps_preview = value
 		__notify_changed()
 
-var show_category_on_board: bool = true:
+var show_category_on_board: bool = false:
 	set(value):
 		show_category_on_board = value
 		__notify_changed()
@@ -89,7 +89,7 @@ var recent_files: PackedStringArray = []:
 # Set via set_internal_state to trigger notification
 # (As no clean-up, during develolpment some mess can remain in it.
 # Use clear or erase in your code in such cases, just don't forget there)
-var internal_states: Dictionary = { } 
+var internal_states: Dictionary = { }
 
 func set_internal_state(property: String, value: Variant):
 	internal_states[property] = value
@@ -114,7 +114,7 @@ func to_json() -> Dictionary:
 		res["recent_files"] = recent_files
 	else:
 		res["editor_data_file_path"] = editor_data_file_path
-		
+
 	res["internal_states"] = internal_states
 
 	return res

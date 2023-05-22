@@ -36,9 +36,7 @@ func get_stage_view_per_uuid(uuid: String) -> __StageScript:
 	var stage_view: __StageScript
 	if stage_views_per_uuid.has(uuid):
 		stage_view = stage_views_per_uuid[uuid]
-		print("cached stage")
 	else:
-		print("uncached stage")
 		stage_view = __StageScene.instantiate()
 		stage_view.parent_board_view = self
 		stage_views_per_uuid[uuid] = stage_view
