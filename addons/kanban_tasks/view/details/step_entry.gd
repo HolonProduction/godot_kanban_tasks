@@ -35,7 +35,6 @@ var being_edited := false
 
 func _ready():
 	set_h_size_flags(SIZE_EXPAND_FILL)
-	focus_mode = FOCUS_ALL
 
 	context_menu = PopupMenu.new()
 	context_menu.id_pressed.connect(__action)

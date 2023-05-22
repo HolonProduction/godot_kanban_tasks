@@ -24,12 +24,17 @@ const __StepEntry := preload("res://addons/kanban_tasks/view/details/step_entry.
 	set(value):
 		if value != steps_can_be_reordered:
 			steps_can_be_reordered = value
-			__update_children_settings
+			__update_children_settings()
 @export var steps_have_context_menu: bool = true:
 	set(value):
 		if value != steps_have_context_menu:
 			steps_have_context_menu = value
-			__update_children_settings
+			__update_children_settings()
+@export var steps_focus_mode := FocusMode.FOCUS_NONE:
+	set(value):
+		if value != steps_focus_mode:
+			steps_focus_mode = value
+			__update_children_settings()
 
 var __mouse_entered_step_list: bool = false
 var __move_target_entry: __StepEntry = null
@@ -89,6 +94,7 @@ func add_step(step: __StepData) -> void:
 	entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	entry.action_triggered.connect(__on_entry_action_triggered)
 	entry.context_menu_enabled = steps_have_context_menu
+	entry.focus_mode = steps_focus_mode
 
 
 func clear_steps():
@@ -115,6 +121,7 @@ func __update_children_settings():
 		__remove_area.visible = steps_can_be_removed
 	for entry in get_step_entries():
 		entry.context_menu_enabled = steps_have_context_menu
+		entry.focus_mode = steps_focus_mode
 
 
 func __update_move_target(at_position: Vector2) -> void:

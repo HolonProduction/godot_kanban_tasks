@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/kanban_tasks/view/details/details.gd" id="1_gh7s6"]
 [ext_resource type="PackedScene" uid="uid://dwjg5vyxx4g48" path="res://addons/kanban_tasks/view/details/step_holder.tscn" id="2_0ptaf"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wkyb1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2m6xd"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -89,8 +89,9 @@ placeholder_text = "Create Step"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_wkyb1")
+theme_override_styles/panel = SubResource("StyleBoxFlat_2m6xd")
 
 [node name="StepHolder" parent="VBoxContainer/HSplitContainer/StepList/PanelContainer" instance=ExtResource("2_0ptaf")]
 unique_name_in_owner = true
 layout_mode = 2
+steps_focus_mode = 2

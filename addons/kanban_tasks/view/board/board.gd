@@ -142,7 +142,6 @@ func __on_filter_changed_external():
 
 
 func __on_show_categories_toggled(button_pressed: bool):
-	print("h")
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	ctx.settings.show_category_on_board = button_pressed
 

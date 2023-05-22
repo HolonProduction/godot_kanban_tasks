@@ -55,6 +55,7 @@ layout_mode = 2
 [node name="CategoryButton" type="Button" parent="Panel/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 
 [node name="Title" type="VBoxContainer" parent="Panel/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -81,6 +82,7 @@ scrollable = false
 steps_can_be_removed = false
 steps_can_be_reordered = false
 steps_have_context_menu = false
+steps_focus_mode = null
 
 [node name="ExpandButton" type="Button" parent="Panel/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
