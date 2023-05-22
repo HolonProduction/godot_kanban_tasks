@@ -80,6 +80,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if __move_target_entry != null:
 		entry_move_requesed.emit(data, __move_target_entry, __move_after_target)
+		__move_target_entry = null
 	if data is __StepEntry:
 		if __remove_area.get_global_rect().has_point(get_global_transform() * at_position):
 			data.__action(__StepEntry.Actions.DELETE)
