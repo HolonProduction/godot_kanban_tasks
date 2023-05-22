@@ -182,7 +182,8 @@ func get_tasks() -> Array[String]:
 ## Removes a task by uuid.
 func remove_task(uuid: String, silent: bool = false) -> void:
 	if __tasks.has(uuid):
-		__tasks[uuid].changed.disconnect(__emit_changed)
+		if __tasks[uuid].changed.is_connected(__notify_changed):
+			__tasks[uuid].changed.disconnect(__notify_changed)
 		__tasks.erase(uuid)
 		if not silent:
 			__notify_changed()
