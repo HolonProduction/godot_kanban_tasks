@@ -10,6 +10,8 @@ const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
 const __StageScript := preload("res://addons/kanban_tasks/view/stage/stage.gd")
 const __StageScene := preload("res://addons/kanban_tasks/view/stage/stage.tscn")
+const __TaskScript := preload("res://addons/kanban_tasks/view/task/task.gd")
+const __TaskScene := preload("res://addons/kanban_tasks/view/task/task.tscn")
 const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
 const __SettingsScript := preload("res://addons/kanban_tasks/view/settings/settings.gd")
 
@@ -27,6 +29,29 @@ var board_data: __BoardData
 @onready var column_holder: HBoxContainer = %ColumnHolder
 @onready var settings: __SettingsScript = %SettingsView
 
+var stage_views_per_uuid = {}
+var task_views_per_uuid = {}
+
+func get_stage_view_per_uuid(uuid: String) -> __StageScript:
+	var stage_view: __StageScript
+	if stage_views_per_uuid.has(uuid):
+		stage_view = stage_views_per_uuid[uuid]
+		print("cached stage")
+	else:
+		print("uncached stage")
+		stage_view = __StageScene.instantiate()
+		stage_view.parent_board_view = self
+		stage_views_per_uuid[uuid] = stage_view
+	return stage_view
+
+func get_task_view_per_uuid(uuid: String) -> __TaskScript:
+	var task_view: __TaskScript
+	if task_views_per_uuid.has(uuid):
+		task_view = task_views_per_uuid[uuid]
+	else:
+		task_view = __TaskScene.instantiate()
+		task_views_per_uuid[uuid] = task_view
+	return task_view
 
 func _ready():
 	update()
@@ -92,11 +117,26 @@ func _notification(what):
 			if is_instance_valid(button_show_steps):
 				button_show_steps.icon = get_theme_icon(&"FileList", &"EditorIcons")
 
-var stages_per_uuid = {}
+
+func __clean_up_stage_and_task_view_dict():
+	var stages_on_board := PackedStringArray()
+	for column_data in board_data.layout.columns:
+		for uuid in column_data:
+			stages_on_board.append(uuid)
+	for uuid in stage_views_per_uuid:
+		if not uuid in stages_on_board:
+			stage_views_per_uuid[uuid].queue_free()
+			stage_views_per_uuid.erase(uuid)
+	var tasks_on_board := PackedStringArray()
+	for uuid in stages_on_board:
+		tasks_on_board.append_array(board_data.get_stage(uuid).tasks)
+	for uuid in task_views_per_uuid:
+		if not uuid in tasks_on_board:
+			task_views_per_uuid[uuid].queue_free()
+			task_views_per_uuid.erase(uuid)
+
 
 func update() -> void:
-	for stage in stages_per_uuid.values():
-		stage.get_parent().remove_child(stage)
 	for column in column_holder.get_children():
 		column.queue_free()
 
@@ -113,15 +153,14 @@ func update() -> void:
 		column_holder.add_child(column_scroll)
 
 		for uuid in column_data:
-			var stage: __StageScript
-			if stages_per_uuid.has(uuid):
-				stage = stages_per_uuid[uuid]
-			else:
-				stage = __StageScene.instantiate()
-				stages_per_uuid[uuid] = stage
-				stage.board_data = board_data
-				stage.data_uuid = uuid
+			var stage := get_stage_view_per_uuid(uuid)
+			stage.board_data = board_data
+			stage.data_uuid = uuid
+			if stage.get_parent() != null:
+				stage.get_parent().remove_child(stage)
 			column.add_child(stage)
+
+	__clean_up_stage_and_task_view_dict()
 
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	button_show_categories.set_pressed_no_signal(ctx.settings.show_category_on_board)
