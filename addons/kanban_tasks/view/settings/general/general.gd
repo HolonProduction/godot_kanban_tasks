@@ -125,9 +125,7 @@ func __apply_changes() -> void:
 	if data.changed.is_connected(update):
 		data.changed.disconnect(update)
 
-	# TODO: Make ability to turn off data.changed signaling. Below code will tirgger it 4 times, while its enough for once
-	# OR
-	# TODO: Instead calling compund update function, call changed.emit separatelly for setting data property change. 1 trigger per one change, and not 4 tigger per 1 change.
+	data.__emit_changed = false
 	data.show_description_preview = show_description_preview.button_pressed
 	data.show_steps_preview = show_steps_preview.button_pressed
 	data.show_category_on_board = show_category_on_board.button_pressed
@@ -137,5 +135,7 @@ func __apply_changes() -> void:
 	data.steps_on_board = steps_on_board.get_selected_id()
 	data.max_steps_on_board = max_steps_on_board.value
 	data.editor_data_file_path = data_file_path.text
+	data.__emit_changed = true
+	data.__notify_changed()
 
 	data.changed.connect(update)
