@@ -15,16 +15,16 @@ var show_steps_preview: bool = true:
 		show_steps_preview = value
 		changed.emit()
 
+var show_category_on_board: bool = true:
+	set(value):
+		show_category_on_board = value
+		changed.emit()
+
 var edit_step_details_exclusively: bool = false:
 	set(value):
 		edit_step_details_exclusively = value
 		changed.emit()
 
-var max_displayed_lines_in_description: int = 0:
-	set(value):
-		max_displayed_lines_in_description = value
-		changed.emit()
-		
 enum DescriptionOnBoard {
 	FULL,
 	FIRST_LINE,
@@ -36,6 +36,11 @@ var description_on_board: DescriptionOnBoard = DescriptionOnBoard.FIRST_LINE:
 		description_on_board = value
 		changed.emit()
 
+var max_displayed_lines_in_description: int = 0:
+	set(value):
+		max_displayed_lines_in_description = value
+		changed.emit()
+		
 enum StepsOnBoard {
 	ONLY_OPEN,
 	ALL_OPEN_FIRST,
@@ -81,11 +86,15 @@ var recent_files: PackedStringArray = []:
 func to_json() -> Dictionary:
 	var res := {
 		"show_description_preview": show_description_preview,
-		"warn_about_empty_deletion": warn_about_empty_deletion,
+		"show_steps_preview": show_steps_preview,
+		"show_category_on_board": show_category_on_board,
 		"edit_step_details_exclusively": edit_step_details_exclusively,
-		"max_displayed_lines_in_description": max_displayed_lines_in_description,
 		"description_on_board": description_on_board,
+		"max_displayed_lines_in_description": max_displayed_lines_in_description,
+		"steps_on_board": steps_on_board,
+		"max_steps_on_board": max_steps_on_board,
 		"editor_data_file_path": editor_data_file_path,
+		"warn_about_empty_deletion": warn_about_empty_deletion,
 	}
 
 	if not Engine.is_editor_hint():
@@ -98,16 +107,24 @@ func to_json() -> Dictionary:
 func from_json(json: Dictionary) -> void:
 	if json.has("show_description_preview"):
 		show_description_preview = json["show_description_preview"]
-	if json.has("warn_about_empty_deletion"):
-		warn_about_empty_deletion = json["warn_about_empty_deletion"]
+	if json.has("show_steps_preview"):
+		show_description_preview = json["show_steps_preview"]
+	if json.has("show_category_on_board"):
+		show_description_preview = json["show_category_on_board"]
 	if json.has("edit_step_details_exclusively"):
 		edit_step_details_exclusively = json["edit_step_details_exclusively"]
-	if json.has("max_displayed_lines_in_description"):
-		max_displayed_lines_in_description = json["max_displayed_lines_in_description"]
 	if json.has("description_on_board"):
 		description_on_board = json["description_on_board"]
+	if json.has("max_displayed_lines_in_description"):
+		max_displayed_lines_in_description = json["max_displayed_lines_in_description"]
+	if json.has("steps_on_board"):
+		description_on_board = json["steps_on_board"]
+	if json.has("max_steps_on_board"):
+		max_displayed_lines_in_description = json["max_steps_on_board"]
 	if json.has("editor_data_file_path"):
 		editor_data_file_path = json["editor_data_file_path"]
+	if json.has("warn_about_empty_deletion"):
+		warn_about_empty_deletion = json["warn_about_empty_deletion"]
 	if json.has("recent_file_count"):
 		recent_file_count = json["recent_file_count"]
 	if json.has("recent_files"):
