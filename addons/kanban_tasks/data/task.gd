@@ -37,6 +37,13 @@ func _init(p_title: String = "", p_description: String = "", p_category: String 
 	super._init()
 
 
+func add_step(step: __Step, silent: bool = false):
+	steps.append(step)
+	step.changed.connect(__notify_changed)
+	if not silent:
+		__notify_changed()
+
+
 func to_json() -> Dictionary:
 	var s: Array[Dictionary] = []
 	for step in steps:
