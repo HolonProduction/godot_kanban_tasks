@@ -80,7 +80,9 @@ func _ready() -> void:
 		ctx.focus = ""
 		grab_focus()
 
-	ctx.filter_changed.connect(__apply_filter)
+	if not ctx.filter_changed.is_connected(__apply_filter):
+		ctx.filter_changed.connect(__apply_filter)
+		ctx.settings.changed.connect(update)
 	__apply_filter()
 
 

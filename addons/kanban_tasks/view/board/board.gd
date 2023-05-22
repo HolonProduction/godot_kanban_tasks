@@ -92,8 +92,11 @@ func _notification(what):
 			if is_instance_valid(button_show_steps):
 				button_show_steps.icon = get_theme_icon(&"FileList", &"EditorIcons")
 
+var stages_per_uuid = {}
 
 func update() -> void:
+	for stage in stages_per_uuid.values():
+		stage.get_parent().remove_child(stage)
 	for column in column_holder.get_children():
 		column.queue_free()
 
@@ -110,9 +113,14 @@ func update() -> void:
 		column_holder.add_child(column_scroll)
 
 		for uuid in column_data:
-			var stage := __StageScene.instantiate()
-			stage.board_data = board_data
-			stage.data_uuid = uuid
+			var stage: __StageScript
+			if stages_per_uuid.has(uuid):
+				stage = stages_per_uuid[uuid]
+			else:
+				stage = __StageScene.instantiate()
+				stages_per_uuid[uuid] = stage
+				stage.board_data = board_data
+				stage.data_uuid = uuid
 			column.add_child(stage)
 
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
