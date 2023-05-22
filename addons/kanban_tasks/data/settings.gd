@@ -82,6 +82,19 @@ var recent_files: PackedStringArray = []:
 		recent_files = value
 		__notify_changed()
 
+# Here such settings can come, which is own responsibiity of a user control.
+# When it just want to persist its own state, but the setting is not used by anything else.
+# In this case there is no need to mess up this class with bolerplate code
+# E.g. the splitter position in the details editor window
+# Set via set_internal_state to trigger notification
+# (As no clean-up, during develolpment some mess can remain in it.
+# Use clear or erase in your code in such cases, just don't forget there)
+var internal_states: Dictionary = { } 
+
+func set_internal_state(property: String, value: Variant):
+	internal_states[property] = value
+	__notify_changed()
+
 
 func to_json() -> Dictionary:
 	var res := {
@@ -101,6 +114,8 @@ func to_json() -> Dictionary:
 		res["recent_files"] = recent_files
 	else:
 		res["editor_data_file_path"] = editor_data_file_path
+		
+	res["internal_states"] = internal_states
 
 	return res
 
@@ -130,3 +145,6 @@ func from_json(json: Dictionary) -> void:
 		max_steps_on_board = json["max_steps_on_board"]
 	if json.has("show_category_on_board"):
 		show_category_on_board = json["show_category_on_board"]
+	if json.has("internal_states"):
+		internal_states = json["internal_states"]
+	__notify_changed()
