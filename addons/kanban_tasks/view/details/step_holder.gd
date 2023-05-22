@@ -116,6 +116,7 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if __move_target_entry != null:
 		entry_move_requesed.emit(data, __move_target_entry, __move_after_target)
+		__move_target_entry = null
 	if data is Node and __is_step_entry(data):
 		if remove_area.get_global_rect().has_point(get_global_transform() * at_position):
 			data.__action(__StepEntry.Actions.DELETE)
