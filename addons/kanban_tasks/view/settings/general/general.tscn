@@ -30,18 +30,18 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7cqkc")
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="GridContainer" parent="PanelContainer/ScrollContainer"]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 2
 
-[node name="ShowDescriptionPreviewLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="ShowDescriptionPreviewLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Show description preview"
 
-[node name="ShowDescriptionPreview" type="CheckBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="ShowDescriptionPreview" type="CheckBox" parent="PanelContainer/ScrollContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -49,12 +49,12 @@ focus_mode = 0
 button_pressed = true
 text = "On"
 
-[node name="ShowStepsPreviewLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="ShowStepsPreviewLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Show steps preview"
 
-[node name="ShowStepsPreview" type="CheckBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="ShowStepsPreview" type="CheckBox" parent="PanelContainer/ScrollContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -62,23 +62,35 @@ focus_mode = 0
 button_pressed = true
 text = "On"
 
-[node name="EditStepDetailsExclusivelyLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="ShowCategoriesOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Edit step details in fullscreen"
+text = "Show categories on board"
 
-[node name="EditStepDetailsExclusively" type="CheckBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="ShowCategoriesOnBoard" type="CheckBox" parent="PanelContainer/ScrollContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "On"
 
-[node name="DescriptionOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="EditStepDetailsExclusivelyLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Edit step details in fullscreen"
+
+[node name="EditStepDetailsExclusively" type="CheckBox" parent="PanelContainer/ScrollContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "On"
+
+[node name="DescriptionOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
 layout_mode = 2
 text = "Description on board"
 
-[node name="DescriptionOnBoard" type="OptionButton" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="DescriptionOnBoard" type="OptionButton" parent="PanelContainer/ScrollContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 item_count = 3
@@ -90,27 +102,27 @@ popup/item_1/id = 1
 popup/item_2/text = "Until first blank line of description"
 popup/item_2/id = 2
 
-[node name="MaxDisplayedLinesInDescriptionLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="MaxDisplayedLinesInDescriptionLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Maximum displayed lines in description"
 
-[node name="MaxDisplayedLinesInDescription" type="SpinBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="MaxDisplayedLinesInDescription" type="SpinBox" parent="PanelContainer/ScrollContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 allow_greater = true
 update_on_text_changed = true
 
-[node name="StepsOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="StepsOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
 layout_mode = 2
 text = "Steps on board"
 
-[node name="StepsOnBoard" type="OptionButton" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="StepsOnBoard" type="OptionButton" parent="PanelContainer/ScrollContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 item_count = 3
-selected = 2
+selected = 0
 popup/item_0/text = "Only open steps"
 popup/item_0/id = 0
 popup/item_1/text = "All, but open first"
@@ -118,35 +130,36 @@ popup/item_1/id = 1
 popup/item_2/text = "All in original order"
 popup/item_2/id = 2
 
-[node name="MaxStepsOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="MaxStepsOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Maximum steps on board"
 
-[node name="MaxStepsOnBoard" type="SpinBox" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="MaxStepsOnBoard" type="SpinBox" parent="PanelContainer/ScrollContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+value = 2.0
 allow_greater = true
 update_on_text_changed = true
 
-[node name="DataFilePathLabel" type="Label" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="DataFilePathLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Data file path"
 
-[node name="DataFilePathContainer" type="HBoxContainer" parent="PanelContainer/ScrollContainer/VBoxContainer"]
+[node name="DataFilePathContainer" type="HBoxContainer" parent="PanelContainer/ScrollContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="DataFilePath" type="LineEdit" parent="PanelContainer/ScrollContainer/VBoxContainer/DataFilePathContainer"]
+[node name="DataFilePath" type="LineEdit" parent="PanelContainer/ScrollContainer/GridContainer/DataFilePathContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "res://osm_2.kanban"
 editable = false
 
-[node name="DataFilePathButton" type="Button" parent="PanelContainer/ScrollContainer/VBoxContainer/DataFilePathContainer"]
+[node name="DataFilePathButton" type="Button" parent="PanelContainer/ScrollContainer/GridContainer/DataFilePathContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = " ... "
