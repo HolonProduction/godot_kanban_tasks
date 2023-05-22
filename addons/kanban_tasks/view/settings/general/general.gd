@@ -8,7 +8,10 @@ const __SettingData := preload("res://addons/kanban_tasks/data/settings.gd")
 
 var data: __SettingData = null
 
+var file_dialog_open_option: CheckBox
 var file_dialog_save_option: CheckBox
+var file_dialog_create_option: CheckBox
+var file_dialog_option_button_group: ButtonGroup
 
 @onready var show_description_preview: CheckBox = %ShowDescriptionPreview
 @onready var show_steps_preview: CheckBox = %ShowStepsPreview
@@ -45,36 +48,61 @@ func _ready() -> void:
 		data_file_path_label.visible = false
 		data_file_path_container.visible = false
 	data_file_path_button.pressed.connect(__open_data_file_path_dialog)
+
+	file_dialog_open_option = CheckBox.new()
+	file_dialog_open_option.text = "Open board from existing file"
+	file_dialog.get_vbox().add_child(file_dialog_open_option)
 	file_dialog_save_option = CheckBox.new()
-	file_dialog_save_option.text = "Save current data to the new file location"
-	file_dialog_save_option.toggled.connect(__file_dialog_save_option_toggled)
+	file_dialog_save_option.text = "Save current board to file"
 	file_dialog.get_vbox().add_child(file_dialog_save_option)
+	file_dialog_create_option = CheckBox.new()
+	file_dialog_create_option.text = "Create new board in file"
+	file_dialog.get_vbox().add_child(file_dialog_create_option)
+	file_dialog_option_button_group = ButtonGroup.new()
+	file_dialog_open_option.button_group = file_dialog_option_button_group
+	file_dialog_save_option.button_group = file_dialog_option_button_group
+	file_dialog_create_option.button_group = file_dialog_option_button_group
+	file_dialog_option_button_group.pressed.connect(func (button): __update_file_dialog())
+	file_dialog.get_line_edit().text_changed.connect(func (new_text): __update_file_dialog())
+	file_dialog_open_option.button_pressed = true
+
+	file_dialog.file_selected.connect(__update_editor_data_file)
 
 
 func __open_data_file_path_dialog():
-	file_dialog_save_option.visible = true
-	file_dialog_save_option.button_pressed = false
+	file_dialog_open_option.set_pressed_no_signal(true)
+	file_dialog_save_option.set_pressed_no_signal(false)
+	file_dialog_create_option.set_pressed_no_signal(false)
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	file_dialog.clear_filters()
 	file_dialog.add_filter("*.kanban, *.json", "Kanban Board")
-	file_dialog.file_selected.connect(__update_editor_data_file, CONNECT_ONE_SHOT)
-	file_dialog.canceled.connect(func (): file_dialog.file_selected.disconnect(__update_editor_data_file))
 	file_dialog.popup_centered(file_dialog.size)
 
 
-func __file_dialog_save_option_toggled(button_pressed: bool):
-	if button_pressed:
+func __update_file_dialog():
+	if file_dialog_save_option.button_pressed:
 		file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+		file_dialog.title = file_dialog_save_option.text
+		file_dialog.ok_button_text = "Save"
+	elif file_dialog_create_option.button_pressed:
+		file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+		file_dialog.title = file_dialog_create_option.text
+		file_dialog.ok_button_text = "Create"
 	else:
 		file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+		file_dialog.title = file_dialog_open_option.text
+		file_dialog.ok_button_text = "Open"
 
 
 func __update_editor_data_file(path: String):
 	data_file_path.text = path
 	__apply_changes()
+
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	if file_dialog_save_option.button_pressed:
 		ctx.save_board.emit()
+	elif file_dialog_create_option.button_pressed:
+		ctx.create_board.emit()
 	else:
 		ctx.reload_board.emit()
 

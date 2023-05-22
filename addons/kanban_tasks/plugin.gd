@@ -128,8 +128,9 @@ func _enter_tree() -> void:
 			__save_board(editor_data_file_path)
 
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
-	ctx.save_board.connect(__action.bind(ACTION_SAVE))
+	ctx.save_board.connect(__editor_save_board)
 	ctx.reload_board.connect(__editor_reload_board)
+	ctx.create_board.connect(__editor_create_board)
 
 	__update_menus()
 
@@ -264,10 +265,22 @@ func __action(id: int) -> void:
 			get_tree().get_root().propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 
 
+func __editor_save_board():
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	__save_board(ctx.settings.editor_data_file_path)
+
+
 func __editor_reload_board():
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	__action(ACTION_SAVE)
 	__open_board(ctx.settings.editor_data_file_path)
+
+
+func __editor_create_board():
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	__action(ACTION_SAVE)
+	__create_board()
+	__save_board(ctx.settings.editor_data_file_path)
 
 
 func __request_discard_changes(callback: Callable) -> void:

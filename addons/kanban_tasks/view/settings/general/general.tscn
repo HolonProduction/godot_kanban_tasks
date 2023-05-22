@@ -72,6 +72,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
+button_pressed = true
 text = "On"
 
 [node name="EditStepDetailsExclusivelyLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
@@ -94,7 +95,7 @@ text = "Description on board"
 unique_name_in_owner = true
 layout_mode = 2
 item_count = 3
-selected = 1
+selected = 0
 popup/item_0/text = "Full description"
 popup/item_0/id = 0
 popup/item_1/text = "First line of description"
@@ -111,6 +112,7 @@ text = "Maximum displayed lines in description"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+value = 2.0
 allow_greater = true
 
 [node name="StepsOnBoardLabel" type="Label" parent="PanelContainer/ScrollContainer/GridContainer"]
@@ -164,6 +166,7 @@ text = " ... "
 
 [node name="FileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
+title = "Open board from existing file"
 size = Vector2i(800, 600)
 ok_button_text = "Save"
-show_hidden_files = true
+mode_overrides_title = false

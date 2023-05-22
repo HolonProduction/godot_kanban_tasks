@@ -341,7 +341,7 @@ func __apply_filter() -> void:
 					filter_matches = true
 			else:
 				break
-		
+
 	if filter_matches:
 		show()
 	else:
