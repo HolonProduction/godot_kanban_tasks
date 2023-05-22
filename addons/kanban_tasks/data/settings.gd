@@ -108,9 +108,9 @@ func from_json(json: Dictionary) -> void:
 	if json.has("show_description_preview"):
 		show_description_preview = json["show_description_preview"]
 	if json.has("show_steps_preview"):
-		show_description_preview = json["show_steps_preview"]
+		show_steps_preview = json["show_steps_preview"]
 	if json.has("show_category_on_board"):
-		show_description_preview = json["show_category_on_board"]
+		show_category_on_board = json["show_category_on_board"]
 	if json.has("edit_step_details_exclusively"):
 		edit_step_details_exclusively = json["edit_step_details_exclusively"]
 	if json.has("description_on_board"):
@@ -118,9 +118,9 @@ func from_json(json: Dictionary) -> void:
 	if json.has("max_displayed_lines_in_description"):
 		max_displayed_lines_in_description = json["max_displayed_lines_in_description"]
 	if json.has("steps_on_board"):
-		description_on_board = json["steps_on_board"]
+		steps_on_board = json["steps_on_board"]
 	if json.has("max_steps_on_board"):
-		max_displayed_lines_in_description = json["max_steps_on_board"]
+		max_steps_on_board = json["max_steps_on_board"]
 	if json.has("editor_data_file_path"):
 		editor_data_file_path = json["editor_data_file_path"]
 	if json.has("warn_about_empty_deletion"):
@@ -129,3 +129,4 @@ func from_json(json: Dictionary) -> void:
 		recent_file_count = json["recent_file_count"]
 	if json.has("recent_files"):
 		recent_files = PackedStringArray(json["recent_files"])
+	__notify_changed()
