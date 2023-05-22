@@ -34,7 +34,14 @@ toggle_mode = true
 
 [node name="VSeparator" type="VSeparator" parent="Header"]
 layout_mode = 2
+tooltip_text = "Show categories"
 theme_override_constants/separation = 0
+
+[node name="ShowCategories" type="Button" parent="Header"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+toggle_mode = true
 
 [node name="ShowDescriptions" type="Button" parent="Header"]
 unique_name_in_owner = true

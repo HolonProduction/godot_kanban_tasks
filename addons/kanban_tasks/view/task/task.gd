@@ -15,6 +15,7 @@ const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
 const __DetailsScript := preload("res://addons/kanban_tasks/view/details/details.gd")
 const __StepHolder := preload("res://addons/kanban_tasks/view/details/step_holder.gd")
 const __TooltipScript := preload("res://addons/kanban_tasks/view/tooltip.gd")
+const __CategoryPopupMenu := preload("res://addons/kanban_tasks/view/category/category_popup_menu.gd")
 
 enum ACTIONS {
 	DETAILS,
@@ -25,13 +26,19 @@ enum ACTIONS {
 
 const COLOR_WIDTH: int = 8
 
-var board_data: __BoardData
+var board_data: __BoardData:
+	set(value):
+		board_data = value
+		__update_category_menu()
 var data_uuid: String
 
 var __style_focus: StyleBoxFlat
 var __style_panel: StyleBoxFlat
 
+var __category_menu := __CategoryPopupMenu.new()
+
 @onready var panel_container: PanelContainer = %Panel
+@onready var category_button: Button = %CategoryButton
 @onready var title_label: __EditLabel = %Title
 @onready var description_label: Label = %Description
 @onready var step_holder: __StepHolder = %StepHolder
@@ -56,6 +63,10 @@ func _ready() -> void:
 	edit_button.pressed.connect(__action.bind(ACTIONS.DETAILS))
 	expand_button.state_changed.connect(func (expanded): __update_step_holder())
 
+	category_button.pressed.connect(__on_category_button_pressed)
+	add_child(__category_menu)
+	__category_menu.uuid_selected.connect(__on_category_menu_uuid_selected)
+
 	notification(NOTIFICATION_THEME_CHANGED)
 
 	await get_tree().create_timer(0.0).timeout
@@ -63,6 +74,7 @@ func _ready() -> void:
 
 	update()
 	board_data.get_task(data_uuid).changed.connect(update)
+	board_data.changed.connect(__update_category_button)
 
 	if data_uuid == ctx.focus:
 		ctx.focus = ""
@@ -189,6 +201,9 @@ func update() -> void:
 	__style_focus.border_color = task_category.color
 	__style_panel.border_color = task_category.color
 
+	category_button.text = task_category.title
+	category_button.visible = ctx.settings.show_category_on_board
+
 	if ctx.settings.show_description_preview:
 		var description: String
 		match ctx.settings.description_on_board:
@@ -224,9 +239,22 @@ func update() -> void:
 	title_label.text = board_data.get_task(data_uuid).title
 	title_label.text_changed.connect(__set_title)
 
+	__update_category_menu()
+	__update_category_button()
 	__update_tooltip()
 
 	queue_redraw()
+
+
+func __update_category_menu():
+	__category_menu.board_data = board_data
+
+
+func __update_category_button():
+	if board_data.get_category_count() > 1:
+		category_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	else:
+		category_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
 func __update_tooltip():
@@ -371,3 +399,12 @@ func __action(action):
 
 func __set_title(value: String) -> void:
 	board_data.get_task(data_uuid).title = value
+
+
+func __on_category_button_pressed():
+	__category_menu.popup_at_local_position(category_button, Vector2(0, category_button.size.y))
+
+
+func __on_category_menu_uuid_selected(category_uuid):
+	var task = board_data.get_task(data_uuid)
+	task.category = category_uuid

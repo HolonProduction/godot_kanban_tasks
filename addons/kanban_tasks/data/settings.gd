@@ -29,6 +29,11 @@ var show_steps_preview: bool = true:
 		show_steps_preview = value
 		changed.emit()
 
+var show_category_on_board: bool = true:
+	set(value):
+		show_category_on_board = value
+		changed.emit()
+
 var edit_step_details_exclusively: bool = false:
 	set(value):
 		edit_step_details_exclusively = value
@@ -86,6 +91,7 @@ func to_json() -> Dictionary:
 		"max_displayed_lines_in_description": max_displayed_lines_in_description,
 		"description_on_board": description_on_board,
 		"show_steps_preview": show_steps_preview,
+		"show_category_on_board": show_category_on_board,
 		"steps_on_board": steps_on_board,
 		"max_steps_on_board": max_steps_on_board,
 	}
@@ -122,3 +128,5 @@ func from_json(json: Dictionary) -> void:
 		steps_on_board = json["steps_on_board"]
 	if json.has("max_steps_on_board"):
 		max_steps_on_board = json["max_steps_on_board"]
+	if json.has("show_category_on_board"):
+		show_category_on_board = json["show_category_on_board"]

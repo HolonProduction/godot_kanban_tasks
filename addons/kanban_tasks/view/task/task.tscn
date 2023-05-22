@@ -49,10 +49,18 @@ theme_override_constants/margin_bottom = 5
 layout_mode = 2
 alignment = 1
 
-[node name="Title" type="VBoxContainer" parent="Panel/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CategoryButton" type="Button" parent="Panel/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Title" type="VBoxContainer" parent="Panel/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 34.1)
 layout_mode = 2
+size_flags_horizontal = 3
 alignment = 1
 script = ExtResource("2_iitpi")
 
