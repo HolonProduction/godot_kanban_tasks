@@ -317,11 +317,32 @@ func __apply_filter() -> void:
 		show()
 		return
 
+	var task = board_data.get_task(data_uuid)
 	var filter_simple := __simplify_string(ctx.filter.text)
-	var title := __simplify_string(board_data.get_task(data_uuid).title)
-	var description := __simplify_string(board_data.get_task(data_uuid).description)
-
-	if (title.matchn("*" + filter_simple + "*") or (ctx.filter.advanced and description.matchn("*" + filter_simple + "*"))):
+	var filter_matches := false
+	if not filter_matches:
+		var text_simple := __simplify_string(task.title)
+		if text_simple.matchn("*" + filter_simple + "*"):
+			filter_matches = true
+	if not filter_matches:
+		var category = board_data.get_category(task.category)
+		var text_simple := __simplify_string(category.title)
+		if text_simple.matchn("*" + filter_simple + "*"):
+			filter_matches = true
+	if not filter_matches and ctx.filter.advanced:
+		var text_simple := __simplify_string(task.description)
+		if text_simple.matchn("*" + filter_simple + "*"):
+			filter_matches = true
+	if not filter_matches and ctx.filter.advanced:
+		for step in task.steps:
+			if not filter_matches:
+				var text_simple := __simplify_string(step.details)
+				if text_simple.matchn("*" + filter_simple + "*"):
+					filter_matches = true
+			else:
+				break
+		
+	if filter_matches:
 		show()
 	else:
 		hide()
