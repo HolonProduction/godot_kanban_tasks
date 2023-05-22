@@ -19,12 +19,17 @@ const __StepEntry := preload("res://addons/kanban_tasks/view/details/step_entry.
 	set(value):
 		if value != steps_can_be_reordered:
 			steps_can_be_reordered = value
-			__update_children_settings
+			__update_children_settings()
 @export var steps_have_context_menu: bool = true:
 	set(value):
 		if value != steps_have_context_menu:
 			steps_have_context_menu = value
-			__update_children_settings
+			__update_children_settings()
+@export var steps_focus_mode: FocusMode = FOCUS_NONE:
+	set(value):
+		if value != steps_focus_mode:
+			steps_have_context_menu = value
+			__update_children_settings()
 
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 @onready var step_list: VBoxContainer = %StepList
@@ -57,6 +62,7 @@ func __update_children_settings():
 		remove_area.visible = steps_can_be_removed
 	for entry in get_step_entries():
 		entry.context_menu_enabled = steps_have_context_menu
+		entry.focus_mode = steps_focus_mode
 	
 func _get_drag_data(at_position: Vector2) -> Variant:
 	if not steps_can_be_removed and not steps_can_be_reordered:
