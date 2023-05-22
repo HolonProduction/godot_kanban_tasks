@@ -39,14 +39,12 @@ func _ready() -> void:
 
 func __load_internal_state():
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
-	print("[__load_internal_state] internal_states = %s" % ctx.settings.internal_states)
 	if ctx.settings.internal_states.has("details_editor_step_holder_width"):
 		step_holder.custom_minimum_size.x = ctx.settings.internal_states["details_editor_step_holder_width"]
 
 func __save_internal_state():	
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	ctx.settings.set_internal_state("details_editor_step_holder_width", step_holder.size.x)
-	print("[__save_internal_state] internal_states = %s" % ctx.settings.internal_states)
 
 func _notification(what: int) -> void:
 	match(what):
