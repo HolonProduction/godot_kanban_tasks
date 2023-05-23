@@ -38,7 +38,9 @@ func _init(p_title: String = "", p_description: String = "", p_category: String 
 
 
 func add_step(step: __Step, silent: bool = false):
-	steps.append(step)
+	var new_steps = steps
+	new_steps.append(step)
+	steps = new_steps
 	step.changed.connect(__notify_changed)
 	if not silent:
 		__notify_changed()
