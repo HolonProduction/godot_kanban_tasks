@@ -9,6 +9,7 @@ const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
 const __SettingData := preload("res://addons/kanban_tasks/data/settings.gd")
 
 signal filter_changed()
+signal save_board()
 
 ## The currently active filter.
 var filter: __Filter = null:

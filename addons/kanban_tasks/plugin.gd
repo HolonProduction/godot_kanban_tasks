@@ -123,6 +123,9 @@ func _enter_tree() -> void:
 			__create_board()
 			__save_board(EDITOR_DATA_PATH)
 
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	ctx.save_board.connect(__action.bind(ACTION_SAVE))
+
 	__update_menus()
 	__load_settings()
 
