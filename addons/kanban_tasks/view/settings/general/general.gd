@@ -69,7 +69,21 @@ func _ready() -> void:
 	file_dialog.file_selected.connect(__update_editor_data_file)
 
 
-func __open_data_file_path_dialog():
+func update() -> void:
+	show_description_preview.button_pressed = data.show_description_preview
+	show_steps_preview.button_pressed = data.show_steps_preview
+	show_category_on_board.button_pressed = data.show_category_on_board
+	edit_step_details_exclusively.button_pressed = data.edit_step_details_exclusively
+	max_displayed_lines_in_description.value = data.max_displayed_lines_in_description
+	max_steps_on_board.value = data.max_steps_on_board
+
+	description_on_board.select(description_on_board.get_item_index(data.description_on_board))
+	steps_on_board.select(steps_on_board.get_item_index(data.steps_on_board))
+
+	data_file_path.text = data.editor_data_file_path
+
+
+func __open_data_file_path_dialog() -> void:
 	file_dialog_open_option.set_pressed_no_signal(true)
 	file_dialog_save_option.set_pressed_no_signal(false)
 	file_dialog_create_option.set_pressed_no_signal(false)
@@ -79,7 +93,7 @@ func __open_data_file_path_dialog():
 	file_dialog.popup_centered(file_dialog.size)
 
 
-func __update_file_dialog():
+func __update_file_dialog() -> void:
 	if file_dialog_save_option.button_pressed:
 		file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 		file_dialog.title = file_dialog_save_option.text
@@ -94,7 +108,7 @@ func __update_file_dialog():
 		file_dialog.ok_button_text = "Open"
 
 
-func __update_editor_data_file(path: String):
+func __update_editor_data_file(path: String) -> void:
 	data_file_path.text = path
 	__apply_changes()
 
@@ -105,20 +119,6 @@ func __update_editor_data_file(path: String):
 		ctx.create_board.emit()
 	else:
 		ctx.reload_board.emit()
-
-
-func update() -> void:
-	show_description_preview.button_pressed = data.show_description_preview
-	show_steps_preview.button_pressed = data.show_steps_preview
-	show_category_on_board.button_pressed = data.show_category_on_board
-	edit_step_details_exclusively.button_pressed = data.edit_step_details_exclusively
-	max_displayed_lines_in_description.value = data.max_displayed_lines_in_description
-	max_steps_on_board.value = data.max_steps_on_board
-
-	description_on_board.select(description_on_board.get_item_index(data.description_on_board))
-	steps_on_board.select(steps_on_board.get_item_index(data.steps_on_board))
-
-	data_file_path.text = data.editor_data_file_path
 
 
 func __apply_changes() -> void:

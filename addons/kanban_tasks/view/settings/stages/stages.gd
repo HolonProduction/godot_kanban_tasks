@@ -21,7 +21,7 @@ var stylebox_hp: StyleBoxFlat
 @onready var task_destination: OptionButton = %TaskDestination
 
 
-func _ready():
+func _ready() -> void:
 	column_add.focus_mode = Control.FOCUS_NONE
 	column_add.pressed.connect(__on_add_stage.bind(-1))
 
@@ -63,7 +63,7 @@ func _notification(what) -> void:
 				warning_sign.icon = get_theme_icon(&"NodeWarning", &"EditorIcons")
 
 
-func update():
+func update() -> void:
 	if not board_data.layout.changed.is_connected(update):
 		board_data.layout.changed.connect(update)
 
@@ -187,12 +187,12 @@ func __remove_stage(uuid: String) -> void:
 	board_data.layout.columns = columns
 
 
-func __settings_changed():
+func __settings_changed() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	warn_about_empty_deletion.button_pressed = ctx.settings.warn_about_empty_deletion
 
 
-func __apply_settings_changes(warn: bool):
+func __apply_settings_changes(warn: bool) -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	ctx.settings.changed.disconnect(__settings_changed)
 	ctx.settings.warn_about_empty_deletion = warn

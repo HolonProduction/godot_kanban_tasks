@@ -267,7 +267,6 @@ func __propagate_uuid_dict(dict: Dictionary) -> Array:
 	return res
 
 
-
 # TODO: Remove this sometime in the future.
 ## Loads a board from the old file format.
 func __from_legacy_file(data: Dictionary) -> void:

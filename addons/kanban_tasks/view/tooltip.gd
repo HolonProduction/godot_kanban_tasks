@@ -1,23 +1,24 @@
 @tool
 extends RichTextLabel
 
+
 @export var mimicked_paragraph_spacing_font_size: int = 6
 
 
-func _init():
+func _init() -> void:
 	bbcode_enabled = true
 	fit_content = true
 	custom_minimum_size.x = 500
 	resized.connect(__on_resized)
 
 
-func _notification(what):
+func _notification(what) -> void:
 	match what:
 		NOTIFICATION_ENTER_TREE:
 			__take_over_label_style()
 
 
-func mimic_paragraphs():
+func mimic_paragraphs() -> void:
 	var what_in_order: PackedStringArray = [
 		"[/p]\n[p]",
 		"[/p][p]",
@@ -34,14 +35,13 @@ func mimic_paragraphs():
 	text = new_text
 
 
-func __take_over_label_style():
+func __take_over_label_style() -> void:
 	add_theme_stylebox_override(&"normal", get_theme_stylebox(&"normal", &"Label"))
 
 
-func __on_resized():
+func __on_resized() -> void:
 	# Reduce width if unnecessary, as there is no line wraps
 	var stylebox = get_theme_stylebox(&"normal")
 	var required_width = get_content_width() + stylebox.content_margin_left + stylebox.content_margin_right
 	if required_width < custom_minimum_size.x:
 		custom_minimum_size.x = required_width
-

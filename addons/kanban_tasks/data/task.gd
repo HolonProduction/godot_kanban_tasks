@@ -37,7 +37,7 @@ func _init(p_title: String = "", p_description: String = "", p_category: String 
 	super._init()
 
 
-func add_step(step: __Step, silent: bool = false):
+func add_step(step: __Step, silent: bool = false) -> void:
 	var new_steps = steps
 	new_steps.append(step)
 	steps = new_steps

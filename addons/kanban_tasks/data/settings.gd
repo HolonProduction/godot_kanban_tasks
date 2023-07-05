@@ -91,7 +91,8 @@ var recent_files: PackedStringArray = []:
 # Use clear or erase in your code in such cases, just don't forget there)
 var internal_states: Dictionary = { }
 
-func set_internal_state(property: String, value: Variant):
+
+func set_internal_state(property: String, value: Variant) -> void:
 	internal_states[property] = value
 	__notify_changed()
 

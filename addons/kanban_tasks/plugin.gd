@@ -265,18 +265,18 @@ func __action(id: int) -> void:
 			get_tree().get_root().propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 
 
-func __editor_save_board():
+func __editor_save_board() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	__save_board(ctx.settings.editor_data_file_path)
 
 
-func __editor_reload_board():
+func __editor_reload_board() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	__action(ACTION_SAVE)
 	__open_board(ctx.settings.editor_data_file_path)
 
 
-func __editor_create_board():
+func __editor_create_board() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	__action(ACTION_SAVE)
 	__create_board()
@@ -374,7 +374,7 @@ func __on_board_changed() -> void:
 		__request_save()
 
 
-func __on_start_view_open_board(path: String):
+func __on_start_view_open_board(path: String) -> void:
 	if path.is_empty():
 		__action(ACTION_OPEN)
 	else:

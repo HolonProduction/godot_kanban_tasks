@@ -14,7 +14,7 @@ signal state_changed(expanded: bool)
 var __texture_rect := TextureRect.new()
 
 
-func _init():
+func _init() -> void:
 	focus_mode = Control.FOCUS_NONE
 	flat = true
 	var center := CenterContainer.new()
@@ -26,14 +26,14 @@ func _init():
 	__update_icon()
 
 
-func _notification(what):
+func _notification(what) -> void:
 	if what == NOTIFICATION_THEME_CHANGED:
 		__texture_rect.texture = get_theme_icon(&"Collapse", &"EditorIcons")
 
 
-func __update_icon():
+func __update_icon() -> void:
 	__texture_rect.flip_v = expanded
 
 
-func __on_pressed():
+func __on_pressed() -> void:
 	expanded = !expanded

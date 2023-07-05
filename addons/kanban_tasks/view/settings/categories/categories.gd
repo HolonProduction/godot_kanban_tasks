@@ -41,7 +41,7 @@ func update() -> void:
 		category_holder.add_child(entry)
 
 
-func __add_category():
+func __add_category() -> void:
 	var color = Color.from_hsv(randomizer.randf(), randomizer.randf_range(0.8, 1.0), randomizer.randf_range(0.7, 1.0))
 	var data = __CategoryData.new("New category", color)
 	var uuid = board_data.add_category(data)

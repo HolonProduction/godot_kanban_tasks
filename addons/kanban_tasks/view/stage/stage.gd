@@ -30,6 +30,7 @@ var __category_menu := __CategoryPopupMenu.new()
 
 var parent_board_view: __BoardView
 
+
 func _ready() -> void:
 	update()
 	board_data.get_stage(data_uuid).changed.connect(update.bind(true))
@@ -193,7 +194,7 @@ func update(single: bool = false) -> void:
 	__update_category_menus()
 
 
-func __update_category_menus():
+func __update_category_menus() -> void:
 	__category_menu.board_data = board_data
 
 
@@ -270,5 +271,5 @@ func __target_height_from_position(pos: Vector2) -> float:
 	return c
 
 
-func __on_category_create_popup_uuid_selected(uuid):
+func __on_category_create_popup_uuid_selected(uuid) -> void:
 	__create_task(uuid)

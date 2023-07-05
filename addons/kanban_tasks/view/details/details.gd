@@ -92,51 +92,6 @@ func popup_centered_ratio_no_fullscreen(ratio: float = 0.8) -> void:
 	popup(Rect2i(Vector2(viewport.position) + viewport.size / 2.0 - viewport.size * ratio / 2.0, viewport.size * ratio))
 
 
-func __on_step_action_triggered(entry: __StepEntry, action: __StepEntry.Actions, meta) -> void:
-	match action:
-		__StepEntry.Actions.EDIT_HARD:
-			edit_step_details(entry.step_data)
-		__StepEntry.Actions.EDIT_SOFT:
-			if is_instance_valid(__step_data):
-				edit_step_details(entry.step_data)
-		__StepEntry.Actions.CLOSE:
-			close_step_details(entry.step_data)
-		__StepEntry.Actions.DELETE:
-			delete_step(entry.step_data)
-		__StepEntry.Actions.MOVE_UP:
-			move_step_up(entry.step_data)
-		__StepEntry.Actions.MOVE_DOWN:
-			move_step_down(entry.step_data)
-
-
-func __step_move_requesed(moved_entry: __StepEntry, target_entry: __StepEntry, move_after_target: bool) -> void:
-	var steps = board_data.get_task(data_uuid).steps
-	var moved_idx = steps.find(moved_entry.step_data)
-	var target_idx = steps.find(target_entry.step_data)
-	if moved_idx < 0 or target_idx < 0 or moved_idx == target_idx:
-		return
-	steps.erase(moved_entry.step_data)
-	if moved_idx < target_idx:
-		target_idx -= 1
-	if move_after_target:
-		steps.insert(target_idx + 1, moved_entry.step_data)
-	else:
-		steps.insert(target_idx, moved_entry.step_data)
-	board_data.get_task(data_uuid).steps = steps
-	update()
-
-
-func __load_internal_state():
-	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
-	if ctx.settings.internal_states.has("details_editor_step_holder_width"):
-		h_split_container.split_offset = ctx.settings.internal_states["details_editor_step_holder_width"]
-
-func __save_internal_state():
-	if not visible:
-		var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
-		ctx.settings.set_internal_state("details_editor_step_holder_width", h_split_container.split_offset)
-
-
 func edit_step_details(step: __StepData) -> void:
 	if is_instance_valid(__step_data):
 		__step_data.changed.disconnect(update)
@@ -182,13 +137,59 @@ func close_step_details(step: __StepData) -> void:
 		__close_step_details()
 
 
+func __on_step_action_triggered(entry: __StepEntry, action: __StepEntry.Actions) -> void:
+	match action:
+		__StepEntry.Actions.EDIT_HARD:
+			edit_step_details(entry.step_data)
+		__StepEntry.Actions.EDIT_SOFT:
+			if is_instance_valid(__step_data):
+				edit_step_details(entry.step_data)
+		__StepEntry.Actions.CLOSE:
+			close_step_details(entry.step_data)
+		__StepEntry.Actions.DELETE:
+			delete_step(entry.step_data)
+		__StepEntry.Actions.MOVE_UP:
+			move_step_up(entry.step_data)
+		__StepEntry.Actions.MOVE_DOWN:
+			move_step_down(entry.step_data)
+
+
+func __step_move_requesed(moved_entry: __StepEntry, target_entry: __StepEntry, move_after_target: bool) -> void:
+	var steps = board_data.get_task(data_uuid).steps
+	var moved_idx = steps.find(moved_entry.step_data)
+	var target_idx = steps.find(target_entry.step_data)
+	if moved_idx < 0 or target_idx < 0 or moved_idx == target_idx:
+		return
+	steps.erase(moved_entry.step_data)
+	if moved_idx < target_idx:
+		target_idx -= 1
+	if move_after_target:
+		steps.insert(target_idx + 1, moved_entry.step_data)
+	else:
+		steps.insert(target_idx, moved_entry.step_data)
+	board_data.get_task(data_uuid).steps = steps
+	update()
+
+
+func __load_internal_state() -> void:
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	if ctx.settings.internal_states.has("details_editor_step_holder_width"):
+		h_split_container.split_offset = ctx.settings.internal_states["details_editor_step_holder_width"]
+
+
+func __save_internal_state() -> void:
+	if not visible:
+		var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+		ctx.settings.set_internal_state("details_editor_step_holder_width", h_split_container.split_offset)
+
+
 func __close_step_details() -> void:
 	__step_data.changed.disconnect(update)
 	__step_data = null
 	update()
 
 
-func __on_step_details_changed():
+func __on_step_details_changed() -> void:
 	if __step_data.changed.is_connected(update):
 		__step_data.changed.disconnect(update)
 	__step_data.details = step_edit.text

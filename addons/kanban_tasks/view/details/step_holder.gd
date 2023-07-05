@@ -2,7 +2,7 @@
 extends VBoxContainer
 
 
-signal entry_action_triggered(entry: __StepEntry, action: __StepEntry.Actions, meta)
+signal entry_action_triggered(entry: __StepEntry, action: __StepEntry.Actions)
 signal entry_move_requesed(moved_entry: __StepEntry, target_entry: __StepEntry, move_after_target: bool)
 
 const __StepData := preload("res://addons/kanban_tasks/data/step.gd")
@@ -25,11 +25,13 @@ const __StepEntry := preload("res://addons/kanban_tasks/view/details/step_entry.
 		if value != steps_can_be_reordered:
 			steps_can_be_reordered = value
 			__update_children_settings()
+
 @export var steps_have_context_menu: bool = true:
 	set(value):
 		if value != steps_have_context_menu:
 			steps_have_context_menu = value
 			__update_children_settings()
+
 @export var steps_focus_mode := FocusMode.FOCUS_NONE:
 	set(value):
 		if value != steps_focus_mode:
@@ -46,7 +48,7 @@ var __move_after_target: bool = false
 @onready var __remove_area: Button = %RemoveArea
 
 
-func _ready():
+func _ready() -> void:
 	__remove_area.icon = get_theme_icon(&"Remove", &"EditorIcons")
 	__step_list.draw.connect(__on_step_list_draw)
 	__step_list.mouse_exited.connect(__on_step_list_mouse_exited)
@@ -98,7 +100,7 @@ func add_step(step: __StepData) -> void:
 	entry.focus_mode = steps_focus_mode
 
 
-func clear_steps():
+func clear_steps() -> void:
 	for step in get_step_entries():
 		__step_list.remove_child(step)
 		step.queue_free()
@@ -113,7 +115,7 @@ func get_step_entries() -> Array[__StepEntry]:
 	return step_entries
 
 
-func __update_children_settings():
+func __update_children_settings() -> void:
 	if is_instance_valid(__scroll_container):
 		__scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO if scrollable else ScrollContainer.SCROLL_MODE_DISABLED
 	if is_instance_valid(__remove_separator):
@@ -178,5 +180,5 @@ func __on_step_list_draw() -> void:
 		__step_list.draw_rect(preview_rect, get_theme_color(&"step_move_review_color"))
 
 
-func __on_entry_action_triggered(entry, action, meta):
-	entry_action_triggered.emit(entry, action, meta)
+func __on_entry_action_triggered(entry, action) -> void:
+	entry_action_triggered.emit(entry, action)

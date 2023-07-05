@@ -4,15 +4,13 @@ extends HBoxContainer
 ## Visual representation of a step.
 
 
-signal action_triggered(entry: __StepEntry, action: Actions, meta)
+signal action_triggered(entry: __StepEntry, action: Actions)
 
 const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
 const __StepData := preload("res://addons/kanban_tasks/data/step.gd")
 const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
 const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
 const __StepEntry := preload("step_entry.gd")
-
-@export var context_menu_enabled: bool = true
 
 enum Actions {
 	DELETE,
@@ -22,6 +20,8 @@ enum Actions {
 	EDIT_SOFT, ## Only switches to this step if the details are opened.
 	CLOSE,
 }
+
+@export var context_menu_enabled: bool = true
 
 var done: CheckBox
 var title_label: Label
@@ -33,7 +33,7 @@ var step_data: __StepData
 var being_edited := false
 
 
-func _ready():
+func _ready() -> void:
 	set_h_size_flags(SIZE_EXPAND_FILL)
 
 	context_menu = PopupMenu.new()
@@ -74,15 +74,6 @@ func _shortcut_input(event: InputEvent) -> void:
 			done.button_pressed = not done.button_pressed
 
 
-func _notification(what):
-	match(what):
-		NOTIFICATION_DRAW:
-			if has_focus() or being_edited:
-				focus_box.draw(get_canvas_item(), Rect2(Vector2.ZERO, get_rect().size))
-		NOTIFICATION_FOCUS_ENTER:
-			__action(Actions.EDIT_SOFT)
-
-
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		accept_event()
@@ -97,6 +88,15 @@ func _gui_input(event: InputEvent) -> void:
 		__action(Actions.EDIT_HARD)
 
 
+func _notification(what) -> void:
+	match(what):
+		NOTIFICATION_DRAW:
+			if has_focus() or being_edited:
+				focus_box.draw(get_canvas_item(), Rect2(Vector2.ZERO, get_rect().size))
+		NOTIFICATION_FOCUS_ENTER:
+			__action(Actions.EDIT_SOFT)
+
+
 func update() -> void:
 	tooltip_text = step_data.details
 	done.set_pressed_no_signal(step_data.done)
@@ -105,7 +105,7 @@ func update() -> void:
 
 
 func __action(what: Actions) -> void:
-	action_triggered.emit(self, what, null)
+	action_triggered.emit(self, what)
 
 
 func __update_context_menu() -> void:

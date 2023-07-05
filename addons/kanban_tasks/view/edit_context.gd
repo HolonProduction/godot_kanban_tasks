@@ -1,7 +1,6 @@
 @tool
 extends Node
 
-
 ## Global stuff for the view system.
 
 

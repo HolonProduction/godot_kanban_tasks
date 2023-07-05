@@ -32,24 +32,6 @@ var board_data: __BoardData
 var stage_views_per_uuid = {}
 var task_views_per_uuid = {}
 
-func get_stage_view_per_uuid(uuid: String) -> __StageScript:
-	var stage_view: __StageScript
-	if stage_views_per_uuid.has(uuid):
-		stage_view = stage_views_per_uuid[uuid]
-	else:
-		stage_view = __StageScene.instantiate()
-		stage_view.parent_board_view = self
-		stage_views_per_uuid[uuid] = stage_view
-	return stage_view
-
-func get_task_view_per_uuid(uuid: String) -> __TaskScript:
-	var task_view: __TaskScript
-	if task_views_per_uuid.has(uuid):
-		task_view = task_views_per_uuid[uuid]
-	else:
-		task_view = __TaskScene.instantiate()
-		task_views_per_uuid[uuid] = task_view
-	return task_view
 
 func _ready():
 	update()
@@ -116,24 +98,6 @@ func _notification(what):
 				button_show_steps.icon = get_theme_icon(&"FileList", &"EditorIcons")
 
 
-func __clean_up_stage_and_task_view_dict():
-	var stages_on_board := PackedStringArray()
-	for column_data in board_data.layout.columns:
-		for uuid in column_data:
-			stages_on_board.append(uuid)
-	for uuid in stage_views_per_uuid:
-		if not uuid in stages_on_board:
-			stage_views_per_uuid[uuid].queue_free()
-			stage_views_per_uuid.erase(uuid)
-	var tasks_on_board := PackedStringArray()
-	for uuid in stages_on_board:
-		tasks_on_board.append_array(board_data.get_stage(uuid).tasks)
-	for uuid in task_views_per_uuid:
-		if not uuid in tasks_on_board:
-			task_views_per_uuid[uuid].queue_free()
-			task_views_per_uuid.erase(uuid)
-
-
 func update() -> void:
 	for column in column_holder.get_children():
 		column.queue_free()
@@ -164,6 +128,45 @@ func update() -> void:
 	button_show_categories.set_pressed_no_signal(ctx.settings.show_category_on_board)
 	button_show_descriptions.set_pressed_no_signal(ctx.settings.show_description_preview)
 	button_show_steps.set_pressed_no_signal(ctx.settings.show_steps_preview)
+
+
+func get_stage_view_per_uuid(uuid: String) -> __StageScript:
+	var stage_view: __StageScript
+	if stage_views_per_uuid.has(uuid):
+		stage_view = stage_views_per_uuid[uuid]
+	else:
+		stage_view = __StageScene.instantiate()
+		stage_view.parent_board_view = self
+		stage_views_per_uuid[uuid] = stage_view
+	return stage_view
+
+
+func get_task_view_per_uuid(uuid: String) -> __TaskScript:
+	var task_view: __TaskScript
+	if task_views_per_uuid.has(uuid):
+		task_view = task_views_per_uuid[uuid]
+	else:
+		task_view = __TaskScene.instantiate()
+		task_views_per_uuid[uuid] = task_view
+	return task_view
+
+
+func __clean_up_stage_and_task_view_dict() -> void:
+	var stages_on_board := PackedStringArray()
+	for column_data in board_data.layout.columns:
+		for uuid in column_data:
+			stages_on_board.append(uuid)
+	for uuid in stage_views_per_uuid:
+		if not uuid in stages_on_board:
+			stage_views_per_uuid[uuid].queue_free()
+			stage_views_per_uuid.erase(uuid)
+	var tasks_on_board := PackedStringArray()
+	for uuid in stages_on_board:
+		tasks_on_board.append_array(board_data.get_stage(uuid).tasks)
+	for uuid in task_views_per_uuid:
+		if not uuid in tasks_on_board:
+			task_views_per_uuid[uuid].queue_free()
+			task_views_per_uuid.erase(uuid)
 
 
 # Do not use parameters the method is bound to diffrent signals.

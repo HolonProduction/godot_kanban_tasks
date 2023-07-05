@@ -118,6 +118,13 @@ func _shortcut_input(event: InputEvent) -> void:
 			__action(ACTIONS.DUPLICATE)
 
 
+func _make_custom_tooltip(for_text) -> Object:
+	var tooltip := __TooltipScript.new()
+	tooltip.text = for_text
+	tooltip.mimic_paragraphs()
+	return tooltip
+
+
 func _notification(what: int) -> void:
 	match(what):
 		NOTIFICATION_THEME_CHANGED:
@@ -140,60 +147,6 @@ func _notification(what: int) -> void:
 					),
 				)
 
-func __update_step_holder():
-	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
-	var task := board_data.get_task(data_uuid)
-	var expanded := expand_button.expanded
-
-	step_holder.clear_steps()
-	var step_count := 0
-	var expandable := false
-
-	if ctx.settings.show_steps_preview:
-		var steps := board_data.get_task(data_uuid).steps
-		var max_step_count := ctx.settings.max_steps_on_board
-		match ctx.settings.steps_on_board:
-			ctx.settings.StepsOnBoard.ONLY_OPEN:
-				for i in steps.size():
-					if steps[i].done:
-						continue
-					if max_step_count > 0 and step_count >= max_step_count:
-						expandable = true
-						if not expanded:
-							break
-					step_holder.add_step(steps[i])
-					step_count += 1
-			ctx.settings.StepsOnBoard.ALL_OPEN_FIRST:
-				for i in steps.size():
-					if steps[i].done:
-						continue
-					if max_step_count > 0 and step_count >= max_step_count:
-						expandable = true
-						if not expanded:
-							break
-					step_holder.add_step(steps[i])
-					step_count += 1
-				for i in steps.size():
-					if not steps[i].done:
-						continue
-					if max_step_count > 0 and step_count >= max_step_count:
-						expandable = true
-						if not expanded:
-							break
-					step_holder.add_step(steps[i])
-					step_count += 1
-			ctx.settings.StepsOnBoard.ALL_IN_ORDER:
-				for i in steps.size():
-					if max_step_count > 0 and step_count >= max_step_count:
-						expandable = true
-						if not expanded:
-							break
-					step_holder.add_step(steps[i])
-					step_count += 1
-			_:
-				pass
-	step_holder.visible = (step_count > 0)
-	expand_button.visible = expandable
 
 func update() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
@@ -248,18 +201,78 @@ func update() -> void:
 	queue_redraw()
 
 
-func __update_category_menu():
+func show_edit(intention: __EditLabel.INTENTION) -> void:
+	title_label.show_edit(intention)
+
+
+func __update_step_holder() -> void:
+	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
+	var task := board_data.get_task(data_uuid)
+	var expanded := expand_button.expanded
+
+	step_holder.clear_steps()
+	var step_count := 0
+	var expandable := false
+
+	if ctx.settings.show_steps_preview:
+		var steps := board_data.get_task(data_uuid).steps
+		var max_step_count := ctx.settings.max_steps_on_board
+		match ctx.settings.steps_on_board:
+			ctx.settings.StepsOnBoard.ONLY_OPEN:
+				for i in steps.size():
+					if steps[i].done:
+						continue
+					if max_step_count > 0 and step_count >= max_step_count:
+						expandable = true
+						if not expanded:
+							break
+					step_holder.add_step(steps[i])
+					step_count += 1
+			ctx.settings.StepsOnBoard.ALL_OPEN_FIRST:
+				for i in steps.size():
+					if steps[i].done:
+						continue
+					if max_step_count > 0 and step_count >= max_step_count:
+						expandable = true
+						if not expanded:
+							break
+					step_holder.add_step(steps[i])
+					step_count += 1
+				for i in steps.size():
+					if not steps[i].done:
+						continue
+					if max_step_count > 0 and step_count >= max_step_count:
+						expandable = true
+						if not expanded:
+							break
+					step_holder.add_step(steps[i])
+					step_count += 1
+			ctx.settings.StepsOnBoard.ALL_IN_ORDER:
+				for i in steps.size():
+					if max_step_count > 0 and step_count >= max_step_count:
+						expandable = true
+						if not expanded:
+							break
+					step_holder.add_step(steps[i])
+					step_count += 1
+			_:
+				pass
+	step_holder.visible = (step_count > 0)
+	expand_button.visible = expandable
+
+
+func __update_category_menu() -> void:
 	__category_menu.board_data = board_data
 
 
-func __update_category_button():
+func __update_category_button() -> void:
 	if board_data.get_category_count() > 1:
 		category_button.mouse_filter = Control.MOUSE_FILTER_STOP
 	else:
 		category_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
-func __update_tooltip():
+func __update_tooltip() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	var task := board_data.get_task(data_uuid)
 	var task_category := board_data.get_category(task.category)
@@ -299,17 +312,6 @@ func __update_tooltip():
 				tooltip_text += "[cell]" + done_step_bullet + "[/cell][cell]" + step.details + "[/cell]\n"
 			tooltip_text += "[/table]\n"
 		tooltip_text += "[/p]"
-
-
-func _make_custom_tooltip(for_text) -> Object:
-	var tooltip := __TooltipScript.new()
-	tooltip.text = for_text
-	tooltip.mimic_paragraphs()
-	return tooltip
-
-
-func show_edit(intention: __EditLabel.INTENTION) -> void:
-	title_label.show_edit(intention)
 
 
 func __apply_filter() -> void:
@@ -354,7 +356,7 @@ func __simplify_string(string: String) -> String:
 	return string.replace(" ", "").replace("\t", "")
 
 
-func __update_context_menu():
+func __update_context_menu() -> void:
 	var shortcuts: __Shortcuts = __Singletons.instance_of(__Shortcuts, self)
 
 	context_menu.clear()
@@ -372,7 +374,7 @@ func __update_context_menu():
 	context_menu.set_item_shortcut(context_menu.get_item_index(ACTIONS.DELETE), shortcuts.delete)
 
 
-func __action(action):
+func __action(action) -> void:
 	var undo_redo: UndoRedo = __Singletons.instance_of(__EditContext, self).undo_redo
 
 	match(action):
@@ -424,10 +426,10 @@ func __set_title(value: String) -> void:
 	board_data.get_task(data_uuid).title = value
 
 
-func __on_category_button_pressed():
+func __on_category_button_pressed() -> void:
 	__category_menu.popup_at_local_position(category_button, Vector2(0, category_button.size.y))
 
 
-func __on_category_menu_uuid_selected(category_uuid):
+func __on_category_menu_uuid_selected(category_uuid) -> void:
 	var task = board_data.get_task(data_uuid)
 	task.category = category_uuid

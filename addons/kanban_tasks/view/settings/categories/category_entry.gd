@@ -1,7 +1,6 @@
 @tool
 extends HBoxContainer
 
-
 ## Visual representation of a category.
 
 
@@ -19,7 +18,7 @@ var board_data: __BoardData
 var data_uuid: String
 
 
-func _ready():
+func _ready() -> void:
 	set_h_size_flags(SIZE_EXPAND_FILL)
 	focus_mode = FOCUS_ALL
 	title = __EditLabel.new()
@@ -60,7 +59,7 @@ func _shortcut_input(event: InputEvent) -> void:
 			title.show_edit()
 
 
-func _notification(what):
+func _notification(what) -> void:
 	match(what):
 		NOTIFICATION_THEME_CHANGED:
 			if is_instance_valid(delete):
@@ -70,7 +69,7 @@ func _notification(what):
 				focus_box.draw(get_canvas_item(), Rect2(Vector2.ZERO, get_rect().size))
 
 
-func show_edit(intention: int = title.default_intention):
+func show_edit(intention: int = title.default_intention) -> void:
 	title.show_edit(intention)
 
 
@@ -84,7 +83,7 @@ func __on_color_changed() -> void:
 	board_data.layout.changed.emit()
 
 
-func __on_delete():
+func __on_delete() -> void:
 	board_data.remove_category(data_uuid)
 
 	var fallback_to = board_data.get_categories()[0]

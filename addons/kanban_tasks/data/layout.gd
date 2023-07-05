@@ -45,7 +45,5 @@ func from_json(json: Dictionary) -> void:
 			columns = cols
 		else:
 			push_warning("Layout data is corrupted.")
-
 	else:
 		push_warning("Loading incomplete json data which is missing a list of columns.")
-

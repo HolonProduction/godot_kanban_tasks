@@ -9,7 +9,6 @@ const __CategoriesScript := preload("res://addons/kanban_tasks/view/settings/cat
 @onready var category_settings: __CategoriesScript = %Categories
 @onready var stage_settings = %Stages
 
-
 var board_data: __BoardData
 
 

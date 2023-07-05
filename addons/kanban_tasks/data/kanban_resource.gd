@@ -9,10 +9,6 @@ signal changed()
 
 var __emit_changed := true
 
-func __notify_changed():
-	if __emit_changed:
-		changed.emit()
-
 
 func _init() -> void:
 	pass
@@ -27,3 +23,8 @@ func to_json() -> Dictionary:
 ## Deserializes the object from json.
 func from_json(json: Dictionary) -> void:
 	push_error("Method from_json not implemented.")
+
+
+func __notify_changed() -> void:
+	if __emit_changed:
+		changed.emit()
