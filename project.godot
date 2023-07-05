@@ -19,6 +19,7 @@ config/auto_accept_quit=false
 config/features=PackedStringArray("4.0")
 run/low_processor_mode=true
 config/icon="res://icon.svg"
+config/tags=PackedStringArray("addon")
 
 [display]
 
