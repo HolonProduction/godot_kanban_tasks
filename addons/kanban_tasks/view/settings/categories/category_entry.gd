@@ -89,6 +89,7 @@ func __on_delete():
 
 	var fallback_to = board_data.get_categories()[0]
 	for uuid in board_data.get_tasks():
-		board_data.get_task(uuid).category = fallback_to
+		if board_data.get_task(uuid).category == data_uuid:
+			board_data.get_task(uuid).category = fallback_to
 
 	get_parent().get_owner().update()

@@ -114,7 +114,7 @@ func get_categories() -> Array[String]:
 ## Removes a category by uuid.
 func remove_category(uuid: String, silent: bool = false) -> void:
 	if __categories.has(uuid):
-		__categories[uuid].changed.disconnect(__emit_changed)
+		__categories[uuid].changed.disconnect(__notify_changed)
 		__categories.erase(uuid)
 		if not silent:
 			__notify_changed()
@@ -148,7 +148,7 @@ func get_stages() -> Array[String]:
 ## Removes a stage by uuid.
 func remove_stage(uuid: String, silent: bool = false) -> void:
 	if __stages.has(uuid):
-		__stages[uuid].changed.disconnect(__emit_changed)
+		__stages[uuid].changed.disconnect(__notify_changed)
 		__stages.erase(uuid)
 		if not silent:
 			__notify_changed()
