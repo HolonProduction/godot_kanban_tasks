@@ -123,6 +123,11 @@ func _enter_tree() -> void:
 		var editor_data_file_path = ctx.settings.editor_data_file_path
 		if FileAccess.file_exists(editor_data_file_path):
 			__open_board(editor_data_file_path)
+		elif FileAccess.file_exists("res://addons/kanban_tasks/data.json"):
+			# TODO: Remove sometime in the future.
+			# Migrate from old version.
+			__open_board("res://addons/kanban_tasks/data.json")
+			__save_board(editor_data_file_path)
 		else:
 			__create_board()
 			__save_board(editor_data_file_path)
