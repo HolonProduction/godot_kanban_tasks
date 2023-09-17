@@ -233,6 +233,10 @@ func __add_task(task: __Task, uuid: String = "") -> String:
 
 	if __tasks.has(uuid):
 		push_warning("The uuid " + uuid + ' is already used. A new one will be generated for the task "' + task.title + '".')
+		
+	for step in task.steps:
+		if not step.changed.is_connected(__notify_changed):
+			step.changed.connect(__notify_changed)
 
 	if uuid == "":
 		uuid = __UUID.v4()
