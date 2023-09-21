@@ -80,6 +80,7 @@ func from_json(json: Dictionary) -> void:
 		for step in json["steps"]:
 			s.append(__Step.new())
 			s[-1].from_json(step)
+			s[-1].changed.connect(__notify_changed)
 		steps = s
 	else:
 		push_warning("Loading incomplete json data which is missing steps.")
