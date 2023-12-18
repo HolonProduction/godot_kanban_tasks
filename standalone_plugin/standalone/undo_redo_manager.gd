@@ -12,7 +12,7 @@ enum {
 
 var __undo_redo: UndoRedo = UndoRedo.new()
 # Default value for all varargs. Indicates, that no value was passed.
-var __undefined: Object = Object()
+var __undefined: Object = Object.new()
 
 var __is_committing: bool = false
 

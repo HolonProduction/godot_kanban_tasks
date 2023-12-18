@@ -17,7 +17,7 @@ run/main_scene="res://ui/ui.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="kanban_tasks_todo_manager"
 config/auto_accept_quit=false
-config/features=PackedStringArray("4.1")
+config/features=PackedStringArray("4.2")
 run/low_processor_mode=true
 config/icon="res://icon.svg"
 
