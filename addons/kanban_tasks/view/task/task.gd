@@ -149,6 +149,10 @@ func _notification(what: int) -> void:
 
 
 func update() -> void:
+	if not is_inside_tree():
+		# The node might linger in the undoredo manager.
+		return
+
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	var task := board_data.get_task(data_uuid)
 	var task_category := board_data.get_category(task.category)
