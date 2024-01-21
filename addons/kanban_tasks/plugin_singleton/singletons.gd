@@ -9,6 +9,9 @@ const HOLDER_NAME: String = "PluginSingletons"
 static func instance_of(p_script: Script, requester: Node) -> Variant:
 	var holder: Node = requester.get_tree().get_root().get_node_or_null(HOLDER_NAME)
 
+	if requester.get_tree() == null:
+		return
+
 	if not is_instance_valid(holder):
 		holder = Node.new()
 		holder.name = HOLDER_NAME
