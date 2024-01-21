@@ -321,6 +321,9 @@ func __update_tooltip() -> void:
 func __apply_filter() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 
+	if ctx == null:
+		return
+
 	if not ctx.filter or ctx.filter.text.length() == 0:
 		show()
 		return
