@@ -12,7 +12,6 @@ const __TaskScene := preload("res://addons/kanban_tasks/view/task/task.tscn")
 const __TaskScript := preload("res://addons/kanban_tasks/view/task/task.gd")
 const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
 const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
-const __BoardView := preload("res://addons/kanban_tasks/view/board/board.gd")
 const __CategoryPopupMenu := preload("res://addons/kanban_tasks/view/category/category_popup_menu.gd")
 
 var board_data: __BoardData
@@ -27,8 +26,6 @@ var __category_menu := __CategoryPopupMenu.new()
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 @onready var preview: Control = %Preview
 @onready var preview_color: ColorRect = %Preview/Color
-
-var parent_board_view: __BoardView
 
 
 func _ready() -> void:
@@ -171,14 +168,10 @@ func update(single: bool = false) -> void:
 			__Singletons.instance_of(__EditContext, self).focus = focus_owner.data_uuid
 
 	for task in task_holder.get_children():
-		task_holder.remove_child(task)
+		task.queue_free()
 
 	for uuid in board_data.get_stage(data_uuid).tasks:
-		var task: __TaskScript
-		if parent_board_view != null:
-			task = parent_board_view.get_task_view_per_uuid(uuid)
-		else:
-			task = __TaskScene.instantiate()
+		var task: __TaskScript = __TaskScene.instantiate()
 		task.board_data = board_data
 		task.data_uuid = uuid
 		task.set_drag_forwarding(
@@ -186,8 +179,6 @@ func update(single: bool = false) -> void:
 			_can_drop_data_fw.bind(task),
 			_drop_data_fw.bind(task),
 		)
-		if task.get_parent() != null:
-			task.get_parent().remove_child(task)
 		task_holder.add_child(task)
 
 	scroll_container.scroll_vertical = old_scroll
