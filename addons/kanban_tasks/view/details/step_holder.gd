@@ -5,8 +5,8 @@ extends VBoxContainer
 signal entry_action_triggered(entry: __StepEntry, action: __StepEntry.Actions)
 signal entry_move_requesed(moved_entry: __StepEntry, target_entry: __StepEntry, move_after_target: bool)
 
-const __StepData := preload("res://addons/kanban_tasks/data/step.gd")
-const __StepEntry := preload("res://addons/kanban_tasks/view/details/step_entry.gd")
+const __StepData := preload("../../data/step.gd")
+const __StepEntry := preload("../details/step_entry.gd")
 
 @export var scrollable: bool = true:
 	set(value):

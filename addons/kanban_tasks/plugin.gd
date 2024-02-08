@@ -1,21 +1,21 @@
 @tool
-extends "res://addons/kanban_tasks/standalone_plugin.gd"
+extends "standalone_plugin.gd"
 
 
-const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
-const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
-const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
-const __Settings := preload("res://addons/kanban_tasks/data/settings.gd")
-const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
-const __LayoutData := preload("res://addons/kanban_tasks/data/layout.gd")
-const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
-const __CategoryData := preload("res://addons/kanban_tasks/data/category.gd")
-const __StageData := preload("res://addons/kanban_tasks/data/stage.gd")
-const __BoardView := preload("res://addons/kanban_tasks/view/board/board.tscn")
-const __BoardViewType := preload("res://addons/kanban_tasks/view/board/board.gd")
-const __StartView := preload("res://addons/kanban_tasks/view/start/start.tscn")
-const __StartViewType := preload("res://addons/kanban_tasks/view/start/start.gd")
-const __DocumentationView := preload("res://addons/kanban_tasks/view/documentation/documentation.tscn")
+const __Singletons := preload("./plugin_singleton/singletons.gd")
+const __Shortcuts := preload("./view/shortcuts.gd")
+const __EditContext := preload("./view/edit_context.gd")
+const __Settings := preload("./data/settings.gd")
+const __BoardData := preload("./data/board.gd")
+const __LayoutData := preload("./data/layout.gd")
+const __TaskData := preload("./data/task.gd")
+const __CategoryData := preload("./data/category.gd")
+const __StageData := preload("./data/stage.gd")
+const __BoardView := preload("./view/board/board.tscn")
+const __BoardViewType := preload("./view/board/board.gd")
+const __StartView := preload("./view/start/start.tscn")
+const __StartViewType := preload("./view/start/start.gd")
+const __DocumentationView := preload("./view/documentation/documentation.tscn")
 
 const SETTINGS_KEY: String = "kanban_tasks/general/settings"
 
@@ -188,7 +188,7 @@ func _get_plugin_name() -> String:
 
 
 func _get_plugin_icon() -> Texture2D:
-	return preload("res://addons/kanban_tasks/icon.svg")
+	return preload("./icon.svg")
 
 
 func _notification(what: int) -> void:

@@ -4,8 +4,8 @@ extends Node
 ## Global stuff for the view system.
 
 
-const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
-const __SettingData := preload("res://addons/kanban_tasks/data/settings.gd")
+const __Filter := preload("filter.gd")
+const __SettingData := preload("../data/settings.gd")
 
 signal filter_changed()
 signal save_board()

@@ -2,9 +2,9 @@
 extends VBoxContainer
 
 
-const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
-const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
-const __SettingData := preload("res://addons/kanban_tasks/data/settings.gd")
+const __Singletons := preload("../../../plugin_singleton/singletons.gd")
+const __EditContext := preload("../../edit_context.gd")
+const __SettingData := preload("../../../data/settings.gd")
 
 var data: __SettingData = null
 

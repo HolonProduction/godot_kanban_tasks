@@ -2,10 +2,10 @@
 extends VBoxContainer
 
 
-const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
-const __CategoryEntry := preload("res://addons/kanban_tasks/view/settings/categories/category_entry.gd")
-const __CategoryData := preload("res://addons/kanban_tasks/data/category.gd")
-const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
+const __BoardData := preload("../../../data/board.gd")
+const __CategoryEntry := preload("../../settings/categories/category_entry.gd")
+const __CategoryData := preload("../../../data/category.gd")
+const __EditLabel := preload("../../../edit_label/edit_label.gd")
 
 var board_data: __BoardData
 

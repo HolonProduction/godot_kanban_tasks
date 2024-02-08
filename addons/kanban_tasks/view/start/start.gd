@@ -2,8 +2,8 @@
 extends Control
 
 
-const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
-const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
+const __Singletons := preload("../../plugin_singleton/singletons.gd")
+const __EditContext := preload("../edit_context.gd")
 
 signal create_board()
 signal open_board(path: String)

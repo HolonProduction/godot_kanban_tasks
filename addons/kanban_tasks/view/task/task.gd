@@ -4,18 +4,18 @@ extends MarginContainer
 ## The visual representation of a task.
 
 
-const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
-const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
-const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
-const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
-const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
-const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
-const __ExpandButton := preload("res://addons/kanban_tasks/expand_button/expand_button.gd")
-const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
-const __DetailsScript := preload("res://addons/kanban_tasks/view/details/details.gd")
-const __StepHolder := preload("res://addons/kanban_tasks/view/details/step_holder.gd")
-const __TooltipScript := preload("res://addons/kanban_tasks/view/tooltip.gd")
-const __CategoryPopupMenu := preload("res://addons/kanban_tasks/view/category/category_popup_menu.gd")
+const __Singletons := preload("../../plugin_singleton/singletons.gd")
+const __Shortcuts := preload("../shortcuts.gd")
+const __EditContext := preload("../edit_context.gd")
+const __Filter := preload("../filter.gd")
+const __BoardData := preload("../../data/board.gd")
+const __EditLabel := preload("../../edit_label/edit_label.gd")
+const __ExpandButton := preload("../../expand_button/expand_button.gd")
+const __TaskData := preload("../../data/task.gd")
+const __DetailsScript := preload("../details/details.gd")
+const __StepHolder := preload("../details/step_holder.gd")
+const __TooltipScript := preload("../tooltip.gd")
+const __CategoryPopupMenu := preload("../category/category_popup_menu.gd")
 
 enum ACTIONS {
 	DETAILS,

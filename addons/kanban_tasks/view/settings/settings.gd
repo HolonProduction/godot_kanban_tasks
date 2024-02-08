@@ -2,9 +2,9 @@
 extends AcceptDialog
 
 
-const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
-const __CategoriesScene := preload("res://addons/kanban_tasks/view/settings/categories/categories.tscn")
-const __CategoriesScript := preload("res://addons/kanban_tasks/view/settings/categories/categories.gd")
+const __BoardData := preload("../../data/board.gd")
+const __CategoriesScene := preload("../settings/categories/categories.tscn")
+const __CategoriesScript := preload("../settings/categories/categories.gd")
 
 @onready var category_settings: __CategoriesScript = %Categories
 @onready var stage_settings = %Stages

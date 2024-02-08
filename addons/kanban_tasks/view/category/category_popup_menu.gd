@@ -2,7 +2,7 @@
 extends PopupMenu
 
 
-const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
+const __BoardData := preload("../../data/board.gd")
 
 var board_data: __BoardData
 

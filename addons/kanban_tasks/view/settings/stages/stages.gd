@@ -2,10 +2,10 @@
 extends VBoxContainer
 
 
-const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
-const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
-const __BoardData = preload("res://addons/kanban_tasks/data/board.gd")
-const __StageData = preload("res://addons/kanban_tasks/data/stage.gd")
+const __Singletons := preload("../../../plugin_singleton/singletons.gd")
+const __EditContext := preload("../../edit_context.gd")
+const __BoardData = preload("../../../data/board.gd")
+const __StageData = preload("../../../data/stage.gd")
 
 var board_data: __BoardData
 

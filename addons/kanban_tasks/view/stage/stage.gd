@@ -4,15 +4,15 @@ extends MarginContainer
 ## The visual representation of a stage.
 
 
-const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
-const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
-const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
-const __TaskData := preload("res://addons/kanban_tasks/data/task.gd")
-const __TaskScene := preload("res://addons/kanban_tasks/view/task/task.tscn")
-const __TaskScript := preload("res://addons/kanban_tasks/view/task/task.gd")
-const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
-const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
-const __CategoryPopupMenu := preload("res://addons/kanban_tasks/view/category/category_popup_menu.gd")
+const __Singletons := preload("../../plugin_singleton/singletons.gd")
+const __Shortcuts := preload("../shortcuts.gd")
+const __EditContext := preload("../edit_context.gd")
+const __TaskData := preload("../../data/task.gd")
+const __TaskScene := preload("../task/task.tscn")
+const __TaskScript := preload("../task/task.gd")
+const __EditLabel := preload("../../edit_label/edit_label.gd")
+const __BoardData := preload("../../data/board.gd")
+const __CategoryPopupMenu := preload("../category/category_popup_menu.gd")
 
 var board_data: __BoardData
 var data_uuid: String

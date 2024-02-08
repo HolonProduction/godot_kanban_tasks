@@ -4,14 +4,14 @@ extends VBoxContainer
 ## The visual representation of a kanban board.
 
 
-const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
-const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
-const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
-const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
-const __StageScript := preload("res://addons/kanban_tasks/view/stage/stage.gd")
-const __StageScene := preload("res://addons/kanban_tasks/view/stage/stage.tscn")
-const __Filter := preload("res://addons/kanban_tasks/view/filter.gd")
-const __SettingsScript := preload("res://addons/kanban_tasks/view/settings/settings.gd")
+const __Singletons := preload("../../plugin_singleton/singletons.gd")
+const __Shortcuts := preload("../shortcuts.gd")
+const __EditContext := preload("../edit_context.gd")
+const __BoardData := preload("../../data/board.gd")
+const __StageScript := preload("../stage/stage.gd")
+const __StageScene := preload("../stage/stage.tscn")
+const __Filter := preload("../filter.gd")
+const __SettingsScript := preload("../settings/settings.gd")
 
 signal show_documentation()
 

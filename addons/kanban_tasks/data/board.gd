@@ -4,7 +4,7 @@ extends "kanban_resource.gd"
 ## Manages the loading and saving of other data.
 
 
-const __UUID := preload("res://addons/kanban_tasks/uuid/uuid.gd")
+const __UUID := preload("../uuid/uuid.gd")
 const __Category := preload("category.gd")
 const __Layout := preload("layout.gd")
 const __Stage := preload("stage.gd")

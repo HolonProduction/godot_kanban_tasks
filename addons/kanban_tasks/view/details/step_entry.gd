@@ -6,10 +6,10 @@ extends HBoxContainer
 
 signal action_triggered(entry: __StepEntry, action: Actions)
 
-const __EditLabel := preload("res://addons/kanban_tasks/edit_label/edit_label.gd")
-const __StepData := preload("res://addons/kanban_tasks/data/step.gd")
-const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
-const __Shortcuts := preload("res://addons/kanban_tasks/view/shortcuts.gd")
+const __EditLabel := preload("../../edit_label/edit_label.gd")
+const __StepData := preload("../../data/step.gd")
+const __Singletons := preload("../../plugin_singleton/singletons.gd")
+const __Shortcuts := preload("../shortcuts.gd")
 const __StepEntry := preload("step_entry.gd")
 
 enum Actions {

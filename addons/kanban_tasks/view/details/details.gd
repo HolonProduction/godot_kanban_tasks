@@ -2,11 +2,11 @@
 extends AcceptDialog
 
 
-const __BoardData := preload("res://addons/kanban_tasks/data/board.gd")
-const __StepData := preload("res://addons/kanban_tasks/data/step.gd")
-const __StepEntry := preload("res://addons/kanban_tasks/view/details/step_entry.gd")
-const __Singletons := preload("res://addons/kanban_tasks/plugin_singleton/singletons.gd")
-const __EditContext := preload("res://addons/kanban_tasks/view/edit_context.gd")
+const __BoardData := preload("../../data/board.gd")
+const __StepData := preload("../../data/step.gd")
+const __StepEntry := preload("../details/step_entry.gd")
+const __Singletons := preload("../../plugin_singleton/singletons.gd")
+const __EditContext := preload("../edit_context.gd")
 
 var board_data: __BoardData
 var data_uuid: String
