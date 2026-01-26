@@ -16,6 +16,7 @@ var stylebox_hp: StyleBoxFlat
 @onready var column_add: Button = %AddColumn
 @onready var warning_sign: Button = %WarningSign
 @onready var warn_about_empty_deletion: CheckBox = %WarnAboutEmptyDeletion
+@onready var width_spin_box: SpinBox = %WidthSpinBox
 @onready var confirm_not_empty: ConfirmationDialog = %ConfirmNotEmpty
 @onready var confirm_empty: ConfirmationDialog = %ConfirmEmpty
 @onready var task_destination: OptionButton = %TaskDestination
@@ -42,6 +43,7 @@ func _ready() -> void:
 	ctx.settings.changed.connect(__settings_changed)
 
 	warn_about_empty_deletion.toggled.connect(__apply_settings_changes)
+	width_spin_box.value_changed.connect(__apply_settings_changes)
 
 
 func _notification(what) -> void:
@@ -192,10 +194,12 @@ func __remove_stage(uuid: String) -> void:
 func __settings_changed() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	warn_about_empty_deletion.button_pressed = ctx.settings.warn_about_empty_deletion
+	width_spin_box.value = ctx.settings.stages_width
 
 
 func __apply_settings_changes(warn: bool) -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	ctx.settings.changed.disconnect(__settings_changed)
 	ctx.settings.warn_about_empty_deletion = warn
+	ctx.settings.stages_width = int(width_spin_box.value)
 	ctx.settings.changed.connect(__settings_changed)

@@ -58,6 +58,11 @@ var max_steps_on_board: int = 2:
 	set(value):
 		max_steps_on_board = value
 		__notify_changed()
+		
+var stages_width: int = 200:
+	set(value):
+		stages_width = value
+		__notify_changed()
 
 var editor_data_file_path: String = DEFAULT_EDITOR_DATA_PATH:
 	set(value):
@@ -108,6 +113,7 @@ func to_json() -> Dictionary:
 		"show_category_on_board": show_category_on_board,
 		"steps_on_board": steps_on_board,
 		"max_steps_on_board": max_steps_on_board,
+		"stages_width": stages_width,
 	}
 
 	if not Engine.is_editor_hint():
@@ -144,6 +150,8 @@ func from_json(json: Dictionary) -> void:
 		steps_on_board = json["steps_on_board"]
 	if json.has("max_steps_on_board"):
 		max_steps_on_board = json["max_steps_on_board"]
+	if json.has("stages_width"):
+		stages_width = json["stages_width"]
 	if json.has("show_category_on_board"):
 		show_category_on_board = json["show_category_on_board"]
 	if json.has("internal_states"):
