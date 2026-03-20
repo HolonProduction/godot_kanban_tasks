@@ -144,7 +144,7 @@ func _notification(what: int) -> void:
 	match(what):
 		NOTIFICATION_THEME_CHANGED:
 			if is_instance_valid(panel_container):
-				panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Tree"))
+				panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Panel"))
 			if is_instance_valid(create_button):
 				create_button.icon = get_theme_icon(&"Add", &"EditorIcons")
 			if is_instance_valid(preview_color):

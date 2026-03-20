@@ -63,7 +63,7 @@ func _notification(what) -> void:
 			if is_instance_valid(warning_sign):
 				warning_sign.icon = get_theme_icon(&"NodeWarning", &"EditorIcons")
 			if is_instance_valid(panel_container):
-				panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Tree"))
+				panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Panel"))
 
 
 func update() -> void:

@@ -39,7 +39,7 @@ func _notification(what: int) -> void:
 	match(what):
 		NOTIFICATION_THEME_CHANGED:
 			if is_instance_valid(steps_panel_container):
-				steps_panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Tree"))
+				steps_panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Panel"))
 			if is_instance_valid(create_step_edit):
 				create_step_edit.right_icon = get_theme_icon(&"Add", &"EditorIcons")
 			if is_instance_valid(close_step_details_button):
