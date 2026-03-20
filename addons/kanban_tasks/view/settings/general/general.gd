@@ -73,10 +73,9 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_THEME_CHANGED:
-			if is_instance_valid(panel_container):
-				panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Panel"))
+	if what == NOTIFICATION_THEME_CHANGED and not is_part_of_edited_scene():
+		if is_instance_valid(panel_container):
+			panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Panel"))
 
 
 func update() -> void:

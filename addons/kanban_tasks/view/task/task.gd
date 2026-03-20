@@ -57,7 +57,8 @@ func _ready() -> void:
 	__style_panel.set_border_width_all(0)
 	__style_panel.border_width_left = COLOR_WIDTH
 	__style_panel.draw_center = false
-	panel_container.add_theme_stylebox_override(&"panel", __style_panel)
+	if not is_part_of_edited_scene():
+		panel_container.add_theme_stylebox_override(&"panel", __style_panel)
 
 	context_menu.id_pressed.connect(__action)
 	edit_button.pressed.connect(__action.bind(ACTIONS.DETAILS))
@@ -127,7 +128,7 @@ func _make_custom_tooltip(for_text) -> Object:
 
 func _notification(what: int) -> void:
 	match(what):
-		NOTIFICATION_THEME_CHANGED:
+		NOTIFICATION_THEME_CHANGED when not is_part_of_edited_scene():
 			if panel_container:
 				var tab_panel = get_theme_stylebox(&"panel", &"TabContainer")
 				if tab_panel is StyleBoxFlat:

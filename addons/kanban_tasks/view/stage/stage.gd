@@ -141,14 +141,13 @@ func _drop_data_fw(at_position: Vector2, data: Variant, from: Control) -> void:
 
 
 func _notification(what: int) -> void:
-	match(what):
-		NOTIFICATION_THEME_CHANGED:
-			if is_instance_valid(panel_container):
-				panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Panel"))
-			if is_instance_valid(create_button):
-				create_button.icon = get_theme_icon(&"Add", &"EditorIcons")
-			if is_instance_valid(preview_color):
-				preview_color.color = get_theme_color(&"font_selected_color", &"TabBar")
+	if what == NOTIFICATION_THEME_CHANGED and not is_part_of_edited_scene():
+		if is_instance_valid(panel_container):
+			panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Panel"))
+		if is_instance_valid(create_button):
+			create_button.icon = get_theme_icon(&"Add", &"EditorIcons")
+		if is_instance_valid(preview_color):
+			preview_color.color = get_theme_color(&"font_selected_color", &"TabBar")
 
 
 func update(single: bool = false) -> void:

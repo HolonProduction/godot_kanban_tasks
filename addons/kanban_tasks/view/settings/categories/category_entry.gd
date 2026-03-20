@@ -61,7 +61,7 @@ func _shortcut_input(event: InputEvent) -> void:
 
 func _notification(what) -> void:
 	match(what):
-		NOTIFICATION_THEME_CHANGED:
+		NOTIFICATION_THEME_CHANGED when not is_part_of_edited_scene():
 			if is_instance_valid(delete):
 				delete.icon = get_theme_icon(&"Remove", &"EditorIcons")
 		NOTIFICATION_DRAW:

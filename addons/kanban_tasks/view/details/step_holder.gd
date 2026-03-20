@@ -49,10 +49,10 @@ var __move_after_target: bool = false
 
 
 func _ready() -> void:
-	__remove_area.icon = get_theme_icon(&"Remove", &"EditorIcons")
 	__step_list.draw.connect(__on_step_list_draw)
 	__step_list.mouse_exited.connect(__on_step_list_mouse_exited)
 	__step_list.mouse_entered.connect(__on_step_list_mouse_entered)
+	notification(NOTIFICATION_THEME_CHANGED)
 	__update_children_settings()
 
 
@@ -86,6 +86,12 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if data is __StepEntry:
 		if __remove_area.get_global_rect().has_point(get_global_transform() * at_position):
 			data.__action(__StepEntry.Actions.DELETE)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED and not is_part_of_edited_scene():
+		if is_instance_valid(__remove_area):
+			__remove_area.icon = get_theme_icon(&"Remove", &"EditorIcons")
 
 
 func add_step(step: __StepData) -> void:

@@ -45,25 +45,24 @@ func _ready() -> void:
 
 
 func _notification(what) -> void:
-	match(what):
-		NOTIFICATION_THEME_CHANGED:
-			stylebox_n = get_theme_stylebox(&"normal", &"Button").duplicate()
-			stylebox_n.set_border_width_all(1)
-			stylebox_n.border_color = Color8(32, 32, 32, 255)
+	if what == NOTIFICATION_THEME_CHANGED and not is_part_of_edited_scene():
+		stylebox_n = get_theme_stylebox(&"normal", &"Button").duplicate()
+		stylebox_n.set_border_width_all(1)
+		stylebox_n.border_color = Color8(32, 32, 32, 255)
 
-			stylebox_hp = get_theme_stylebox(&"read_only", &"LineEdit").duplicate()
-			stylebox_hp.set_border_width_all(1)
-			stylebox_hp.border_color = Color8(32, 32, 32, 128)
+		stylebox_hp = get_theme_stylebox(&"read_only", &"LineEdit").duplicate()
+		stylebox_hp.set_border_width_all(1)
+		stylebox_hp.border_color = Color8(32, 32, 32, 128)
 
-			if is_instance_valid(column_add):
-				column_add.get_child(0).get_child(0).texture = get_theme_icon(&"Add", &"EditorIcons")
-				column_add.add_theme_stylebox_override(&"normal", stylebox_n)
-				column_add.add_theme_stylebox_override(&"hover", stylebox_hp)
-				column_add.add_theme_stylebox_override(&"pressed", stylebox_hp)
-			if is_instance_valid(warning_sign):
-				warning_sign.icon = get_theme_icon(&"NodeWarning", &"EditorIcons")
-			if is_instance_valid(panel_container):
-				panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Panel"))
+		if is_instance_valid(column_add):
+			column_add.get_child(0).get_child(0).texture = get_theme_icon(&"Add", &"EditorIcons")
+			column_add.add_theme_stylebox_override(&"normal", stylebox_n)
+			column_add.add_theme_stylebox_override(&"hover", stylebox_hp)
+			column_add.add_theme_stylebox_override(&"pressed", stylebox_hp)
+		if is_instance_valid(warning_sign):
+			warning_sign.icon = get_theme_icon(&"NodeWarning", &"EditorIcons")
+		if is_instance_valid(panel_container):
+			panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Panel"))
 
 
 func update() -> void:

@@ -75,24 +75,23 @@ func _shortcut_input(event: InputEvent) -> void:
 
 
 func _notification(what):
-	match(what):
-		NOTIFICATION_THEME_CHANGED:
-			if is_instance_valid(search_bar):
-				search_bar.right_icon = get_theme_icon(&"Search", &"EditorIcons")
-			if is_instance_valid(button_settings):
-				button_settings.icon = get_theme_icon(&"Tools", &"EditorIcons")
-			if is_instance_valid(button_documentation):
-				button_documentation.icon = get_theme_icon(&"Help", &"EditorIcons")
-			if is_instance_valid(button_advanced_search):
-				button_advanced_search.icon = get_theme_icon(&"Zoom", &"EditorIcons")
-			if is_instance_valid(button_show_categories):
-				button_show_categories.icon = get_theme_icon(&"Rectangle", &"EditorIcons")
-			if is_instance_valid(button_show_descriptions):
-				button_show_descriptions.icon = get_theme_icon(&"Script", &"EditorIcons")
-			if is_instance_valid(button_show_steps):
-				button_show_steps.icon = get_theme_icon(&"FileList", &"EditorIcons")
-			if is_instance_valid(settings):
-				settings.on_theme_changed()
+	if what == NOTIFICATION_THEME_CHANGED and not is_part_of_edited_scene():
+		if is_instance_valid(search_bar):
+			search_bar.right_icon = get_theme_icon(&"Search", &"EditorIcons")
+		if is_instance_valid(button_settings):
+			button_settings.icon = get_theme_icon(&"Tools", &"EditorIcons")
+		if is_instance_valid(button_documentation):
+			button_documentation.icon = get_theme_icon(&"Help", &"EditorIcons")
+		if is_instance_valid(button_advanced_search):
+			button_advanced_search.icon = get_theme_icon(&"Zoom", &"EditorIcons")
+		if is_instance_valid(button_show_categories):
+			button_show_categories.icon = get_theme_icon(&"Rectangle", &"EditorIcons")
+		if is_instance_valid(button_show_descriptions):
+			button_show_descriptions.icon = get_theme_icon(&"Script", &"EditorIcons")
+		if is_instance_valid(button_show_steps):
+			button_show_steps.icon = get_theme_icon(&"FileList", &"EditorIcons")
+		if is_instance_valid(settings):
+			settings.on_theme_changed()
 
 
 func update() -> void:

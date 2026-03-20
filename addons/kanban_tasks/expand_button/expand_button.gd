@@ -22,12 +22,11 @@ func _init() -> void:
 	add_child(center)
 	center.add_child(__texture_rect)
 	pressed.connect(__on_pressed)
-	text = " "
 	__update_icon()
 
 
 func _notification(what) -> void:
-	if what == NOTIFICATION_THEME_CHANGED:
+	if what == NOTIFICATION_THEME_CHANGED and not is_part_of_edited_scene():
 		__texture_rect.texture = get_theme_icon(&"Collapse", &"EditorIcons")
 
 
