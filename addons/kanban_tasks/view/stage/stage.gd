@@ -179,6 +179,8 @@ func update(single: bool = false) -> void:
 			_drop_data_fw.bind(task),
 		)
 		task_holder.add_child(task)
+		
+	custom_minimum_size.x = __Singletons.instance_of(__EditContext, self).settings.stages_width
 
 	scroll_container.scroll_vertical = old_scroll
 	__update_category_menus()
