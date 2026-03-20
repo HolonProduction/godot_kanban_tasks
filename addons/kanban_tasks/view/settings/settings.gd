@@ -30,5 +30,5 @@ func popup_centered_ratio_no_fullscreen(ratio: float = 0.8) -> void:
 
 
 func on_theme_changed():
-	# Called from parrent since changing this during this nodes theme change notification will create infinite recursion.
-	add_theme_stylebox_override(&"panel", get_theme_stylebox(&"Background", &"EditorStyles"))
+	# Called from parent since changing this during this nodes theme change notification will create infinite recursion.
+	add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"EditorSettingsDialog"))
