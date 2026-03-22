@@ -41,6 +41,9 @@ var help_menu: PopupMenu
 
 var board_view: __BoardViewType
 var board_label: Label
+var board_watch_timer: Timer
+var board_watch_path: String = ""
+var board_watch_modified_time: int = -1
 var board_path: String = "":
 	set(value):
 		board_path = value
@@ -99,6 +102,13 @@ func _enter_tree() -> void:
 	documentation_dialog = __DocumentationView.instantiate()
 	get_editor_interface().get_base_control().add_child(documentation_dialog)
 
+	board_watch_timer = Timer.new()
+	board_watch_timer.one_shot = false
+	board_watch_timer.wait_time = 1.0
+	board_watch_timer.autostart = false
+	board_watch_timer.timeout.connect(__poll_board_file_changes)
+	add_child(board_watch_timer)
+
 	main_panel_frame = MarginContainer.new()
 	main_panel_frame.add_theme_constant_override(&"margin_top", 5)
 	main_panel_frame.add_theme_constant_override(&"margin_left", 5)
@@ -155,6 +165,8 @@ func _exit_tree() -> void:
 	file_dialog_open.queue_free()
 	discard_changes_dialog.queue_free()
 	documentation_dialog.queue_free()
+	
+	board_watch_timer.queue_free()
 
 	main_panel_frame.queue_free()
 	start_view.queue_free()
@@ -278,7 +290,7 @@ func __editor_save_board() -> void:
 func __editor_reload_board() -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	__action(ACTION_SAVE)
-	__open_board(ctx.settings.editor_data_file_path)
+	__open_board(ctx.settings.editor_data_file_path, true)
 
 
 func __editor_create_board() -> void:
@@ -326,6 +338,7 @@ func __create_board() -> void:
 
 	board_path = ""
 	board_changed = false
+	__stop_board_watch()
 
 
 func __save_board(path: String) -> void:
@@ -334,11 +347,15 @@ func __save_board(path: String) -> void:
 		board_path = path
 		board_view.board_data.save(path)
 		board_changed = false
+		__start_board_watch(path)
 
 
-func __open_board(path: String) -> void:
+func __open_board(path: String, should_validate_board_data: bool = false) -> void:
 	var data := __BoardData.new()
-	data.load(path)
+	
+	if not data.load(path, should_validate_board_data):
+		return
+	
 	data.changed.connect(__on_board_changed)
 
 	__make_board_view_visible(data)
@@ -346,13 +363,15 @@ func __open_board(path: String) -> void:
 
 	board_path = path
 	board_changed = false
-
+	__start_board_watch(path)
+	
 
 func __close_board() -> void:
 	board_view.queue_free()
 	board_view = null
 	board_path = ""
 	board_changed = false
+	__stop_board_watch()
 	start_view.show()
 
 
@@ -395,6 +414,31 @@ func __make_board_view_visible(data: __BoardData) -> void:
 
 	main_panel_frame.add_child(board_view)
 	start_view.hide()
+
+
+func __start_board_watch(path: String) -> void:
+	if not FileAccess.file_exists(path):
+		return
+
+	board_watch_path = path
+	board_watch_modified_time = FileAccess.get_modified_time(path)
+	board_watch_timer.start()
+
+
+func __stop_board_watch() -> void:
+	board_watch_path = ""
+	board_watch_modified_time = -1
+	board_watch_timer.stop()
+
+
+func __poll_board_file_changes() -> void:
+	var modified_time := FileAccess.get_modified_time(board_watch_path)
+	var is_board_modified := modified_time != board_watch_modified_time
+	if not is_board_modified:
+		return
+
+	board_watch_modified_time = modified_time
+	__open_board(board_watch_path, true)
 
 
 func __save_settings() -> void:

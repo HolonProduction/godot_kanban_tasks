@@ -10,6 +10,7 @@ const __Layout := preload("layout.gd")
 const __Stage := preload("stage.gd")
 const __Task := preload("task.gd")
 const __KanbanResource := preload("kanban_resource.gd")
+const __BoardFileValidator := preload("board_file_validator.gd")
 
 var layout: __Layout:
 	set(value):
@@ -68,24 +69,33 @@ func from_json(json: Dictionary) -> void:
 
 
 ## Loads the data from `path` into the current instance.
-func load(path: String) -> void:
+## When `should_validate_board_data` is `true`, incomplete or invalid
+## board data is rejected instead of being loaded best-effort.
+func load(path: String, should_validate_board_data: bool = false) -> bool:
 	var file = FileAccess.open(path, FileAccess.READ)
 	if not file:
 		push_error("Error " + str(FileAccess.get_open_error()) + " while opening file for loading board data at " + path)
-		file.close()
-		return
+		return false
 
 	var json = JSON.new()
 	var err = json.parse(file.get_as_text())
 	file.close()
 	if err != OK:
 		push_error("Error " + str(err) + " while parsing board at " + path + " to json. At line " + str(json.get_error_line()) + " the following problem occured:\n" + json.get_error_message())
-		return
+		return false
+
+	if should_validate_board_data:
+		var validation_error := __BoardFileValidator.validate_loaded_json(json.data)
+		if not validation_error.is_empty():
+			push_warning("Skipping board reload at " + path + " because " + validation_error)
+			return false
 
 	if json.data.has("columns"):
 		__from_legacy_file(json.data)
 	else:
 		from_json(json.data)
+	
+	return true
 
 
 ## Adds a category and returns the uuid which is associated with it.
