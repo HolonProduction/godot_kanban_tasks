@@ -1,6 +1,6 @@
 # :pencil2: Kanban Tasks - Todo Manager
 [![itch.io](https://img.shields.io/static/v1?label=Itch&message=standalone&color=grey&logo=itch.io&logoColor=white&labelColor=fa5c5c)](https://holonproduction.itch.io/kanban-tasks)
-[![Godot 4.x](https://img.shields.io/static/v1?label=Godot&message=4.x&color=grey&logo=godotengine&logoColor=white&labelColor=478cbf)](https://godotengine.org/asset-library/asset/1474)
+[![Godot 4.x](https://img.shields.io/static/v1?label=Godot&message=4.x&color=grey&logo=godotengine&logoColor=white&labelColor=478cbf)](https://store.godotengine.org/asset/holonproduction/kanban-tasks/)
 [![Godot 3.x](https://img.shields.io/static/v1?label=Godot&message=3.x&color=grey&logo=godotengine&logoColor=white&labelColor=478cbf)](https://godotengine.org/asset-library/asset/1245)
 
 Kanban Tasks - Todo Manager is a minimalistic kanban board application aimed at solo developers. It is available as addon for the [Godot Engine](https://godotengine.org) or as standalone application.
@@ -8,7 +8,7 @@ Kanban Tasks - Todo Manager is a minimalistic kanban board application aimed at 
 ---
 
 ## :seedling: Setup
-The editor plugin can be installed from the godot asset lib. After doing so add the plugin folder `res://addons/kanban_tasks` to your build exceptions to prevent it from getting bundled with your game.
+The editor plugin can be installed from the Godot Asset Store. After doing so, add the plugin folder `res://addons/kanban_tasks` to your build exceptions to prevent it from getting bundled with your game.
 
 ---
 ## :rocket: Features
