@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://cwfixtyy5lpin"]
 
+[ext_resource type="Script" uid="uid://c6ccwvv8tjdsk" path="res://addons/kanban_tasks/view/documentation/documentation.gd" id="1_fw3gy"]
 [ext_resource type="Texture2D" uid="uid://3edv1ymvukp0" path="res://addons/kanban_tasks/view/documentation/1.svg" id="1_inmy7"]
 [ext_resource type="Texture2D" uid="uid://bbo1gfac2wymg" path="res://addons/kanban_tasks/view/documentation/2.svg" id="2_1g6ul"]
 [ext_resource type="Texture2D" uid="uid://bb8knc6dctfj1" path="res://addons/kanban_tasks/view/documentation/3.svg" id="3_e3hha"]
-[ext_resource type="Texture2D" uid="uid://phpa3kr3tjwu" path="res://addons/kanban_tasks/view/documentation/4.svg" id="4_ic0nh"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cmnk1"]
 font_size = 20
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cmvuv"]
 
 [node name="AcceptDialog" type="AcceptDialog" unique_id=1501486445]
 oversampling_override = 1.0
@@ -15,6 +17,7 @@ size = Vector2i(1000, 600)
 min_size = Vector2i(1000, 600)
 theme_type_variation = &"EditorSettingsDialog"
 ok_button_text = "Close"
+script = ExtResource("1_fw3gy")
 
 [node name="Help" type="ScrollContainer" parent="." unique_id=535755392]
 anchors_preset = 15
@@ -110,30 +113,13 @@ layout_mode = 2
 texture = ExtResource("3_e3hha")
 expand_mode = 1
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="Help/VBoxContainer" unique_id=908763012]
+[node name="ShamelessPlug" type="RichTextLabel" parent="Help/VBoxContainer" unique_id=2067203823]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 50
-alignment = 1
-
-[node name="Control" type="Control" parent="Help/VBoxContainer/HBoxContainer4" unique_id=1334221267]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Help/VBoxContainer/HBoxContainer4" unique_id=78177552]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="Help/VBoxContainer/HBoxContainer4/HBoxContainer" unique_id=1209223258]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-texture = ExtResource("4_ic0nh")
-expand_mode = 3
-
-[node name="LinkButton" type="LinkButton" parent="Help/VBoxContainer/HBoxContainer4/HBoxContainer" unique_id=1066981468]
-layout_mode = 2
-size_flags_vertical = 4
-text = "Leave a star on Github"
-uri = "https://github.com/HolonProduction/godot_kanban_tasks"
-
-[node name="Control2" type="Control" parent="Help/VBoxContainer/HBoxContainer4" unique_id=1549292013]
-layout_mode = 2
-size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 17
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cmvuv")
+bbcode_enabled = true
+text = "[center][img height=2em]uid://phpa3kr3tjwu[/img]  Leave a star on [url=https://github.com/HolonProduction/godot_kanban_tasks]Github[/url] or a like on the [url=https://store.godotengine.org/asset/holonproduction/kanban-tasks/]Asset Store[/url][/center]"
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
