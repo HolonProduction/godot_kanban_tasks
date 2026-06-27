@@ -31,7 +31,6 @@ I wanted the plugin to be findable with the keywords `kanban`, `todo` and `tasks
 ### :camera: Can I get some screenshots please?
 |     |     |
 |:---:|:---:|
-| ![screenshot](./images/editor1.png) | ![screenshot](./images/standalone1.png) |
-| ![screenshot](./images/standalone2.png) | ![screenshot](./images/editor2.png) |
-| ![screenshot](./images/editor3.png) | ![screenshot](./images/standalone3.png) |
-| ![screenshot](./images/standalone4.png) | ![screenshot](./images/editor4.png) |
+| ![screenshot](./images/editor_empty.png) | ![screenshot](./images/standalone_empty.png) |
+| ![screenshot](./images/standalone.png) | ![screenshot](./images/editor.png) |
+| ![screenshot](./images/settings_categories.png) | ![screenshot](./images/settings_stages.png) |
