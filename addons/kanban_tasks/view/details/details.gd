@@ -220,7 +220,6 @@ func __create_step(text: String) -> void:
 	task.add_step(data)
 	create_step_edit.text = ""
 	update()
-	if is_instance_valid(__step_data):
-		for step in step_holder.get_step_entries():
-			if step.step_data == data:
-				step.grab_focus.call_deferred()
+	for step in step_holder.get_step_entries():
+		if step.step_data == data:
+			step.grab_focus.call_deferred()
