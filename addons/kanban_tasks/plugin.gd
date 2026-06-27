@@ -51,6 +51,7 @@ var board_changed: bool = false:
 		board_changed = value
 		__update_board_label()
 
+var export_plugin: Variant = null
 
 func _enter_tree() -> void:
 	board_label = Label.new()
@@ -131,6 +132,10 @@ func _enter_tree() -> void:
 		else:
 			__create_board()
 			__save_board(editor_data_file_path)
+	
+	if Engine.is_editor_hint():
+		export_plugin = load((get_script() as Script).resource_path.get_base_dir().path_join("export_plugin.gd")).new()
+		add_export_plugin(export_plugin)
 
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
 	ctx.save_board.connect(__editor_save_board)
@@ -141,6 +146,9 @@ func _enter_tree() -> void:
 
 
 func _exit_tree() -> void:
+	if is_instance_valid(export_plugin):
+		remove_export_plugin(export_plugin)
+	
 	if not Engine.is_editor_hint():
 		remove_control_from_container(CONTAINER_TOOLBAR, board_label)
 	board_label.queue_free()

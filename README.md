@@ -8,7 +8,7 @@ Kanban Tasks - Todo Manager is a minimalistic kanban board application aimed at 
 ---
 
 ## :seedling: Setup
-The editor plugin can be installed from the Godot Asset Store. After doing so, add the plugin folder `res://addons/kanban_tasks` to your build exceptions to prevent it from getting bundled with your game.
+The editor plugin can be installed from the Godot Asset Store.
 
 ---
 ## :rocket: Features
