@@ -22,99 +22,52 @@ static func should_handle_shortcut(node: Node) -> bool:
 
 
 func _ready() -> void:
-	__setup_shortcuts()
-
-
-func __setup_shortcuts() -> void:
-	# delete
-	var ev_delete := InputEventKey.new()
-	if OS.get_name() == "macOS":
-		ev_delete.keycode = KEY_BACKSPACE
-		ev_delete.meta_pressed = true
+	if Engine.is_editor_hint():
+		# TODO: Update on editor settings change.
+		__update_shortcuts_editor()
 	else:
-		ev_delete.keycode = KEY_DELETE
-	delete.events.append(ev_delete)
+		__update_shortcuts_standalone()
 
-	# duplicate
-	var ev_dupe := InputEventKey.new()
-	if OS.get_name() == "macOS":
-		ev_dupe.keycode = KEY_D
-		ev_dupe.meta_pressed = true
-	else:
-		ev_dupe.keycode = KEY_D
-		ev_dupe.ctrl_pressed = true
-	duplicate.events.append(ev_dupe)
 
-	# create
-	var ev_create := InputEventKey.new()
-	if OS.get_name() == "macOS":
-		ev_create.keycode = KEY_A
-		ev_create.meta_pressed = true
-	else:
-		ev_create.keycode = KEY_A
-		ev_create.ctrl_pressed = true
-	create.events.append(ev_create)
+func __update_shortcuts_editor() -> void:
+	var editor_settings = Engine.get_singleton(&"EditorInterface").get_editor_settings()
+	delete = editor_settings.get_shortcut("scene_tree/delete")
+	duplicate = editor_settings.get_shortcut("scene_tree/duplicate")
+	create = editor_settings.get_shortcut("scene_tree/add_child_node")
+	rename = editor_settings.get_shortcut("scene_tree/rename")
+	search = editor_settings.get_shortcut("editor/open_search")
+	confirm = editor_settings.get_shortcut("ui_accept")
+	undo = editor_settings.get_shortcut("ui_undo")
+	redo = editor_settings.get_shortcut("ui_redo")
 
-	# rename
-	var ev_rename := InputEventKey.new()
-	ev_rename.keycode = KEY_F2
-	rename.events.append(ev_rename)
 
-	# search
-	var ev_search := InputEventKey.new()
-	if OS.get_name() == "macOS":
-		ev_search.keycode = KEY_F
-		ev_search.meta_pressed = true
-	else:
-		ev_search.keycode = KEY_F
-		ev_search.ctrl_pressed = true
-	search.events.append(ev_search)
+func __create(key: Key, shift: bool, ctrl: bool):
+	var ev := InputEventKey.new()
+	ev.command_or_control_autoremap = ctrl
+	ev.shift_pressed = shift
+	ev.keycode = key
+	var shortcut := Shortcut.new()
+	shortcut.events.append(ev)
+	return shortcut
 
-	# confirm
-	var ev_confirm := InputEventKey.new()
-	ev_confirm.keycode = KEY_ENTER
-	confirm.events.append(ev_confirm)
 
-	# undo
-	var ev_undo := InputEventKey.new()
-	if OS.get_name() == "macOS":
-		ev_undo.keycode = KEY_Z
-		ev_undo.meta_pressed = true
-	else:
-		ev_undo.keycode = KEY_Z
-		ev_undo.ctrl_pressed = true
-	undo.events.append(ev_undo)
+func __get(action: String, fallback: Shortcut = null) -> Shortcut:
+	if InputMap.has_action(action):
+		var shortcut := Shortcut.new()
+		shortcut.events = InputMap.action_get_events(action)
+		return shortcut
+	return fallback
 
-	# redo
-	var ev_redo := InputEventKey.new()
-	if OS.get_name() == "macOS":
-		ev_redo.keycode = KEY_Z
-		ev_redo.meta_pressed = true
-		ev_redo.shift_pressed = true
-	else:
-		ev_redo.keycode = KEY_Z
-		ev_redo.ctrl_pressed = true
-		ev_redo.shift_pressed = true
-	redo.events.append(ev_redo)
 
-	# save
-	var ev_save := InputEventKey.new()
-	if OS.get_name() == "macOS":
-		ev_save.keycode = KEY_S
-		ev_save.meta_pressed = true
-	else:
-		ev_save.keycode = KEY_S
-		ev_save.ctrl_pressed = true
-	save.events.append(ev_save)
-
-	# save as
-	var ev_save_as := InputEventKey.new()
-	if OS.get_name() == "macOS":
-		ev_save_as.keycode = KEY_S
-		ev_save_as.meta_pressed = true
-		ev_save_as.shift_pressed = true
-	else:
-		ev_save_as.keycode = KEY_S
-		ev_save_as.ctrl_pressed = true
-		ev_save_as.shift_pressed = true
-	save_as.events.append(ev_save_as)
+func __update_shortcuts_standalone() -> void:
+	delete = __get("ui_kanban_delete", __get("ui_text_delete"))
+	duplicate = __get("ui_kanban_duplicate", __get("ui_graph_duplicate"))
+	create = __get("ui_kanban_create", __create(KEY_A, false, true))
+	rename = __get("ui_kanban_rename", __create(KEY_F2, false, false))
+	search = __get("ui_kanban_search", __get("ui_filedialog_find"))
+	confirm = __get("ui_accept")
+	undo = __get("ui_undo")
+	redo = __get("ui_redo")
+	
+	save = __get("ui_kanban_save", __create(KEY_S, false, true))
+	save_as = __get("ui_kanban_save_as", __create(KEY_S, true, true))
