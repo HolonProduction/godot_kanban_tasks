@@ -6,12 +6,16 @@
 addons/*
 !addons/kanban_tasks/
 !addons/standalone_plugin/
-editor_script.gd
+/editor_script.gd
+/editor_script.gd.uid
 
 export/
 generated/
 addons/kanban_tasks/data.json
 addons/kanban_tasks/data.kanban
 kanban_tasks_data.json
-kanban_tasks_data.kanban
+/*.kanban
 override.cfg
+
+# IDE excludes
+.vscode/

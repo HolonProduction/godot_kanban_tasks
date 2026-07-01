@@ -5,12 +5,9 @@
 
 Kanban Tasks - Todo Manager is a minimalistic kanban board application aimed at solo developers. It is available as addon for the [Godot Engine](https://godotengine.org) or as standalone application.
 
----
-
 ## :seedling: Setup
 The editor plugin can be installed from the Godot Asset Store.
 
----
 ## :rocket: Features
 - Tasks with detailed description and title
 - Intuitive drag and drop usage
@@ -19,7 +16,6 @@ The editor plugin can be installed from the Godot Asset Store.
 - Categories to organize your tasks
 - Integrates well with all Godot editor themes including light ones
 
----
 ## :question: Q & A
 
 ### :anger: Now that there is a standalone version will the editor plugin be discontinued?
@@ -34,3 +30,9 @@ I wanted the plugin to be findable with the keywords `kanban`, `todo` and `tasks
 | ![screenshot](./images/editor_empty.png) | ![screenshot](./images/standalone_empty.png) |
 | ![screenshot](./images/standalone.png) | ![screenshot](./images/editor.png) |
 | ![screenshot](./images/settings_categories.png) | ![screenshot](./images/settings_stages.png) |
+
+
+## :hammer: Building a release version
+
+To build a release version of the plugin and standalone versions use the `res://build_logic/bundle.gd` utility. It ensures that the license is correctly included in the distributed zips.
+The build script is only supported on linux.

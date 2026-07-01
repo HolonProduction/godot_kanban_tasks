@@ -2,10 +2,3 @@
 * text=auto eol=lf
 
 *.res binary
-
-# Only export the plugin when packing as zip.
-/** export-ignore
-/addons !export-ignore
-/addons/kanban_tasks/ !export-ignore
-/addons/kanban_tasks/** !export-ignore
-
