@@ -112,7 +112,7 @@ func get_version() -> void:
 	var cfg := ConfigFile.new()
 	check(cfg.load("res://addons/kanban_tasks/plugin.cfg") == OK)
 	version = cfg.get_value("plugin", "version")
-	version = version.strip_edges()
+	version = version.strip_edges().trim_prefix("v")
 	check(not version.is_empty())
 
 

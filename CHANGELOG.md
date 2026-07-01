@@ -4,7 +4,7 @@ Changelog
 This file contains a manually maintained list of the most relevant changes for each version.
 Minor bug fixes or UX changes might be missing. Use `git log` for that.
 
-v2.2.0 (Upcoming)
+v2.2.0
 -----------------
 
 - Minimum Godot Version: 4.6
