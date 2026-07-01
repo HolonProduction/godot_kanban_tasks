@@ -283,9 +283,10 @@ func __editor_save_board() -> void:
 	__save_board(ctx.settings.editor_data_file_path)
 
 
-func __editor_reload_board() -> void:
+func __editor_reload_board(discard_changes: bool) -> void:
 	var ctx: __EditContext = __Singletons.instance_of(__EditContext, self)
-	__action(ACTION_SAVE)
+	if not discard_changes:
+		__action(ACTION_SAVE)
 	__open_board(ctx.settings.editor_data_file_path)
 
 

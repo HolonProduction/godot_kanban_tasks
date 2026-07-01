@@ -127,7 +127,7 @@ func __update_editor_data_file(path: String) -> void:
 	elif file_dialog_create_option.button_pressed:
 		ctx.create_board.emit()
 	else:
-		ctx.reload_board.emit()
+		ctx.reload_board.emit(false)
 
 
 func __apply_changes() -> void:

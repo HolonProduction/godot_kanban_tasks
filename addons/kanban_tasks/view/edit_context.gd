@@ -10,7 +10,7 @@ const __SettingData := preload("../data/settings.gd")
 signal filter_changed()
 signal save_board()
 signal create_board()
-signal reload_board()
+signal reload_board(discard_changes: bool)
 
 ## The currently active filter.
 var filter: __Filter = null:
