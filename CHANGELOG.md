@@ -4,6 +4,13 @@ Changelog
 This file contains a manually maintained list of the most relevant changes for each version.
 Minor bug fixes or UX changes might be missing. Use `git log` for that.
 
+v2.3.0
+-----------------
+- Minimum Godot Version: 4.8
+- Migrated to the new dock system:
+    - Tasks dock can now be made floating.
+- Updated header styling to align better with 4.8.
+
 v2.2.0
 -----------------
 
