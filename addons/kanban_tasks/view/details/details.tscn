@@ -83,10 +83,18 @@ wrap_mode = 1
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="CreateStepEdit" type="LineEdit" parent="VBoxContainer/HSplitContainer/StepList" unique_id=479211446]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HSplitContainer/StepList" unique_id=1826282573]
+layout_mode = 2
+
+[node name="CreateStepEdit" type="LineEdit" parent="VBoxContainer/HSplitContainer/StepList/HBoxContainer" unique_id=479211446]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 placeholder_text = "Create Step"
+
+[node name="CreateStepButton" type="Button" parent="VBoxContainer/HSplitContainer/StepList/HBoxContainer" unique_id=582958774]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HSplitContainer/StepList" unique_id=1566602760]
 unique_name_in_owner = true

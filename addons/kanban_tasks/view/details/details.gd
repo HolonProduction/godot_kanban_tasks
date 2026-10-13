@@ -19,6 +19,7 @@ var __step_data: __StepData
 @onready var step_holder: VBoxContainer = %StepHolder
 @onready var steps_panel_container: PanelContainer = %PanelContainer
 @onready var create_step_edit: LineEdit = %CreateStepEdit
+@onready var create_step_button: Button = %CreateStepButton
 @onready var step_details: VBoxContainer = %StepDetails
 @onready var close_step_details_button: Button = %CloseStepDetails
 @onready var step_edit: TextEdit = %StepEdit
@@ -27,6 +28,7 @@ var __step_data: __StepData
 func _ready() -> void:
 	about_to_popup.connect(__on_about_to_popup)
 	create_step_edit.text_submitted.connect(__create_step)
+	create_step_button.pressed.connect(__create_step)
 	close_step_details_button.pressed.connect(__close_step_details)
 	notification(NOTIFICATION_THEME_CHANGED)
 	step_holder.entry_action_triggered.connect(__on_step_action_triggered)
@@ -39,8 +41,8 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_THEME_CHANGED and not is_part_of_edited_scene():
 		if is_instance_valid(steps_panel_container):
 			steps_panel_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"Panel"))
-		if is_instance_valid(create_step_edit):
-			create_step_edit.right_icon = get_theme_icon(&"Add", &"EditorIcons")
+		if is_instance_valid(create_step_button):
+			create_step_button.icon = get_theme_icon(&"Add", &"EditorIcons")
 		if is_instance_valid(close_step_details_button):
 			close_step_details_button.icon = get_theme_icon(&"Close", &"EditorIcons")
 
@@ -212,7 +214,8 @@ func __on_category_selected(index: int) -> void:
 	board_data.get_task(data_uuid).category = category_select.get_item_metadata(index)
 
 
-func __create_step(text: String) -> void:
+func __create_step(_arg0 = null) -> void:
+	var text = create_step_edit.text
 	if text.is_empty():
 		return
 	var task = board_data.get_task(data_uuid)
